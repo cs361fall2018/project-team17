@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import static cs361.battleships.models.AtackStatus.*;
 
@@ -49,18 +50,30 @@ public class Game {
         return true;
     }
 
+    /*
+     * Description: create a random character from A-J by using the Random class and using .nextInt(max - min + 1) + min;
+     * return: random integer from 1-10
+     */
     private char randCol() {
-        // TODO implement
-        return 'X';
+        Random random = new Random();
+        return (char)(random.nextInt(10) + 65);
     }
 
+    /*
+     * Description: create a random integer from 1-10 by using the Random class and using .nextInt(max - min + 1) + min;
+     * return: random integer from 1-10
+     */
     private int randRow() {
-        // TODO implement
-        return 0;
+        Random random = new Random();
+        return random.nextInt(10) + 1;
     }
 
+    /*
+     * Description: create a random boolean tat is true or false by using the Random class and using .nextBoolean();
+     * return: random boolean that is true or false
+     */
     private boolean randVertical() {
-        // TODO implement
-        return false;
+        Random random = new Random();
+        return random.nextBoolean();
     }
 }
