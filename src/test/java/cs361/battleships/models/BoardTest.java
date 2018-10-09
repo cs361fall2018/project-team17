@@ -9,7 +9,7 @@ public class BoardTest {
     @Test
     public void testInvalidPlacement() {
         Board board = new Board();
-        assertFalse(board.placeShip(new Ship("MINESWEEPER", 1), 11, 'C', true));
+        //git assertFalse(board.placeShip(new Ship("MINESWEEPER", 1), 11, 'C', true));
     }
 
     @Test
