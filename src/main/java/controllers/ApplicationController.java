@@ -3,6 +3,9 @@ package controllers;
 import com.google.inject.Singleton;
 import cs361.battleships.models.Game;
 import cs361.battleships.models.Ship;
+import cs361.battleships.models.Destroyer;
+import cs361.battleships.models.Minesweeper;
+import cs361.battleships.models.Battleship;
 import ninja.Context;
 import ninja.Result;
 import ninja.Results;
@@ -21,7 +24,17 @@ public class ApplicationController {
 
     public Result placeShip(Context context, PlacementGameAction g) {
         Game game = g.getGame();
-        Ship ship = new Ship(g.getShipType());
+        Ship ship;
+        if (g.getShipType() == "Destroyer"){
+            ship = new Destroyer();
+        }
+        else if(g.getShipType() == "Minesweeper"){
+            ship = new Minesweeper();
+        }
+        else{
+            ship = new Battleship();
+        }
+        //Ship ship = new Ship(g.getShipType());
         boolean result = game.placeShip(ship, g.getActionRow(), g.getActionColumn(), g.isVertical());
         if (result) {
             return Results.json().render(game);
