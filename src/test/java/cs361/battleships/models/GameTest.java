@@ -1,7 +1,7 @@
 package cs361.battleships.models;
 
 import org.junit.Test;
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class GameTest {
 
@@ -9,7 +9,7 @@ public class GameTest {
     public void GameTest() {
         Game g1 = new Game();
         Ship cruiser = new Cruiser();
-        g1.placeShip(cruiser, 5, 'A', true);
+        assertTrue(g1.placeShip(cruiser, 5, 'A', true));
 
     }
 }
