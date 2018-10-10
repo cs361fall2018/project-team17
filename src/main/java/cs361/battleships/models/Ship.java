@@ -11,6 +11,14 @@ public class Ship {
 	private String kind;
 	private int length;
 
+	public Ship() {
+		occupiedSquares = new ArrayList<>();
+	}
+
+	public Ship(String kind){
+		this.kind = kind;
+	}
+
 	public Ship(String kind, int length) {
 		this.kind = kind;
 		this.length = length;
@@ -21,11 +29,23 @@ public class Ship {
 		return kind;
 	}
 
+	public int getLength(){
+		return length;
+	}
+
 	public List<Square> getOccupiedSquares() {
 		return occupiedSquares;
 	}
 
-	public void setOccupiedSquares(int x, char y, boolean isVerticle){
+	public boolean setOccupiedSquares(int x, char y, boolean isVerticle){
+
+		if (x < 1 | x > 9){
+			return false;
+		}
+		if (y > 'J' | y < 'A'){
+			return false;
+		}
+
 		if (isVerticle == true){
 			Square newSquare;
 			int row = x;
@@ -47,7 +67,7 @@ public class Ship {
 		}
 
 
-
+		return true;
 
 	}
 }
