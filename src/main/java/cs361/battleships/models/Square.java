@@ -5,14 +5,23 @@ public class Square {
 
 	private int row;
 	private char column;
+	private boolean occupied;
+	private boolean hit;
 
-	public Square(){
-
+	public Square(int row, char column, boolean occupied){
+		hit = 0;
+		this.row = r;
+		this.column = c;
+		this.occupied = o;
 	}
 
-	public Square(int row, char column) {
-		this.row = row;
-		this.column = column;
+	public squareHit(){
+		hit = 1;
+		return occupied;
+	}
+
+	public compare() {
+		return row + column;
 	}
 
 	public char getColumn() {
