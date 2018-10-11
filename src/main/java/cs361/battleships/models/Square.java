@@ -1,27 +1,40 @@
 package cs361.battleships.models;
 
-@SuppressWarnings("unused")
+import static java.lang.Boolean.FALSE;
+
+
 public class Square {
 
 	private int row;
 	private char column;
 	private boolean occupied;
-	private boolean hit;
+	private int hit;
 
 	public Square(int row, char column, boolean occupied){
 		hit = 0;
-		this.row = r;
-		this.column = c;
-		this.occupied = o;
+		this.row = row;
+		this.column = column;
+		this.occupied = occupied;
 	}
 
-	public squareHit(){
-		hit = 1;
+	public boolean checkHit(){
+		hit++;
+		if(hit > 1){
+			return false;
+		}
 		return occupied;
 	}
 
-	public compare() {
-		return row + column;
+//	returns a concadinated version of the location as to more easily compare
+	public String compareLocation() {
+		return Integer.toString(row) + String.valueOf(column);
+	}
+
+	public boolean checkValid(){
+		if(hit > 0){
+			return false;
+		}
+		return true;
 	}
 
 	public char getColumn() {
