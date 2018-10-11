@@ -1,16 +1,18 @@
 package cs361.battleships.models;
 
+import java.util.List;
+
 public class Result {
 
 	//Private
 	private Square location;
-	private Ship CurrentShip;
-	private int ShipCount;
+	private Ship currentShip;
+	private int shipCount;
 
 	//Constructors
 	Result(Square square) {
 		location = square;
-		currentShip = new Ship(null);
+		currentShip = new Ship("None");
 		shipCount = 3;
 	}
 
@@ -24,10 +26,10 @@ public class Result {
 	public AtackStatus getResult() {
 		if(location.checkHit()){
 			int check_sunk = 0;
+			List<Square> shipLocation = currentShip.getOccupiedSquares();
 			for(int i = 0; i < currentShip.getLength(); i++){
-				Square shipLocation = currentShip.getOccupiedSquares();
-				if(location.compareLocation() = shipLocation.compareLocation()){
-					if(!shipLocation.checkHit()){
+				if(location.compareLocation() == shipLocation.get(i).compareLocation()){
+					if(!shipLocation.get(i).checkHit()){
 						check_sunk++;
 					}
 				}
@@ -42,9 +44,9 @@ public class Result {
 			}else {
 				return AtackStatus.HIT;
 			}
-			return AtackStatus.MISS;
 		}
-		return null;
+		return AtackStatus.MISS;
+//		return AtackStatus.INVALID;
 	}
 
 	public void setResult(AtackStatus result) {
@@ -62,7 +64,7 @@ public class Result {
 
 	public Square getLocation() {
 		//TODO implement
-		return return location;
+		return location;
 	}
 
 	public void setLocation(Square square) {

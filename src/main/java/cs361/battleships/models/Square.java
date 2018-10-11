@@ -27,7 +27,8 @@ public class Square {
 
 //	returns a concadinated version of the location as to more easily compare
 	public String compareLocation() {
-		return Integer.toString(row) + String.valueOf(column);
+		String temp = Integer.toString(row) + String.valueOf(column);
+		return temp;
 	}
 
 	public boolean checkValid(){
