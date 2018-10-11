@@ -50,7 +50,7 @@ public class Ship {
 			Square newSquare;
 			int row = x;
 			for (int i = 0; i < length; i++){
-				newSquare = new Square(row, y);
+				newSquare = new Square(row, y, true);
 				occupiedSquares.add(i,newSquare);
 				row++;
 			}
@@ -59,7 +59,7 @@ public class Ship {
 			char col = y;
 			Square newSquare;
 			for (int i = 0; i < length; i++){
-				newSquare = new Square(x, col);
+				newSquare = new Square(x, col, true);
 				occupiedSquares.add(i,newSquare);
 			col++;
 			}
