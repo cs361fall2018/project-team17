@@ -11,7 +11,7 @@ public class ShipTest {
     @Test
     public void testShipConstructor(){
         Destroyer c1 = new Destroyer();
-        assertEquals(c1.getKind(), "Destroyer");
+        assertEquals(c1.getKind(), "DESTROYER");
     }
 
     @Test
