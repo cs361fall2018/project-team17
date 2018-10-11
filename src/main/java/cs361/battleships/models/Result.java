@@ -2,8 +2,48 @@ package cs361.battleships.models;
 
 public class Result {
 
+	//Private
+	private Square location;
+	private Ship CurrentShip;
+	private int ShipCount;
+
+	//Constructors
+	Result(Square square) {
+		location = square;
+		currentShip = new Ship(null);
+		shipCount = 3;
+	}
+
+	Result(Square square, Ship ship) {
+		location = square;
+		currentShip = ship;
+		shipCount = 3;
+	}
+
+	//Public
 	public AtackStatus getResult() {
-		//TODO implement
+		if(location.checkHit()){
+			int check_sunk = 0;
+			for(int i = 0; i < currentShip.getLength(); i++){
+				Square shipLocation = currentShip.getOccupiedSquares();
+				if(location.compareLocation() = shipLocation.compareLocation()){
+					if(!shipLocation.checkHit()){
+						check_sunk++;
+					}
+				}
+			}
+			if(check_sunk == currentShip.getLength()){
+				shipCount--;
+				if(shipCount == 0){
+					return AtackStatus.SURRENDER;
+				}else {
+					return AtackStatus.SUNK;
+				}
+			}else {
+				return AtackStatus.HIT;
+			}
+			return AtackStatus.MISS;
+		}
 		return null;
 	}
 
@@ -13,19 +53,19 @@ public class Result {
 
 	public Ship getShip() {
 		//TODO implement
-		return null;
+		return currentShip;
 	}
 
 	public void setShip(Ship ship) {
-		//TODO implement
+		currentShip = ship;
 	}
 
 	public Square getLocation() {
 		//TODO implement
-		return null;
+		return return location;
 	}
 
 	public void setLocation(Square square) {
-		//TODO implement
+		location = square;
 	}
 }
