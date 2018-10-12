@@ -40,8 +40,7 @@ public class Board {
         	ship.setOccupiedSquares(x, y, isVertical);
         	List<Square> temp = ship.getOccupiedSquares();
         	ships.add(ship);
-        	for (int i = 0; i < temp.size(); i++)
-			{
+        	for (int i = 0; i < temp.size(); i++) {
 				results.get(temp.get(i).getRow()).get((int)(temp.get(i).getColumn())-64).setShip(ship);
 				if (results.get(temp.get(i).getRow()).get((int)(temp.get(i).getColumn())-64).getShip() == ship) {
 					returnVar = true;
@@ -58,7 +57,12 @@ public class Board {
 		int ycon = y-64;
 		if (ships.size() == 1) {
 			if (x < 10 && ycon < 10) {
-				results.get(x).get(ycon).getStatus(ships.size());
+				results.get(x).get(ycon).getStatus(ships.size()-1);
+				if (results.get(x).get(ycon).getResult() == AtackStatus.SUNK ||
+						results.get(x).get(ycon).getResult() == AtackStatus.SURRENDER)
+				{
+					ships.remove(results.get(x).get(ycon).getShip());
+				}
 				return results.get(x).get(ycon);
 			}
 		}
