@@ -50,7 +50,7 @@ public class Result {
 			}
 		}
 		//checks to see if it is a miss or the spot has been hit twice
-		if(currentShip.checkValid()) {
+		if(location.checkValid()) {
 			return AtackStatus.MISS;
 		}
 		return AtackStatus.INVALID;
