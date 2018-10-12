@@ -1,12 +1,14 @@
 package cs361.battleships.models;
 
 import java.util.List;
+import java.util.PrimitiveIterator;
 
 public class Result {
 
 	//Private
 	private Square location;
 	private Ship currentShip;
+	private AtackStatus currentStatus;
 
 	//Constructors
 	Result(Square square) {
@@ -43,19 +45,28 @@ public class Result {
 							// have to be manipulated outside this function this
 							//is just to keep track if the game is over or not
 				if(shipCount == 0){
-					return AtackStatus.SURRENDER; // game over
+					currentStatus = AtackStatus.SURRENDER;
+					return currentStatus; // game over
 				}else {
-					return AtackStatus.SUNK;
+					currentStatus = AtackStatus.SUNK;
+					return currentStatus;
 				}
 			}else {
-				return AtackStatus.HIT;
+				currentStatus = AtackStatus.HIT;
+				return currentStatus;
 			}
 		}
 		//checks to see if it is a miss or the spot has been hit twice
 		if(location.checkValid()) {
-			return AtackStatus.MISS;
+			currentStatus = AtackStatus.MISS;
+			return currentStatus;
 		}
-		return AtackStatus.INVALID;
+		currentStatus = AtackStatus.INVALID;
+		return currentStatus;
+	}
+
+	public AtackStatus getStatus(){
+		return currentStatus;
 	}
 
 	public Ship getShip() {
