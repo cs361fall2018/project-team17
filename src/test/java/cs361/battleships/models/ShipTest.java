@@ -17,12 +17,12 @@ public class ShipTest {
     @Test
     public void testSetOccupiedSquares(){
         Destroyer d1 = new Destroyer();
-        assertTrue(d1.setOccupiedSquares(1, 'A', true));
+        assertTrue(d1.setOccupiedSquares(1, 'A', false));
         for (int i = 0; i < d1.getLength(); i++){
             assertEquals(d1.getOccupiedSquares().get(i).getColumn(),'A' );
             assertEquals(d1.getOccupiedSquares().get(i).getRow(), i+1 );
         }
-        assertTrue(d1.setOccupiedSquares(1, 'A', false));
+        assertTrue(d1.setOccupiedSquares(1, 'A', true));
         for (int i = 0; i < d1.getLength(); i++){
             assertEquals(d1.getOccupiedSquares().get(i).getColumn(),'A'+i );
             assertEquals(d1.getOccupiedSquares().get(i).getRow(), 1 );
