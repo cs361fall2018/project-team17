@@ -53,28 +53,26 @@ public class Ship {
 			return false;
 		}
 
-		if (isVerticle == true){
+		if (isVerticle){
 			Square newSquare;
 			int row = x;
 			for (int i = 0; i < length; i++){
 				newSquare = new Square(row, y, true);
-				occupiedSquares.add(i,newSquare);
+				this.occupiedSquares.add(i,newSquare);
 				row++;
 			}
+			return true;
 		}
 		else {
 			char col = y;
 			Square newSquare;
 			for (int i = 0; i < length; i++){
 				newSquare = new Square(x, col, true);
-				occupiedSquares.add(i,newSquare);
+				this.occupiedSquares.add(i,newSquare);
 			col++;
 			}
-
+			return true;
 		}
-
-
-		return true;
 
 	}
 }
