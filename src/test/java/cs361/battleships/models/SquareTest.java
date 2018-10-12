@@ -40,4 +40,23 @@ public class SquareTest {
         assertEquals("5c", test2.compareLocation());
     }
 
+    @Test
+    public void testGetters(){
+    assertEquals(1, test.getRow());
+    assertEquals('a', test.getColumn());
+    assertEquals(true, test.getOccupied());
+    assertEquals(0, test.getHit());
+    }
+
+    @Test
+    public void testSetters(){
+        test.setRow(5);
+        assertEquals(5, test.getRow());
+        test.setColumn('D');
+        assertEquals('D', test.getColumn());
+        test.setOccupied(false);
+        assertEquals(false, test.getOccupied());
+        test.setHit(1);
+        assertEquals(1, test.getHit());
+    }
 }
