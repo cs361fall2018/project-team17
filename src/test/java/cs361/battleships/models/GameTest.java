@@ -11,7 +11,7 @@ public class GameTest {
     public void GameTest() {
         Game g1 = new Game();
         Ship minesweeper = new Minesweeper();
-        //assertTrue(g1.placeShip(minesweeper, 5, 'A', true));
+        assertTrue(g1.placeShip(minesweeper, 5, 'A', true));
 
 
     }
