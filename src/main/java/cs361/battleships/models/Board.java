@@ -11,42 +11,45 @@ public class Board {
 
 	//Private Arrays, Ships contains the ship variables present in the Board
 	//Results is a array that contains a result object for every attack on the board
-    @JsonProperty private List<Ship> ships;
-    @JsonProperty private List<Result> attacks;
+	@JsonProperty private List<Ship> ships;
+	@JsonProperty private List<Result> attacks;
 
 	/*
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
 	public Board() {
 		//Initial Declarations
-        this.ships = new ArrayList<>();
-        this.attacks = new ArrayList<>();
+
+		this.ships = new ArrayList<>();
+		this.attacks = new ArrayList<>();
 	}
 
 	/*
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
- 	public boolean placeShip(Ship ship, int x, char y, boolean isVertical) {
- 		//Error Checking
-        if (x < 1 || x > 10)
-            return false;
-        else if (y > 'J' || y < 'A')
-            return false;
-        else if ( x + ship.getLength() - 1 > 10  && isVertical)
-            return false;
-        else if ( y + ship.getLength() - 1 > 'J' && !isVertical)
-            return false;
-        else {
-        	//Set the attacks of the ship to the coordinates passed in
-        	ship.setOccupiedSquares(x, y, isVertical);
-        	//Create a list of the occupied squares to be used to change the result array
-        	List<Square> temp = ship.getOccupiedSquares();
-        	//add the ship to the ship array
-        	this.ships.add(ship);
+	public boolean placeShip(Ship ship, int x, char y, boolean isVertical) {
+		//Error Checking
+		int totxlength = x + ship.getLength();
+		int totylength = y + ship.getLength();
+		if (x < 1 || x > 10)
+			return false;
+		else if (y > 'J' || y < 'A')
+			return false;
+		else if ( totxlength-1 >= 10  && !isVertical)
+			return false;
+		else if ( totylength-1 >= 'J' && isVertical)
+			return false;
+		else {
+			//Set the attacks of the ship to the coordinates passed in
+			ship.setOccupiedSquares(x, y, isVertical);
+			//Create a list of the occupied squares to be used to change the result array
+			List<Square> temp = ship.getOccupiedSquares();
+			//add the ship to the ship array
+			this.ships.add(ship);
 
-        	return true;
-			}
+			return true;
 		}
+	}
 
 	/*
 	DO NOT change the signature of this method. It is used by the grading scripts.
@@ -56,6 +59,19 @@ public class Board {
 		int ycon = y-64;
 		//Error checking
 		if (x < 10 && ycon < 10) {
+			for (int i = 0; i < ships.size(); i++)
+			{
+				for (int j = 0; j < ships.get(i).getOccupiedSquares().size(); j++)
+				{
+					if (ships.get(i).getOccupiedSquares().get(j).getRow() == x &&
+							ships.get(i).getOccupiedSquares().get(j).getColumn() == y) {
+						Result newAtt = new Result(new Square(x, y, true), ships.get(i));
+						newAtt.getStatus(ships.size());
+						attacks.add(newAtt);
+						return newAtt;
+					}
+				}
+			}
 			Result newAttk = new Result(new Square(x, y, false));
 			AtackStatus TMP = newAttk.getStatus(ships.size());
 			attacks.add(newAttk);
