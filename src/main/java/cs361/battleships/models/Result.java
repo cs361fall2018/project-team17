@@ -39,7 +39,6 @@ public class Result {
 			}
 			//to see if the ship sunk or was simply hit
 			if(check_sunk == currentShip.getLength()){
-				System.out.println(shipCount);
 				shipCount--;//drops the amount of ships this actual count will
 							// have to be manipulated outside this function this
 							//is just to keep track if the game is over or not
