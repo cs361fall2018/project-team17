@@ -15,15 +15,17 @@ public class Result {
 
 		location = new Square(square.getRow(), square.getColumn(), false);
 		currentShip = new Ship("None", 0);
+		currentStatus = AtackStatus.INVALID;
 	}
 
 	Result(Square square, Ship ship) {
 		location = square;//new Square(square.getRow(), square.getColumn(), true);
 		currentShip = ship;
+		currentStatus = AtackStatus.INVALID;
 	}
 
 	//Public
-	public AtackStatus getResult(int shipCount) {
+	public AtackStatus getStatus(int shipCount) {
 		//checks if the spot has been hit and is occupied if so it continues
 		if(location.checkHit()){
 			int check_sunk = 0;//keeps track of weather or not the ship sinks
@@ -65,7 +67,7 @@ public class Result {
 		return currentStatus;
 	}
 
-	public AtackStatus getStatus(){
+	public AtackStatus getResult(){
 		return currentStatus;
 	}
 
@@ -75,6 +77,7 @@ public class Result {
 
 	public void setShip(Ship ship) {
 		currentShip = ship;
+		location.setOccupied(true);
 	}
 
 	public Square getLocation() {
