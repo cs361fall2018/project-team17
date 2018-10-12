@@ -39,6 +39,10 @@ public class Square {
 		return false;
 	}
 
+	public int getHit(){
+		return hit;
+	}
+
 //	public void set(Square square){
 //		row = .;
 //		column;

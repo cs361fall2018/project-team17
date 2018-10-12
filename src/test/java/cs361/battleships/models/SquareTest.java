@@ -27,10 +27,10 @@ public class SquareTest {
 
     @Test
     public void testCheckValid(){
-        assertEquals(true, test.checkValid());
+        assertEquals(false, test.checkValid());
 
         test2.checkHit();
-        assertEquals(false, test2.checkValid());
+        assertEquals(true, test2.checkValid());
     }
 
     @Test

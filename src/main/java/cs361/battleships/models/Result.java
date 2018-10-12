@@ -27,16 +27,19 @@ public class Result {
 			int check_sunk = 0;//keeps track of weather or not the ship sinks
 			//goes through the ship locations to see which one was hit
 			for(int i = 0; i < currentShip.getLength(); i++){
-				//checks the current location with the locations of the ship
-				if(location.compareLocation() == currentShip.getOccupiedSquares().get(i).compareLocation()){
-					//checks which spots have been hits to see if the ship sinks
-					if(!currentShip.getOccupiedSquares().get(i).checkHit()){
-						check_sunk++;
-					}
+				//finds which part of the ship was hit
+				if(location.compareLocation().equals(currentShip.getOccupiedSquares().get(i).compareLocation())){
+					currentShip.getOccupiedSquares().get(i).checkHit();
+
+				}
+				//checks which spots have been hits to see if the ship sinks
+				if(currentShip.getOccupiedSquares().get(i).getHit() > 0){
+					check_sunk++;
 				}
 			}
 			//to see if the ship sunk or was simply hit
 			if(check_sunk == currentShip.getLength()){
+				System.out.println(shipCount);
 				shipCount--;//drops the amount of ships this actual count will
 							// have to be manipulated outside this function this
 							//is just to keep track if the game is over or not

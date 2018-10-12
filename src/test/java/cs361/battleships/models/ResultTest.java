@@ -11,6 +11,9 @@ public class ResultTest {
     Result test3;
     Result test4;
 
+    Result lastResult;
+    Result lastResult2;
+
     @Before
     public void beforeTest(){
         Square square1 = new Square(1, 'A', false);
@@ -26,20 +29,29 @@ public class ResultTest {
 
         Square square4 = new Square(6, 'C', true);
         test4 = new Result(square4, testShip);
+
+        Minesweeper lastShip = new Minesweeper();
+        lastShip.setOccupiedSquares(2, 'A', true);
+        Square square5 = new Square(2, 'A', true);
+        lastResult = new Result(square5, lastShip);
+
+        Square square6 = new Square(3, 'A', true);
+        lastResult2 = new Result(square6, lastShip);
+
     }
 
     @Test
     public void testGetResult(){
-//        System.out.println(test1.getResult());
-//        if(AtackStatus.MISS == AtackStatus.MISS){
-//            System.out.println("winner");
-//        }
-//        test1.getShip();
         assertEquals(AtackStatus.MISS, test1.getResult(3));
 
-//        test2.getResult();
         assertEquals(AtackStatus.HIT, test2.getResult(3));
         assertEquals(AtackStatus.INVALID, test2.getResult(3));
 
+        test3.getResult(3);
+
+        assertEquals(AtackStatus.SUNK, test4.getResult(3));
+
+        lastResult.getResult(1);
+        assertEquals(AtackStatus.SURRENDER, lastResult2.getResult(1));
     }
 }
