@@ -13,6 +13,7 @@ public class Board {
 	//Results is a array that contains a result object for every attack on the board
 	@JsonProperty private List<Ship> ships;
 	@JsonProperty private List<Result> attacks;
+	private int counter;
 
 	/*
 	DO NOT change the signature of this method. It is used by the grading scripts.
@@ -22,6 +23,7 @@ public class Board {
 
 		this.ships = new ArrayList<>();
 		this.attacks = new ArrayList<>();
+		this.counter = ships.size();
 	}
 
 	/*
@@ -54,7 +56,7 @@ public class Board {
 			List<Square> temp = ship.getOccupiedSquares();
 			//add the ship to the ship array
 			this.ships.add(ship);
-
+			counter++;
 			return true;
 		}
 	}
@@ -66,7 +68,7 @@ public class Board {
 		//Convert y value to an integer
 		int ycon = y-64;
 		//Error checking
-		if (x < 10 && ycon < 10) {
+		if (x <= 10 && x >= 1 && ycon <= 10 && y>= 1) {
 			for (int i = 0; i < ships.size(); i++)
 			{
 				for (int j = 0; j < ships.get(i).getOccupiedSquares().size(); j++)
@@ -74,8 +76,11 @@ public class Board {
 					if (ships.get(i).getOccupiedSquares().get(j).getRow() == x &&
 							ships.get(i).getOccupiedSquares().get(j).getColumn() == y) {
 						Result newAtt = new Result(new Square(x, y, true), ships.get(i));
-						newAtt.getStatus(ships.size());
+						newAtt.getStatus(counter);
 						attacks.add(newAtt);
+//						if(newAtt.getResult() == AtackStatus.SUNK) {
+//							counter--;
+//						}
 						return newAtt;
 					}
 				}

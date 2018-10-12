@@ -25,8 +25,8 @@ public class BoardTest {
     @Test
     public void testPlaceShip(){
         Board board = new Board();
-        assertTrue(board.placeShip(new Ship("DESTROYER", 3), 6, 'C', true));       //Valid ship placement
-        assertTrue(board.placeShip(new Ship("MINESWEEPER", 2), 8, 'J', false));          //Valid ship placement
+        assertTrue(board.placeShip(new Ship("DESTROYER", 3), 6, 'C', false));       //Valid ship placement
+        assertTrue(board.placeShip(new Ship("MINESWEEPER", 2), 8, 'J', true));          //Valid ship placement
     }
 
     @Test
