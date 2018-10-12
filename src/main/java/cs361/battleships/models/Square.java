@@ -27,15 +27,28 @@ public class Square {
 
 //	returns a concadinated version of the location as to more easily compare
 	public String compareLocation() {
-		return Integer.toString(row) + String.valueOf(column);
+		String temp = Integer.toString(row) + String.valueOf(column);
+		return temp;
 	}
 
+	//checks to make sure that the square has not been hit twice
 	public boolean checkValid(){
-		if(hit > 0){
-			return false;
+		if(hit == 1){
+			return true;
 		}
-		return true;
+		return false;
 	}
+
+	public int getHit(){
+		return hit;
+	}
+
+//	public void set(Square square){
+//		row = .;
+//		column;
+//		occupied;
+//		hit;
+//	}
 
 	public char getColumn() {
 		return column;
