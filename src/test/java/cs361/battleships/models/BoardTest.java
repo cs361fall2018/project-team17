@@ -32,12 +32,19 @@ public class BoardTest {
     @Test
     public void testAttack(){
         Board board1 = new Board();
-        board1.placeShip(new Ship("DESTROYER", 3),6, 'E', true);
-        assertSame(board1.attack(6, 'E').getResult(), AtackStatus.HIT);
-        assertSame(board1.attack(11, 'A').getResult(), AtackStatus.INVALID);
-        assertSame(board1.attack(1, 'A').getResult(), AtackStatus.MISS);
-        assertSame(board1.attack(6, 'F').getResult(), AtackStatus.HIT);
-        assertSame(board1.attack(6, 'G').getResult(), AtackStatus.SURRENDER);
-        assertSame(board1.attack(9, 'E').getResult(), AtackStatus.MISS);
+        board1.placeShip(new Ship("MINESWEEPER", 2),1, 'A', false);
+        board1.placeShip(new Ship("MINESWEEPER", 2),2, 'A', false);
+        board1.placeShip(new Ship("MINESWEEPER", 2),3, 'A', false);
+        assertSame(board1.attack(1, 'A').getResult(), AtackStatus.HIT);
+        assertSame(board1.attack(1, 'B').getResult(), AtackStatus.SUNK);
+        assertSame(board1.attack(2, 'A').getResult(), AtackStatus.HIT);
+        assertSame(board1.attack(2, 'B').getResult(), AtackStatus.SUNK);
+        assertSame(board1.attack(3, 'A').getResult(), AtackStatus.HIT);
+        assertSame(board1.attack(3, 'B').getResult(), AtackStatus.SURRENDER);
+//        assertSame(board1.attack(11, 'A').getResult(), AtackStatus.INVALID);
+//        assertSame(board1.attack(1, 'A').getResult(), AtackStatus.MISS);
+//        assertSame(board1.attack(6, 'F').getResult(), AtackStatus.HIT);
+//        assertSame(board1.attack(6, 'G').getResult(), AtackStatus.SURRENDER);
+//        assertSame(board1.attack(9, 'E').getResult(), AtackStatus.MISS);
     }
 }
