@@ -10,6 +10,10 @@ public class Square {
 	private boolean occupied;
 	private int hit;
 
+	public Square(){
+
+	}
+
 	public Square(int row, char column, boolean occupied){
 		hit = 0;
 		this.row = row;

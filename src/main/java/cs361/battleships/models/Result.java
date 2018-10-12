@@ -1,26 +1,35 @@
 package cs361.battleships.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 import java.util.PrimitiveIterator;
 
 public class Result {
 
+	//@JsonIgnoreProperties(ignoreUnknown = true)
 	//Private
-	private Square location;
-	private Ship currentShip;
+	@JsonProperty private Square location;
+	@JsonProperty private Ship ship;
 	private AtackStatus currentStatus;
 
 	//Constructors
-	Result(Square square) {
+
+	public Result(){
+
+	}
+
+	public Result(Square square) {
 
 		location = new Square(square.getRow(), square.getColumn(), false);
-		currentShip = new Ship("None", 0);
+		ship = new Ship("None", 0);
 		currentStatus = AtackStatus.INVALID;
 	}
 
-	Result(Square square, Ship ship) {
+	public Result(Square square, Ship ship) {
 		location = square;//new Square(square.getRow(), square.getColumn(), true);
-		currentShip = ship;
+		this.ship = ship;
 		currentStatus = AtackStatus.INVALID;
 	}
 
@@ -30,29 +39,21 @@ public class Result {
 		if(location.checkHit()){
 			int check_sunk = 0;//keeps track of weather or not the ship sinks
 			//goes through the ship locations to see which one was hit
-			for(int i = 0; i < currentShip.getLength(); i++){
+			for(int i = 0; i < ship.getLength(); i++){
 				//finds which part of the ship was hit
-				if(location.compareLocation().equals(currentShip.getOccupiedSquares().get(i).compareLocation())){
-					currentShip.getOccupiedSquares().get(i).checkHit();
+				if(location.compareLocation().equals(ship.getOccupiedSquares().get(i).compareLocation())){
+					ship.getOccupiedSquares().get(i).checkHit();
 
 				}
 				//checks which spots have been hits to see if the ship sinks
-				if(currentShip.getOccupiedSquares().get(i).getHit() > 0){
+				if(ship.getOccupiedSquares().get(i).getHit() > 0){
 					check_sunk++;
 				}
 			}
 			//to see if the ship sunk or was simply hit
-			if(check_sunk == currentShip.getLength()){
-				shipCount--;//drops the amount of ships this actual count will
-							// have to be manipulated outside this function this
-							//is just to keep track if the game is over or not
-				if(shipCount == 0){
-					currentStatus = AtackStatus.SURRENDER;
-					return currentStatus; // game over
-				}else {
+			if(check_sunk == ship.getLength()){
 					currentStatus = AtackStatus.SUNK;
 					return currentStatus;
-				}
 			}else {
 				currentStatus = AtackStatus.HIT;
 				return currentStatus;
@@ -71,12 +72,16 @@ public class Result {
 		return currentStatus;
 	}
 
+	public void setResult(AtackStatus status){
+		currentStatus = status;
+	}
+
 	public Ship getShip() {
-		return currentShip;
+		return ship;
 	}
 
 	public void setShip(Ship ship) {
-		currentShip = ship;
+		this.ship = ship;
 		location.setOccupied(true);
 	}
 
