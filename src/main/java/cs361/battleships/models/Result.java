@@ -8,7 +8,7 @@ import java.util.PrimitiveIterator;
 
 public class Result {
 
-	@JsonIgnoreProperties(ignoreUnknown = true)
+	//@JsonIgnoreProperties(ignoreUnknown = true)
 	//Private
 	@JsonProperty private Square location;
 	@JsonProperty private Ship ship;

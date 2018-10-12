@@ -17,6 +17,13 @@ public class Ship {
 
 	public Ship(String kind){
 		this.kind = kind;
+		if(kind.equals("MINESWEEPER"))
+			this.length = 2;
+		else if (kind.equals("DESTROYER"))
+			this.length = 3;
+		else if (kind.equals("BATTLESHIP"))
+			this.length = 4;
+		occupiedSquares = new ArrayList<Square>(length);
 	}
 
 	public Ship(String kind, int length) {
@@ -39,10 +46,10 @@ public class Ship {
 
 	public boolean setOccupiedSquares(int x, char y, boolean isVerticle){
 
-		if (x < 1 | x > 9){
+		if (x < 1 || x > 10){
 			return false;
 		}
-		if (y > 'J' | y < 'A'){
+		if (y > 'J' || y < 'A'){
 			return false;
 		}
 

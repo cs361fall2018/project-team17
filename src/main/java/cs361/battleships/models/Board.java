@@ -38,13 +38,13 @@ public class Board {
 	 */
  	public boolean placeShip(Ship ship, int x, char y, boolean isVertical) {
  		//Error Checking
-        if (x < 1 || x > 9)
+        if (x < 1 || x > 10)
             return false;
         else if (y > 'J' || y < 'A')
             return false;
-        else if ( x + ship.getLength() > 9  && !isVertical)
+        else if ( x + ship.getLength() - 1 > 10  && isVertical)
             return false;
-        else if ( y + ship.getLength()  > 'J' && isVertical)
+        else if ( y + ship.getLength() - 1 > 'J' && !isVertical)
             return false;
         else {
         	boolean returnVar = false;
@@ -58,8 +58,8 @@ public class Board {
 			//passed in ship and then check if the ship var is where it was placed.
         	for (int i = 0; i < temp.size(); i++) {
 
-				attacks.get(temp.get(i).getRow()).get((int)(temp.get(i).getColumn())-64).setShip(ship);
-				if (attacks.get(temp.get(i).getRow()).get((int)(temp.get(i).getColumn())-64).getShip() == ship) {
+				attacks.get(temp.get(i).getRow()-1).get((int)(temp.get(i).getColumn())-65).setShip(ship);
+				if (attacks.get(temp.get(i).getRow()-1).get((int)(temp.get(i).getColumn())-65).getShip().equals(ship)) {
 					returnVar = true;
 				} else
 					return false;
