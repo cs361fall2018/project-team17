@@ -29,11 +29,14 @@ public class BoardTest {
     public void testAttack(){
         Board board1 = new Board();
         board1.placeShip(new Ship("Destroyer", 3),6, 'E', true);
+        board1.placeShip(new Ship("Minesweeper", 2), 2, 'A', false);
         assertSame(board1.attack(6, 'E').getResult(), AtackStatus.HIT);
         assertSame(board1.attack(11, 'A').getResult(), AtackStatus.INVALID);
         assertSame(board1.attack(1, 'A').getResult(), AtackStatus.MISS);
         assertSame(board1.attack(7, 'E').getResult(), AtackStatus.HIT);
-        assertSame(board1.attack(8, 'E').getResult(), AtackStatus.SURRENDER);
+        assertSame(board1.attack(8, 'E').getResult(), AtackStatus.SUNK);
         assertSame(board1.attack(9, 'E').getResult(), AtackStatus.MISS);
+        assertSame(board1.attack(2, 'A').getResult(), AtackStatus.HIT);
+        assertSame(board1.attack(2, 'B').getResult(), AtackStatus.SURRENDER);
     }
 }
