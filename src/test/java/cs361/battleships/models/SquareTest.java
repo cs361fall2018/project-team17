@@ -39,4 +39,5 @@ public class SquareTest {
 
         assertEquals("5c", test2.compareLocation());
     }
+
 }

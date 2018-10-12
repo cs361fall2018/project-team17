@@ -29,6 +29,7 @@ public class Board {
 	/*
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
+
 	public boolean placeShip(Ship ship, int x, char y, boolean isVertical) {
 		//Error Checking
 		int totxlength = x + ship.getLength();
