@@ -23,7 +23,7 @@ public class Board {
         	List<Result> row = new ArrayList<>();
         	results.add(row);
 			for (int j = 0; j < 10; j++) {
-				row.add(new Result(new Square(i, (char)(j+48), false)));
+				row.add(new Result(new Square(i, (char)(j+64), false)));
 			}
 		}
 	}
@@ -33,7 +33,7 @@ public class Board {
 	 */
  	public boolean placeShip(Ship ship, int x, char y, boolean isVertical) {
  		//Error Checking
-        if (x < 1 || x > 9)
+		if (x < 1 || x > 9)
             return false;
         else if (y > 'J' || y < 'A')
             return false;
@@ -72,14 +72,13 @@ public class Board {
 		//Error checking
 		if (x < 10 && ycon < 10) {
 			//get the result of an attack at the specific square
-			results.get(x).get(ycon).getStatus(ships.size()-1);
+			results.get(x).get(ycon).getStatus(ships.size());
 			// check to see if a ship is destroyed, if it is remove it from the ships array
 			if (results.get(x).get(ycon).getResult() == AtackStatus.SUNK ||
-					results.get(x).get(ycon).getResult() == AtackStatus.SURRENDER)
-			{
+					results.get(x).get(ycon).getResult() == AtackStatus.SURRENDER) {
 				ships.remove(results.get(x).get(ycon).getShip());
+				// return the results if it makes it past error checking
 			}
-			// return the results if it makes it past error checking
 			return results.get(x).get(ycon);
 		}
 		//return a new result with an invalid attack if it fails the error checking
