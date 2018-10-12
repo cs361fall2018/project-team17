@@ -7,37 +7,41 @@ public class Result {
 	//Private
 	private Square location;
 	private Ship currentShip;
-	private int shipCount;
 
 	//Constructors
 	Result(Square square) {
-		location = square;
-		currentShip = new Ship("None");
-		shipCount = 3;
+
+		location = new Square(square.getRow(), square.getColumn(), false);
+		currentShip = new Ship("None", 0);
 	}
 
 	Result(Square square, Ship ship) {
-		location = square;
+		location = square;//new Square(square.getRow(), square.getColumn(), true);
 		currentShip = ship;
-		shipCount = 3;
 	}
 
 	//Public
-	public AtackStatus getResult() {
+	public AtackStatus getResult(int shipCount) {
+		//checks if the spot has been hit and is occupied if so it continues
 		if(location.checkHit()){
-			int check_sunk = 0;
-			List<Square> shipLocation = currentShip.getOccupiedSquares();
+			int check_sunk = 0;//keeps track of weather or not the ship sinks
+			//goes through the ship locations to see which one was hit
 			for(int i = 0; i < currentShip.getLength(); i++){
-				if(location.compareLocation() == shipLocation.get(i).compareLocation()){
-					if(!shipLocation.get(i).checkHit()){
+				//checks the current location with the locations of the ship
+				if(location.compareLocation() == currentShip.getOccupiedSquares().get(i).compareLocation()){
+					//checks which spots have been hits to see if the ship sinks
+					if(!currentShip.getOccupiedSquares().get(i).checkHit()){
 						check_sunk++;
 					}
 				}
 			}
+			//to see if the ship sunk or was simply hit
 			if(check_sunk == currentShip.getLength()){
-				shipCount--;
+				shipCount--;//drops the amount of ships this actual count will
+							// have to be manipulated outside this function this
+							//is just to keep track if the game is over or not
 				if(shipCount == 0){
-					return AtackStatus.SURRENDER;
+					return AtackStatus.SURRENDER; // game over
 				}else {
 					return AtackStatus.SUNK;
 				}
@@ -45,16 +49,14 @@ public class Result {
 				return AtackStatus.HIT;
 			}
 		}
-		return AtackStatus.MISS;
-//		return AtackStatus.INVALID;
-	}
-
-	public void setResult(AtackStatus result) {
-		//TODO implement
+		//checks to see if it is a miss or the spot has been hit twice
+		if(currentShip.checkValid()) {
+			return AtackStatus.MISS;
+		}
+		return AtackStatus.INVALID;
 	}
 
 	public Ship getShip() {
-		//TODO implement
 		return currentShip;
 	}
 
@@ -63,7 +65,6 @@ public class Result {
 	}
 
 	public Square getLocation() {
-		//TODO implement
 		return location;
 	}
 

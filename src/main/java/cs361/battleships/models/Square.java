@@ -31,12 +31,20 @@ public class Square {
 		return temp;
 	}
 
+	//checks to make sure that the square has not been hit twice
 	public boolean checkValid(){
-		if(hit > 0){
-			return false;
+		if(hit == 1){
+			return true;
 		}
-		return true;
+		return false;
 	}
+
+//	public void set(Square square){
+//		row = .;
+//		column;
+//		occupied;
+//		hit;
+//	}
 
 	public char getColumn() {
 		return column;
