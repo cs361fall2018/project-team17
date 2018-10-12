@@ -35,11 +35,19 @@ public class Board {
 			return false;
 		else if (y > 'J' || y < 'A')
 			return false;
-		else if ( totxlength-1 >= 10  && !isVertical)
+		else if ( totxlength-1 >= 10  && isVertical)
 			return false;
-		else if ( totylength-1 >= 'J' && isVertical)
+		else if ( totylength-1 >= 'J' && !isVertical)
 			return false;
 		else {
+			for (int i = 0; i < ships.size(); i++) {
+				for (int j = 0; j < ships.get(i).getOccupiedSquares().size(); j++) {
+					if (ships.get(i).getOccupiedSquares().get(j).getRow() == x &&
+							ships.get(i).getOccupiedSquares().get(j).getColumn() == y) {
+						return false;
+					}
+				}
+			}
 			//Set the attacks of the ship to the coordinates passed in
 			ship.setOccupiedSquares(x, y, isVertical);
 			//Create a list of the occupied squares to be used to change the result array
@@ -74,6 +82,8 @@ public class Board {
 			}
 			Result newAttk = new Result(new Square(x, y, false));
 			AtackStatus TMP = newAttk.getStatus(ships.size());
+			if (newAttk.getResult() == AtackStatus.INVALID)
+				return newAttk;
 			attacks.add(newAttk);
 			return newAttk;
 		}

@@ -53,7 +53,7 @@ public class Ship {
 			return false;
 		}
 
-		if (!isVerticle){
+		if (isVerticle){
 			Square newSquare;
 			int row = x;
 			for (int i = 0; i < length; i++){
