@@ -17,7 +17,7 @@ public class Game {
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
     public boolean placeShip(Ship ship, int x, char y, boolean isVertical) {
-        boolean successful = playersBoard.placeShip(ship, x, y, g);
+        boolean successful = playersBoard.placeShip(ship, x, y, isVertical);
         if (!successful)
             return false;
 
