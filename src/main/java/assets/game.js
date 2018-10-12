@@ -17,6 +17,7 @@ function makeGrid(table, isPlayer) {
 }
 
 function markHits(board, elementId, surrenderText) {
+    console.log(board.counter);
     board.attacks.forEach((attack) => {
         let className;
         if (attack.result === "MISS")

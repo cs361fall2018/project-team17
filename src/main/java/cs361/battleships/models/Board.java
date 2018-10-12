@@ -13,7 +13,7 @@ public class Board {
 	//Results is a array that contains a result object for every attack on the board
 	@JsonProperty private List<Ship> ships;
 	@JsonProperty private List<Result> attacks;
-	private int counter;
+	@JsonProperty private int counter;
 
 	/*
 	DO NOT change the signature of this method. It is used by the grading scripts.
@@ -77,10 +77,12 @@ public class Board {
 							ships.get(i).getOccupiedSquares().get(j).getColumn() == y) {
 						Result newAtt = new Result(new Square(x, y, true), ships.get(i));
 						newAtt.getStatus(counter);
+						if(newAtt.getResult() == AtackStatus.SUNK) {
+							counter--;
+						}
+						if (counter == 0 && newAtt.getResult() == AtackStatus.SUNK)
+							newAtt.setResult(AtackStatus.SURRENDER);
 						attacks.add(newAtt);
-//						if(newAtt.getResult() == AtackStatus.SUNK) {
-//							counter--;
-//						}
 						return newAtt;
 					}
 				}

@@ -52,16 +52,8 @@ public class Result {
 			}
 			//to see if the ship sunk or was simply hit
 			if(check_sunk == ship.getLength()){
-				shipCount--;//drops the amount of ships this actual count will
-							// have to be manipulated outside this function this
-							//is just to keep track if the game is over or not
-				if(shipCount == 0){
-					currentStatus = AtackStatus.SURRENDER;
-					return currentStatus; // game over
-				}else {
 					currentStatus = AtackStatus.SUNK;
 					return currentStatus;
-				}
 			}else {
 				currentStatus = AtackStatus.HIT;
 				return currentStatus;
