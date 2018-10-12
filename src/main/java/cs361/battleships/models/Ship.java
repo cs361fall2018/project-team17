@@ -53,7 +53,7 @@ public class Ship {
 			return false;
 		}
 
-		if (isVerticle){
+		if (!isVerticle){
 			Square newSquare;
 			int row = x;
 			for (int i = 0; i < length; i++){
@@ -69,7 +69,7 @@ public class Ship {
 			for (int i = 0; i < length; i++){
 				newSquare = new Square(x, col, true);
 				this.occupiedSquares.add(i,newSquare);
-			col++;
+				col++;
 			}
 			return true;
 		}
