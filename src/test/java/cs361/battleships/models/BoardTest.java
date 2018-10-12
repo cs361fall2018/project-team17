@@ -3,6 +3,7 @@ package cs361.battleships.models;
 import org.junit.Test;
 
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 
@@ -21,7 +22,18 @@ public class BoardTest {
     @Test
     public void testPlaceShip(){
         Board board = new Board();
+        assertTrue(board.placeShip(new Ship("Destroyer", 3), 6, 'C', true));       //Valid ship placement
+    }
 
-        //assertTrue(board.placeShip(new Ship("Destroyer", 3), 11, 'C', true));       //Valid ship placement
+    @Test
+    public void testAttack(){
+        Board board1 = new Board();
+        board1.placeShip(new Ship("Destroyer", 3),6, 'E', true);
+        assertSame(board1.attack(6, 'E').getResult(), AtackStatus.HIT);
+        assertSame(board1.attack(11, 'A').getResult(), AtackStatus.INVALID);
+        assertSame(board1.attack(1, 'A').getResult(), AtackStatus.MISS);
+        assertSame(board1.attack(7, 'E').getResult(), AtackStatus.HIT);
+        assertSame(board1.attack(8, 'E').getResult(), AtackStatus.SURRENDER);
+        assertSame(board1.attack(9, 'E').getResult(), AtackStatus.MISS);
     }
 }

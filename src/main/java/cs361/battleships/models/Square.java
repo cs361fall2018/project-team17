@@ -65,4 +65,8 @@ public class Square {
 	public void setRow(int row) {
 		this.row = row;
 	}
+
+	public void setOccupied(boolean newOccupied) { this.occupied = newOccupied;}
+
+	public boolean getOccupied() { return this.occupied;}
 }

@@ -5,19 +5,20 @@ import java.util.List;
 
 public class Board {
 
-    @jsonProperty private List<Ship> ships;
-    @jsonProperty private List<list<Result> results;
+    private List<Ship> ships;
+    private List<List<Result>> results;
 
 	/*
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
 	public Board() {
         ships = new ArrayList<>();
-        results = new ArrayList<List<>>();
+        results = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-        	List<Square> row = new ArrayList<Result>();
+        	List<Result> row = new ArrayList<>();
+        	results.add(row);
 			for (int j = 0; j < 10; j++) {
-				row.add(new Result(new Square(i, j, false)));
+				row.add(new Result(new Square(i, (char)(j+48), false)));
 			}
 		}
 	}
@@ -25,7 +26,7 @@ public class Board {
 	/*
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
-	public boolean placeShip(Ship ship, int x, char y, boolean isVertical) {
+ 	public boolean placeShip(Ship ship, int x, char y, boolean isVertical) {
         if (x < 1 || x > 9)
             return false;
         else if (y > 'J' || y < 'A')
@@ -35,12 +36,16 @@ public class Board {
         else if ( y + ship.getLength()  > 'J' && isVertical)
             return false;
         else {
-        	boolean returnVar;
-        	returnVar = ship.setOccupiedSquares(x, y, isVertical);
+        	boolean returnVar = false;
+        	ship.setOccupiedSquares(x, y, isVertical);
         	List<Square> temp = ship.getOccupiedSquares();
+        	ships.add(ship);
         	for (int i = 0; i < temp.size(); i++)
 			{
-				results.get(temp.getRow()).get(temp.getColumn()).setShip(ship);
+				results.get(temp.get(i).getRow()).get((int)(temp.get(i).getColumn())-64).setShip(ship);
+				if (results.get(temp.get(i).getRow()).get((int)(temp.get(i).getColumn())-64).getShip() == ship) {
+					returnVar = true;
+				}
 			}
 			return returnVar;
 		}
@@ -50,24 +55,29 @@ public class Board {
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
 	public Result attack(int x, char y) {
-		int ycon = y-48;
-		results.get(x).get(ycon).getResult(ships.size());
-		return results.get(x).get(ycon);
+		int ycon = y-64;
+		if (ships.size() == 1) {
+			if (x < 10 && ycon < 10) {
+				results.get(x).get(ycon).getStatus(ships.size());
+				return results.get(x).get(ycon);
+			}
+		}
+		return new Result(new Square(x, y, false));
 	}
 
 	public List<Ship> getShips() {
-		return ships;
+		return this.ships;
 	}
 
 	public void setShips(List<Ship> ships) {
-		//TODO implement
+		this.ships = ships;
 	}
 
-	public List<Result> getAttacks() {
-		return results;
+	public List<List<Result>> getAttacks() {
+		return this.results;
 	}
 
-	public void setAttacks(List<Result> attacks) {
-		//TODO implement
+	public void setAttacks(List<List<Result>> attacks) {
+		this.results = attacks;
 	}
 }

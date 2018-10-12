@@ -41,17 +41,17 @@ public class ResultTest {
     }
 
     @Test
-    public void testGetResult(){
-        assertEquals(AtackStatus.MISS, test1.getResult(3));
+    public void testGetStatus(){
+        assertEquals(AtackStatus.MISS, test1.getStatus(3));
 
-        assertEquals(AtackStatus.HIT, test2.getResult(3));
-        assertEquals(AtackStatus.INVALID, test2.getResult(3));
+        assertEquals(AtackStatus.HIT, test2.getStatus(3));
+        assertEquals(AtackStatus.INVALID, test2.getStatus(3));
 
-        test3.getResult(3);
+        test3.getStatus(3);
 
-        assertEquals(AtackStatus.SUNK, test4.getResult(3));
+        assertEquals(AtackStatus.SUNK, test4.getStatus(3));
 
-        lastResult.getResult(1);
-        assertEquals(AtackStatus.SURRENDER, lastResult2.getResult(1));
+        lastResult.getStatus(1);
+        assertEquals(AtackStatus.SURRENDER, lastResult2.getStatus(1));
     }
 }
