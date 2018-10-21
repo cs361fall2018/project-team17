@@ -17,7 +17,6 @@ function makeGrid(table, isPlayer) {
 }
 
 function markHits(board, elementId, surrenderText) {
-    console.log(board.counter);
     board.attacks.forEach((attack) => {
         let className;
         if (attack.result === "MISS")
@@ -45,7 +44,7 @@ function redrawGrid() {
         document.getElementById("player").rows[square.row-1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("occupied");
     }));
     markHits(game.opponentsBoard, "opponent", "You won the game");
-    markHits(game.playersBoard, "player", "You lost the game");g
+    markHits(game.playersBoard, "player", "You lost the game");
 }
 
 var oldListener;
@@ -66,11 +65,9 @@ function registerCellListener(f) {
 function cellClick() {
     let row = this.parentNode.rowIndex + 1;
     let col = String.fromCharCode(this.cellIndex + 65);
-    console.log(col);
     if (isSetup) {
         sendXhr("POST", "/place", {game: game, shipType: shipType, x: row, y: col, isVertical: vertical}, function(data) {
             game = data;
-
             redrawGrid();
             placedShips++;
             if (placedShips == 3) {

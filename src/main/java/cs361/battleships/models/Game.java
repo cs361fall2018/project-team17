@@ -21,12 +21,11 @@ public class Game {
         if (!successful)
             return false;
 
-        Ship ship2 = new Ship(ship.getKind());
         boolean opponentPlacedSuccessfully;
         do {
             // AI places random ships, so it might try and place overlapping ships
             // let it try until it gets it right
-            opponentPlacedSuccessfully = opponentsBoard.placeShip(ship2, randRow(), randCol(), randVertical());
+            opponentPlacedSuccessfully = opponentsBoard.placeShip(ship, randRow(), randCol(), randVertical());
         } while (!opponentPlacedSuccessfully);
 
         return true;
@@ -37,7 +36,7 @@ public class Game {
 	 */
     public boolean attack(int x, char  y) {
         Result playerAttack = opponentsBoard.attack(x, y);
-        if (playerAttack.getResult() == AtackStatus.INVALID) {
+        if (playerAttack.getResult() == INVALID) {
             return false;
         }
 
@@ -46,35 +45,21 @@ public class Game {
             // AI does random attacks, so it might attack the same spot twice
             // let it try until it gets it right
             opponentAttackResult = playersBoard.attack(randRow(), randCol());
-        } while(opponentAttackResult.getResult() == AtackStatus.INVALID);
+        } while(opponentAttackResult.getResult() == INVALID);
 
         return true;
     }
 
-    /*
-     * Description: create a random character from A-J by using the Random class and using .nextInt(max - min + 1) + min;
-     * return: random integer from 1-10
-     */
     private char randCol() {
-        Random random = new Random();
-        return (char)(random.nextInt(10) + 65);
+        int random = new Random().nextInt(10);
+        return (char) ('A' + random);
     }
 
-    /*
-     * Description: create a random integer from 1-10 by using the Random class and using .nextInt(max - min + 1) + min;
-     * return: random integer from 1-10
-     */
     private int randRow() {
-        Random random = new Random();
-        return random.nextInt(10) + 1;
+        return  new Random().nextInt(10) + 1;
     }
 
-    /*
-     * Description: create a random boolean tat is true or false by using the Random class and using .nextBoolean();
-     * return: random boolean that is true or false
-     */
     private boolean randVertical() {
-        Random random = new Random();
-        return random.nextBoolean();
+        return new Random().nextBoolean();
     }
 }
