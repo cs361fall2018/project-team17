@@ -2,8 +2,10 @@
 -------------------------------------------------- */
 
 .battleGrid {
+    background: dodgerblue;
+    display: inline-block;
     border: 1px solid black;
-    border-spacing: 0px;
+    border-spacing: 7px;
 }
 
 .battleGrid tr {
@@ -16,8 +18,9 @@
     width: 30px;
 }
 
+
 td:hover {
-    background-color: gray;
+    background-color: lightblue;
 }
 
 .placed {
@@ -25,17 +28,17 @@ td:hover {
 }
 
 .occupied {
-    background-color: black;
+    background-color: purple;
 }
 
 .hit {
-    background-color: orange;
-}
-
-.sink {
     background-color: red;
 }
 
+.sink {
+    background-color: darkred;
+}
+
 .miss {
-    background-color: blue;
+    background-color: darkblue;
 }
