@@ -65,12 +65,15 @@ function registerCellListener(f) {
 function cellClick() {
     let row = this.parentNode.rowIndex + 1;
     let col = String.fromCharCode(this.cellIndex + 65);
+    var check = 0;
     if (isSetup) {
         sendXhr("POST", "/place", {game: game, shipType: shipType, x: row, y: col, isVertical: vertical}, function(data) {
             game = data;
             redrawGrid();
             placedShips++;
             if (placedShips == 3) {
+                document.getElementsByClassName("place-menu")[0].setAttribute("id", "hide");
+                document.getElementsByClassName("attack-menu")[0].removeAttribute("id");
                 isSetup = false;
                 registerCellListener((e) => {});
             }

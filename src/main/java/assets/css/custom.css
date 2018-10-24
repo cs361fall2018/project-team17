@@ -1,11 +1,13 @@
 /* Add additional stylesheets below
 -------------------------------------------------- */
 
+#hide {
+    display: none;
+}
+
 .battleGrid {
-    background: dodgerblue;
-    display: inline-block;
     border: 1px solid black;
-    border-spacing: 7px;
+    border-spacing: 0px;
 }
 
 .battleGrid tr {
@@ -18,9 +20,8 @@
     width: 30px;
 }
 
-
 td:hover {
-    background-color: lightblue;
+    background-color: gray;
 }
 
 .placed {
@@ -28,17 +29,17 @@ td:hover {
 }
 
 .occupied {
-    background-color: purple;
+    background-color: black;
 }
 
 .hit {
-    background-color: red;
+    background-color: orange;
 }
 
 .sink {
-    background-color: darkred;
+    background-color: red;
 }
 
 .miss {
-    background-color: darkblue;
+    background-color: blue;
 }
