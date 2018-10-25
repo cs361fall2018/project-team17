@@ -1,10 +1,23 @@
 /* Add additional stylesheets below
 -------------------------------------------------- */
 
+
 .hide {
     display: none;
 }
 
+.boards li{
+    list-style: none;
+    padding: 5px 10px;
+}
+
+.boards #flex-player {
+    margin-top: auto;
+}
+
+.battleGrid.shrink tr {
+    height: 25px;
+}
 
 .battleGrid {
     border: 1px solid black;
@@ -13,12 +26,20 @@
 
 .battleGrid tr {
     border: 1px solid black;
-    height: 30px;
+    height: 45px;
+}
+
+.battleGrid.shrink tr {
+    height: 25px;
 }
 
 .battleGrid td {
     border: 1px solid black;
-    width: 30px;
+    width: 45px;
+}
+
+.battleGrid.shrink td {
+    width: 25px;
 }
 
 td:hover {
