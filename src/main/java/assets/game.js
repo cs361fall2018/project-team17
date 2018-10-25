@@ -37,6 +37,8 @@ function makeGrid(table, isPlayer) {
 function displayEndGame(endGame) {
     if(endGame.indexOf('won') > -1) {
         document.getElementById('win').classList.remove('hide');
+    } else if(endGame.indexOf('lost') > -1) {
+        document.getElementById('lose').classList.remove('hide');
     }
 }
 
@@ -86,6 +88,14 @@ function registerCellListener(f) {
     oldListener = f;
 }
 
+function prepareAttackPhase() {
+    document.getElementById("place-menu").setAttribute("class", "hide");
+    document.getElementById("attack-menu").classList.remove("hide");
+    document.getElementById("opponent").classList.remove("hide");
+    document.getElementById("player").classList.add("shrink");
+    document.getElementById("flex-player").classList.add("media-player");
+}
+
 function cellClick() {
     let row = this.parentNode.rowIndex + 1;
     let col = String.fromCharCode(this.cellIndex + 65);
@@ -95,11 +105,7 @@ function cellClick() {
             redrawGrid();
             placedShips++;
             if (placedShips == 3) {
-                document.getElementById("place-menu").setAttribute("class", "hide");
-                document.getElementById("attack-menu").classList.remove("hide");
-                document.getElementById("opponent").classList.remove("hide");
-                document.getElementById("player").classList.add("shrink");
-                document.getElementById("flex-player").classList.add("media-player");
+                prepareAttackPhase();
                 isSetup = false;
                 registerCellListener((e) => {});
             }

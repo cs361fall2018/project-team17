@@ -64,7 +64,7 @@
 
 .win-lose-err {
     position: absolute;
-    right: 10%;
+    left: 600px;
     top: 10%;
 }
 
@@ -73,6 +73,14 @@
     border: 1px solid #ccc;
     border-radius: 10px;
     font-size: 40px;
+}
+
+#win {
+    background-color: lightgreen;
+}
+
+#lose {
+    background-color: lightcoral;
 }
 
 td:hover {
