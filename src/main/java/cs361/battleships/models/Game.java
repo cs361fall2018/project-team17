@@ -51,12 +51,12 @@ public class Game {
     }
 
     private char randCol() {
-        int random = new Random().nextInt(10);
+        int random = new Random().nextInt(11)+1;
         return (char) ('A' + random);
     }
 
     private int randRow() {
-        return  new Random().nextInt(10) + 1;
+        return  new Random().nextInt(11) + 2;
     }
 
     private boolean randVertical() {
