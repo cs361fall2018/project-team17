@@ -11,12 +11,12 @@
     display: none;
 }
 
-.boards {
+.boards,.states {
     display: flex;
     flex-flow: row wrap;
 }
 
-.boards li{
+.boards li,.states li{
     list-style: none;
     padding: 5px 10px;
 }
@@ -52,6 +52,16 @@
 
 .battleGrid.shrink td,.battleGrid.shrink th {
     width: 25px;
+}
+
+.states {
+    position: absolute;
+    right: 10%;
+    top: 30%;
+}
+
+.states li {
+
 }
 
 td:hover {
