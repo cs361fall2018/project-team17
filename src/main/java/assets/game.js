@@ -15,7 +15,7 @@ function makeGrid(table, isPlayer) {
                 let columnHeader = document.createElement('th');
                 if(!skip) {
                     if(sides) {
-                        columnHeader.innerHTML = c.charCodeAt(0).toString();
+                        columnHeader.innerHTML = (c.charCodeAt(0)-74).toString();
                     }
                     else if (header) {
                         columnHeader.innerHTML = c;
