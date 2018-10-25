@@ -25,21 +25,23 @@
     margin-top: auto;
 }
 
-.battleGrid.shrink tr {
-    height: 25px;
-}
-
 .battleGrid {
     border: 1px solid black;
     border-spacing: 0px;
 }
 
+.battleGrid th {
+    padding: 0px;
+    width: 45px;
+    border: 1px solid black;
+    text-align: center;
+}
 .battleGrid tr {
     border: 1px solid black;
     height: 45px;
 }
 
-.battleGrid.shrink tr {
+.battleGrid.shrink tr,.battleGrid.shrink th {
     height: 25px;
 }
 
@@ -48,7 +50,7 @@
     width: 45px;
 }
 
-.battleGrid.shrink td {
+.battleGrid.shrink td,.battleGrid.shrink th {
     width: 25px;
 }
 

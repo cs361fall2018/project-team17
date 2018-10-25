@@ -5,13 +5,31 @@ var shipType;
 var vertical;
 
 function makeGrid(table, isPlayer) {
-    for (i=0; i<10; i++) {
+    var header=true; var sides=true; var skip=true;
+    var c = 'A';
+    for (i=0; i<11; i++) {
         let row = document.createElement('tr');
-        for (j=0; j<10; j++) {
-            let column = document.createElement('td');
-            column.addEventListener("click", cellClick);
-            row.appendChild(column);
+        for (j=0; j<11; j++) {
+            if(header || sides) {
+                let columnHeader = document.createElement('th');
+                if(!skip) {
+                    if(sides) { columnHeader.innerHTML = (c.charCodeAt(0)-74).toString(); }
+                    else if (header) { columnHeader.innerHTML = c; }
+
+                    c = String.fromCharCode(c.charCodeAt(0) + 1);
+                }
+                skip=false;
+                row.appendChild(columnHeader);
+            }
+            else {
+                let column = document.createElement('td');
+                column.addEventListener("click", cellClick);
+                row.appendChild(column);
+            }
+            sides=false;
         }
+        sides=true;
+        header=false;
         table.appendChild(row);
     }
 }
@@ -19,16 +37,16 @@ function makeGrid(table, isPlayer) {
 function markHits(board, elementId, surrenderText) {
     board.attacks.forEach((attack) => {
         let className;
-        if (attack.result === "MISS")
-            className = "miss";
-        else if (attack.result === "HIT")
-            className = "hit";
-        else if (attack.result === "SUNK")
-            className = "hit"
-        else if (attack.result === "SURRENDER")
-            alert(surrenderText);// move this and make something cooler
-        document.getElementById(elementId).rows[attack.location.row-1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add(className);
-    });
+    if (attack.result === "MISS")
+        className = "miss";
+    else if (attack.result === "HIT")
+        className = "hit";
+    else if (attack.result === "SUNK")
+        className = "hit"
+    else if (attack.result === "SURRENDER")
+        alert(surrenderText);// move this and make something cooler
+    document.getElementById(elementId).rows[attack.location.row-1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add(className);
+});
 }
 
 function redrawGrid() {
@@ -50,8 +68,8 @@ function redrawGrid() {
 var oldListener;
 function registerCellListener(f) {
     let el = document.getElementById("player");
-    for (i=0; i<10; i++) {
-        for (j=0; j<10; j++) {
+    for (i=1; i<11; i++) {
+        for (j=1; j<11; j++) {
             let cell = el.rows[i].cells[j];
             cell.removeEventListener("mouseover", oldListener);
             cell.removeEventListener("mouseout", oldListener);

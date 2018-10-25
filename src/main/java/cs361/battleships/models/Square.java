@@ -42,7 +42,7 @@ public class Square {
 
 	@JsonIgnore
 	public boolean isOutOfBounds() {
-		return row > 10 || row < 1 || column > 'J' || column < 'A';
+		return row > 11 || row < 2 || column > 'K' || column < 'B';
 	}
 
 	public boolean isHit() {
