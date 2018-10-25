@@ -26,7 +26,7 @@ function markHits(board, elementId, surrenderText) {
         else if (attack.result === "SUNK")
             className = "hit"
         else if (attack.result === "SURRENDER")
-            alert(surrenderText);
+            alert(surrenderText);// move this and make something cooler
         document.getElementById(elementId).rows[attack.location.row-1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add(className);
     });
 }
@@ -65,12 +65,15 @@ function registerCellListener(f) {
 function cellClick() {
     let row = this.parentNode.rowIndex + 1;
     let col = String.fromCharCode(this.cellIndex + 65);
-    if (isSetup) {
+    if(isSetup) {
         sendXhr("POST", "/place", {game: game, shipType: shipType, x: row, y: col, isVertical: vertical}, function(data) {
             game = data;
             redrawGrid();
             placedShips++;
             if (placedShips == 3) {
+                document.getElementById("place-menu").setAttribute("class", "hide");
+                document.getElementById("attack-menu").classList.remove("hide");
+                document.getElementById("opponent").classList.remove("hide");
                 isSetup = false;
                 registerCellListener((e) => {});
             }
@@ -138,6 +141,10 @@ function initGame() {
     document.getElementById("place_battleship").addEventListener("click", function(e) {
         shipType = "BATTLESHIP";
        registerCellListener(place(4));
+    });
+    document.getElementById("start-button").addEventListener("click", function(){
+       document.getElementById("place-menu").classList.remove("hide");
+       document.getElementById("start-button").setAttribute("class", "hide")
     });
     sendXhr("GET", "/game", {}, function(data) {
         game = data;

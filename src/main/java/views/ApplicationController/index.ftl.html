@@ -4,18 +4,24 @@
 
 <h1>The Battleship game</h1>
 
-<table id="opponent" class="battleGrid">
+<button id="start-button"> Start Game </button>
+
+<table id="opponent" class="battleGrid hide">
 </table>
 
 <table id="player" class="battleGrid">
 </table>
 
-<ul>
+<ul id="place-menu" class="hide">
     <li><button id="place_minesweeper">Place Minesweeper</button></li>
     <li><button id="place_destroyer">Place Destroyer</button></li>
     <li><button id="place_battleship">Place Battleship</button></li>
     <li><input type="checkbox" id="is_vertical">Vertical</input></li>
 </ul>
+
+<div id="attack-menu" class="hide">
+    Click location on opponents board to attack that location
+</div>
 
 <script type="text/javascript" src="/assets/game.js"></script>
 <script>

@@ -1,6 +1,11 @@
 /* Add additional stylesheets below
 -------------------------------------------------- */
 
+.hide {
+    display: none;
+}
+
+
 .battleGrid {
     border: 1px solid black;
     border-spacing: 0px;
