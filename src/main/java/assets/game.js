@@ -5,8 +5,7 @@ var shipType;
 var vertical;
 
 function makeGrid(table, isPlayer) {
-    var header=true; var skip=true;
-    var sides=true;
+    var header=true; var sides=true; var skip=true;
     var c = 'A';
     for (i=0; i<11; i++) {
         let row = document.createElement('tr');
@@ -14,12 +13,9 @@ function makeGrid(table, isPlayer) {
             if(header || sides) {
                 let columnHeader = document.createElement('th');
                 if(!skip) {
-                    if(sides) {
-                        columnHeader.innerHTML = (c.charCodeAt(0)-74).toString();
-                    }
-                    else if (header) {
-                        columnHeader.innerHTML = c;
-                    }
+                    if(sides) { columnHeader.innerHTML = (c.charCodeAt(0)-74).toString(); }
+                    else if (header) { columnHeader.innerHTML = c; }
+
                     c = String.fromCharCode(c.charCodeAt(0) + 1);
                 }
                 skip=false;
@@ -31,7 +27,6 @@ function makeGrid(table, isPlayer) {
                 row.appendChild(column);
             }
             sides=false;
-           // skip=true;
         }
         sides=true;
         header=false;
