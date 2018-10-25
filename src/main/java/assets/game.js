@@ -74,6 +74,8 @@ function cellClick() {
                 document.getElementById("place-menu").setAttribute("class", "hide");
                 document.getElementById("attack-menu").classList.remove("hide");
                 document.getElementById("opponent").classList.remove("hide");
+                document.getElementById("player").classList.add("shrink");
+                document.getElementById("flex-player").classList.add("media-player");
                 isSetup = false;
                 registerCellListener((e) => {});
             }
