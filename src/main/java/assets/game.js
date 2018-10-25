@@ -34,6 +34,12 @@ function makeGrid(table, isPlayer) {
     }
 }
 
+function displayEndGame(endGame) {
+    if(endGame.indexOf('won') > -1) {
+        document.getElementById('win').classList.remove('hide');
+    }
+}
+
 function markHits(board, elementId, surrenderText) {
     board.attacks.forEach((attack) => {
         let className;
@@ -44,7 +50,7 @@ function markHits(board, elementId, surrenderText) {
     else if (attack.result === "SUNK")
         className = "hit"
     else if (attack.result === "SURRENDER")
-        alert(surrenderText);// move this and make something cooler
+        displayEndGame(surrenderText);
     document.getElementById(elementId).rows[attack.location.row-1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add(className);
 });
 }
