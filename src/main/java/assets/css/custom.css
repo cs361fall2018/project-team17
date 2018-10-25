@@ -1,9 +1,19 @@
 /* Add additional stylesheets below
 -------------------------------------------------- */
 
+@media only screen and (max-width: 979px) {
+    .boards .media-player {
+        margin: 10px auto 10px 100px;
+    }
+}
 
 .hide {
     display: none;
+}
+
+.boards {
+    display: flex;
+    flex-flow: row wrap;
 }
 
 .boards li{
