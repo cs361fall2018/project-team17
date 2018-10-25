@@ -1,6 +1,14 @@
 /* Add additional stylesheets below
 -------------------------------------------------- */
 
+@media only screen and (max-width: 1057px) {
+    #states{
+        position: unset;
+        padding: 0px;
+        margin: 10px 25% 10px 20%;
+    }
+}
+
 @media only screen and (max-width: 979px) {
     .boards .media-player {
         margin: 10px auto 10px 100px;
@@ -11,12 +19,12 @@
     display: none;
 }
 
-.boards,.states {
+.boards,.win-lose-err {
     display: flex;
     flex-flow: row wrap;
 }
 
-.boards li,.states li{
+.boards li,.win-lose-err li{
     list-style: none;
     padding: 5px 10px;
 }
@@ -54,14 +62,17 @@
     width: 25px;
 }
 
-.states {
+.win-lose-err {
     position: absolute;
     right: 10%;
-    top: 30%;
+    top: 10%;
 }
 
-.states li {
-
+.win-lose-err li {
+    padding: 10px 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    font-size: 40px;
 }
 
 td:hover {
