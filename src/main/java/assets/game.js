@@ -115,9 +115,112 @@ function prepareAttackPhase() {
 }
 
 function cellClick() {
+
+    if(!(document.getElementById("error-menu").classList.contains("hide"))){
+        document.getElementById("error-menu").classList.add("hide");
+    }
+    if(vertical){
+            if(shipType == "MINESWEEPER"){
+
+                if(this.classList.contains("occupied")){
+                    document.getElementById("error-menu").classList.remove("hide");
+                    document.getElementById("error-menu").innerHTML = "*You are trying to place a ship on an occupied space";
+                    return;
+                } else if (document.getElementById("player").rows[this.parentNode.rowIndex + 1].cells[this.cellIndex].classList.contains("occupied")){
+                    document.getElementById("error-menu").classList.remove("hide");
+                    document.getElementById("error-menu").innerHTML = "*You are trying to place a ship on an occupied space";
+                    return;
+                }
+            }
+            else if(shipType == "DESTROYER"){
+
+                if(this.classList.contains("occupied")){
+                    document.getElementById("error-menu").classList.remove("hide");
+                    document.getElementById("error-menu").innerHTML = "*You are trying to place a ship on an occupied space";
+                    return;
+                } else if (document.getElementById("player").rows[this.parentNode.rowIndex + 1].cells[this.cellIndex].classList.contains("occupied")){
+                    document.getElementById("error-menu").classList.remove("hide");
+                    document.getElementById("error-menu").innerHTML = "*You are trying to place a ship on an occupied space";
+                    return;
+                } else if (document.getElementById("player").rows[this.parentNode.rowIndex + 2].cells[this.cellIndex].classList.contains("occupied")){
+                    document.getElementById("error-menu").classList.remove("hide");
+                    document.getElementById("error-menu").innerHTML = "*You are trying to place a ship on an occupied space";
+                    return;
+                }
+            }
+            else if(shipType == "BATTLESHIP"){
+
+                    if(this.classList.contains("occupied")){
+                        document.getElementById("error-menu").classList.remove("hide");
+                        document.getElementById("error-menu").innerHTML = "*You are trying to place a ship on an occupied space";
+                        return;
+                    } else if (document.getElementById("player").rows[this.parentNode.rowIndex + 1].cells[this.cellIndex].classList.contains("occupied")){
+                        document.getElementById("error-menu").classList.remove("hide");
+                        document.getElementById("error-menu").innerHTML = "*You are trying to place a ship on an occupied space";
+                        return;
+                    } else if (document.getElementById("player").rows[this.parentNode.rowIndex + 2].cells[this.cellIndex].classList.contains("occupied")){
+                        document.getElementById("error-menu").classList.remove("hide");
+                        document.getElementById("error-menu").innerHTML = "*You are trying to place a ship on an occupied space";
+                        return;
+                    } else if (document.getElementById("player").rows[this.parentNode.rowIndex + 3].cells[this.cellIndex].classList.contains("occupied")){
+                      document.getElementById("error-menu").classList.remove("hide");
+                      document.getElementById("error-menu").innerHTML = "*You are trying to place a ship on an occupied space";
+                      return;
+                    }
+            }
+        } else {
+            if(shipType == "MINESWEEPER"){
+                if(this.classList.contains("occupied")){
+                    document.getElementById("error-menu").classList.remove("hide");
+                    document.getElementById("error-menu").innerHTML = "*You are trying to place a ship on an occupied space";
+                    return;
+                } else if (this.parentNode.cells[this.cellIndex + 1].classList.contains("occupied")){
+                    document.getElementById("error-menu").classList.remove("hide");
+                    document.getElementById("error-menu").innerHTML = "*You are trying to place a ship on an occupied space";
+                    return;
+                }
+            }
+            else if(shipType == "DESTROYER"){
+
+                if(this.classList.contains("occupied")){
+                    document.getElementById("error-menu").classList.remove("hide");
+                    document.getElementById("error-menu").innerHTML = "*You are trying to place a ship on an occupied space";
+                    return;
+                } else if (this.parentNode.cells[this.cellIndex + 1].classList.contains("occupied")){
+                    document.getElementById("error-menu").classList.remove("hide");
+                    document.getElementById("error-menu").innerHTML = "*You are trying to place a ship on an occupied space";
+                    return;
+                } else if (this.parentNode.cells[this.cellIndex + 2].classList.contains("occupied")){
+                    document.getElementById("error-menu").classList.remove("hide");
+                    document.getElementById("error-menu").innerHTML = "*You are trying to place a ship on an occupied space";
+                    return;
+                }
+            }
+            else if(shipType == "BATTLESHIP"){
+
+                    if(this.classList.contains("occupied")){
+                        document.getElementById("error-menu").classList.remove("hide");
+                        document.getElementById("error-menu").innerHTML = "*You are trying to place a ship on an occupied space";
+                        return;
+                    } else if (this.parentNode.cells[this.cellIndex + 1].classList.contains("occupied")){
+                        document.getElementById("error-menu").classList.remove("hide");
+                        document.getElementById("error-menu").innerHTML = "*You are trying to place a ship on an occupied space";
+                        return;
+                    } else if (this.parentNode.cells[this.cellIndex + 2].classList.contains("occupied")){
+                        document.getElementById("error-menu").classList.remove("hide");
+                        document.getElementById("error-menu").innerHTML = "*You are trying to place a ship on an occupied space";
+                        return;
+                    } else if (this.parentNode.cells[this.cellIndex + 3].classList.contains("occupied")){
+                        document.getElementById("error-menu").classList.remove("hide");
+                        document.getElementById("error-menu").innerHTML = "*You are trying to place a ship on an occupied space";
+                        return;
+                    }
+            }
+        }
     let row = this.parentNode.rowIndex + 1;
     let col = String.fromCharCode(this.cellIndex + 65);
     if(isSetup) {
+
         sendXhr("POST", "/place", {game: game, shipType: shipType, x: row, y: col, isVertical: vertical}, function(data) {
             game = data;
             redrawGrid();
