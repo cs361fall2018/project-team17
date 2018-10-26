@@ -19,12 +19,12 @@
     display: none;
 }
 
-.boards,.win-lose-err {
+.boards {
     display: flex;
     flex-flow: row wrap;
 }
 
-.boards li,.win-lose-err li{
+.boards li,.win-lose li{
     list-style: none;
     padding: 5px 10px;
 }
@@ -62,13 +62,13 @@
     width: 25px;
 }
 
-.win-lose-err {
+.win-lose {
     position: absolute;
     left: 600px;
     top: 10%;
 }
 
-.win-lose-err li {
+.win-lose li {
     padding: 10px 20px;
     border: 1px solid #ccc;
     border-radius: 10px;
