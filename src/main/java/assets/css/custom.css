@@ -7,9 +7,6 @@
     }
 }
 
-.hide {
-    display: none;
-}
 
 .boards {
     display: flex;
@@ -77,3 +74,16 @@ td:hover {
 .miss {
     background-color: blue;
 }
+
+.hide {
+    display: none;
+}
+
+#place-menu {
+    display: inline;
+    color: darkslategray;
+    border: 5px solid dodgerblue;
+    padding: 100px;
+}
+
+
