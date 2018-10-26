@@ -31,12 +31,12 @@ body {
 
 .fadein {
     opacity: 1;
-    animation: fadein 2s linear
+    animation: fadein 2s linear;
 }
 
 .fadeout{
     opacity: 0;
-    animation: fadeout 2s linear
+    animation: fadeout 2s linear;
 }
 
 body {
@@ -61,7 +61,7 @@ body {
 .battleGrid {
     border: 1px solid white;
     border-spacing: 0px;
-    background-image: url("https://i.imgur.com/pHBA49x.jpg")
+    background-image: url("https://i.imgur.com/pHBA49x.jpg");
 }
 
 .battleGrid th {
@@ -104,7 +104,7 @@ span {
     margin: 0 -50%;
     white-space:nowrap;
     font-size: 20px;
-    font family: "Verdana", Sans-serif;
+    font-family: "Verdana", Sans-serif;
 }
 
 #states {

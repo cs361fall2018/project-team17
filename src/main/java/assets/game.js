@@ -42,7 +42,7 @@ function displayEndGame(endGame) {
     }
 
     document.getElementById("states").classList.remove('hide');
-    document.getElementById("test").classList.add('fadeout');
+    document.getElementById("board-container").classList.add('fadeout');
     document.getElementById("attack-menu").classList.add('hide');
     setTimeout(function() {
         document.getElementById("player").classList.add('hide');
