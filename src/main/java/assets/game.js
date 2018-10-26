@@ -89,7 +89,7 @@ function cellClick() {
             redrawGrid();
             placedShips++;
             if (placedShips == 3) {
-                document.getElementById("place-menu").setAttribute("class", "hide");
+                document.getElementById("place-menu-container").setAttribute("class", "hide");
                 document.getElementById("attack-menu").classList.remove("hide");
                 document.getElementById("opponent").classList.remove("hide");
                 document.getElementById("player").classList.add("shrink");
@@ -163,7 +163,7 @@ function initGame() {
        registerCellListener(place(4));
     });
     document.getElementById("start-button").addEventListener("click", function(){
-       document.getElementById("place-menu").classList.remove("hide");
+       document.getElementById("place-menu-container").classList.remove("hide");
        document.getElementById("start-button").setAttribute("class", "hide")
     });
     sendXhr("GET", "/game", {}, function(data) {
