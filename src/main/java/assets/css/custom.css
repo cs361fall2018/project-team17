@@ -49,18 +49,6 @@ body {
     justify-content: center;
 }
 
-#flex-player {
-    background-image: url("https://i.imgur.com/pHBA49x.jpg");
-    background-position: center;
-    background-size: 490px 450px;
-}
-
-#opponent {
-    background-image:url("https://i.imgur.com/pHBA49x.jpg");
-    background-position: center;
-    background-size 490px 450px;
-}
-
 .boards li,.win-lose li{
     list-style: none;
     padding: 5px 10px;
@@ -73,12 +61,13 @@ body {
 .battleGrid {
     border: 1px solid white;
     border-spacing: 0px;
+    background-image: url("https://i.imgur.com/pHBA49x.jpg")
 }
 
 .battleGrid th {
     padding: 0px;
     width: 45px;
-    border: 1px solid black;
+    border: 1px solid white;
     text-align: center;
 }
 .battleGrid tr {
