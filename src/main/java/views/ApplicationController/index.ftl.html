@@ -6,11 +6,16 @@
 
 <button id="start-button"> Start Game </button>
 
+<ul id="states" class="win-lose hide fadein">
+    <li id="win" class="end-game hide"><div>You won the game!</div></li>
+    <li id="lose" class="end-game hide"><div>You lost the game!</div></li>
+    <div><button id="new-game" onClick="window.location.reload()">New Game</button></div>
+</ul>
+
 <ul class="boards">
     <li><table id="opponent" class="battleGrid hide"></table></li>
     <li id="flex-player"><table id="player" class="battleGrid"></table></li>
 </ul>
-
 
 <ul id="place-menu" class="hide">
     <li><button id="place_minesweeper">Place Minesweeper</button></li>

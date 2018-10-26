@@ -1,10 +1,24 @@
 /* Add additional stylesheets below
 -------------------------------------------------- */
 
-@media only screen and (max-width: 979px) {
-    .boards .media-player {
-        margin: 10px auto 10px 100px;
-    }
+@keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+@keyframes fadeout {
+    from { opacity: 1; }
+    to   { opacity: 0; }
+}
+
+.fadein {
+    opacity: 1;
+    animation: fadein 2s linear
+}
+
+.fadeout{
+    opacity: 0;
+    animation: fadeout 2s linear
 }
 
 body {
@@ -18,6 +32,7 @@ body {
 .boards {
     display: flex;
     flex-flow: row wrap;
+    justify-content: center;
 }
 
 #flex-player {
@@ -32,7 +47,7 @@ body {
     background-size 490px 450px;
 }
 
-.boards li{
+.boards li,.win-lose li{
     list-style: none;
     padding: 5px 10px;
 }
@@ -68,6 +83,40 @@ body {
 
 .battleGrid.shrink td,.battleGrid.shrink th {
     width: 25px;
+}
+
+#states {
+    padding: 40px;
+}
+
+.win-lose div {
+    padding: 5px 0px;
+    display: flex;
+    justify-content: center;
+}
+
+.win-lose {
+    padding: 40px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.win-lose li {
+    padding: 10px 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    font-size: 40px;
+    width: 550px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#win {
+    background-color: lightgreen;
+}
+
+#lose {
+    background-color: lightcoral;
 }
 
 td:hover {
