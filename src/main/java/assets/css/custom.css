@@ -94,6 +94,15 @@ button {
     display: inline-block;
     font-size: 16px;
     border-radius: 5px 5px 5px 5px;
+    width: 200px;
+}
+
+
+.disabled:hover {
+    opacity: 0.6;
+    background-color: #4C6A92;
+    cursor: not-allowed;
+    color: darkslategray
 }
 
 button:hover {
@@ -108,11 +117,20 @@ button:hover {
 
 .disabled {
     opacity: 0.6;
+    background-color: #4C6A92;
     cursor: not-allowed;
 }
 
-#is_vertical {
-    display: block;
-    margin: 40px;
-    left: 100px;
+.check {
+    display: inline-block;
+    margin: 4px;
+}
+
+.checkbox-container {
+    text-align: center;
+}
+
+#place-menu-container {
+    border-top: 1px solid black;
+    text-align: center;
 }
