@@ -40,6 +40,14 @@ function displayEndGame(endGame) {
     } else if(endGame.indexOf('lost') > -1) {
         document.getElementById('lose').classList.remove('hide');
     }
+
+    document.getElementById("states").classList.remove('hide');
+    document.getElementById("test").classList.add('fadeout');
+    document.getElementById("attack-menu").classList.add('hide');
+    setTimeout(function() {
+        document.getElementById("player").classList.add('hide');
+        document.getElementById("opponent").classList.add('hide');
+    }, (2000));
 }
 
 function markHits(board, elementId, surrenderText) {
@@ -181,4 +189,4 @@ function initGame() {
     sendXhr("GET", "/game", {}, function(data) {
         game = data;
     });
-};
+}
