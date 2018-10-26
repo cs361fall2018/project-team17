@@ -20,7 +20,12 @@
     opacity: 0;
     animation: fadeout 2s linear
 }
-.hide, #hide {
+
+body {
+    background-color: lightgrey;
+}
+
+.hide {
     display: none;
 }
 
@@ -30,6 +35,17 @@
     justify-content: center;
 }
 
+#flex-player {
+    background-image: url("https://i.imgur.com/pHBA49x.jpg");
+    background-position: center;
+    background-size: 490px 450px;
+}
+
+#opponent {
+    background-image:url("https://i.imgur.com/pHBA49x.jpg");
+    background-position: center;
+    background-size 490px 450px;
+}
 
 .boards li,.win-lose li{
     list-style: none;
@@ -41,7 +57,7 @@
 }
 
 .battleGrid {
-    border: 1px solid black;
+    border: 1px solid white;
     border-spacing: 0px;
 }
 
@@ -52,7 +68,7 @@
     text-align: center;
 }
 .battleGrid tr {
-    border: 1px solid black;
+    border: 1px solid white;
     height: 45px;
 }
 
@@ -61,7 +77,7 @@
 }
 
 .battleGrid td {
-    border: 1px solid black;
+    border: 1px solid white;
     width: 45px;
 }
 
@@ -104,11 +120,11 @@
 }
 
 td:hover {
-    background-color: gray;
+    background-color: grey;
 }
 
 .placed {
-    background-color: gray;
+    background-color: grey;
 }
 
 .occupied {
@@ -116,7 +132,7 @@ td:hover {
 }
 
 .hit {
-    background-color: orange;
+    background-color: red;
 }
 
 .sink {
