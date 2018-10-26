@@ -122,10 +122,15 @@ function cellClick() {
 
     let row = this.parentNode.rowIndex + 1;
     let col = String.fromCharCode(this.cellIndex + 65);
+    console.log(this.parentNode.rowIndex);
     if(isSetup) {
         if(vertical){
             if(shipType == "MINESWEEPER"){
-
+                if(this.parentNode.rowIndex > 9){
+                    document.getElementById("error-menu").classList.remove("hide");
+                    document.getElementById("error-menu").innerHTML = "*You are trying to place a ship outside of the board";
+                    return;
+                }
                 if(this.classList.contains("occupied")){
                     document.getElementById("error-menu").classList.remove("hide");
                     document.getElementById("error-menu").innerHTML = "*You are trying to place a ship on an occupied space";
@@ -135,9 +140,14 @@ function cellClick() {
                     document.getElementById("error-menu").innerHTML = "*You are trying to place a ship on an occupied space";
                     return;
                 }
+
             }
             else if(shipType == "DESTROYER"){
-
+                if(this.parentNode.rowIndex > 8){
+                    document.getElementById("error-menu").classList.remove("hide");
+                    document.getElementById("error-menu").innerHTML = "*You are trying to place a ship outside of the board";
+                    return;
+                }
                 if(this.classList.contains("occupied")){
                     document.getElementById("error-menu").classList.remove("hide");
                     document.getElementById("error-menu").innerHTML = "*You are trying to place a ship on an occupied space";
@@ -153,7 +163,11 @@ function cellClick() {
                 }
             }
             else if(shipType == "BATTLESHIP"){
-
+                if(this.parentNode.rowIndex > 7){
+                    document.getElementById("error-menu").classList.remove("hide");
+                    document.getElementById("error-menu").innerHTML = "*You are trying to place a ship outside of the board";
+                    return;
+                }
                     if(this.classList.contains("occupied")){
                         document.getElementById("error-menu").classList.remove("hide");
                         document.getElementById("error-menu").innerHTML = "*You are trying to place a ship on an occupied space";
@@ -174,6 +188,11 @@ function cellClick() {
             }
         } else {
             if(shipType == "MINESWEEPER"){
+                if(this.cellIndex > 9){
+                    document.getElementById("error-menu").classList.remove("hide");
+                    document.getElementById("error-menu").innerHTML = "*You are trying to place a ship outside of the board";
+                    return;
+                }
                 if(this.classList.contains("occupied")){
                     document.getElementById("error-menu").classList.remove("hide");
                     document.getElementById("error-menu").innerHTML = "*You are trying to place a ship on an occupied space";
@@ -185,7 +204,11 @@ function cellClick() {
                 }
             }
             else if(shipType == "DESTROYER"){
-
+                if(this.cellIndex > 8){
+                    document.getElementById("error-menu").classList.remove("hide");
+                    document.getElementById("error-menu").innerHTML = "*You are trying to place a ship outside of the board";
+                    return;
+                }
                 if(this.classList.contains("occupied")){
                     document.getElementById("error-menu").classList.remove("hide");
                     document.getElementById("error-menu").innerHTML = "*You are trying to place a ship on an occupied space";
@@ -201,7 +224,11 @@ function cellClick() {
                 }
             }
             else if(shipType == "BATTLESHIP"){
-
+                if(this.cellIndex > 7){
+                    document.getElementById("error-menu").classList.remove("hide");
+                    document.getElementById("error-menu").innerHTML = "*You are trying to place a ship outside of the board";
+                    return;
+                }
                     if(this.classList.contains("occupied")){
                         document.getElementById("error-menu").classList.remove("hide");
                         document.getElementById("error-menu").innerHTML = "*You are trying to place a ship on an occupied space";
