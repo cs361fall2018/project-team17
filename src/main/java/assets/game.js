@@ -262,19 +262,22 @@ function cellClick() {
                 return;
             }
         }
-
+        console.log(shipType);
         sendXhr("POST", "/place", {game: game, shipType: shipType, x: row, y: col, isVertical: vertical}, function(data) {
             game = data;
+            disableShipButton(shipType);
             redrawGrid();
             placedShips++;
-            disableShipButton(shipType);
+            console.log(shipType);
+            shipType = 0;
+            //disableShipButton(shipType);
             if (placedShips == 3) {
                 prepareAttackPhase();
                 isSetup = false;
                 registerCellListener((e) => {});
             }
         });
-        shipType = 0;
+
     } else {
         if(document.getElementById("opponent").rows[this.parentNode.rowIndex].cells[this.cellIndex].classList.contains("hit") || document.getElementById("opponent").rows[this.parentNode.rowIndex].cells[this.cellIndex].classList.contains("miss")){
             document.getElementById("error-menu").classList.remove("hide");
