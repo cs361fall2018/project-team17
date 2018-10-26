@@ -142,3 +142,62 @@ td:hover {
 .miss {
     background-color: blue;
 }
+
+
+#place-menu > li {
+    display: inline;
+    padding: 20px;
+}
+
+button {
+    background-color: white;
+    color: black;
+    border: 2px solid #4C6A92; /* Green */
+    padding: 15px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 5px 5px 5px 5px;
+    width: 200px;
+}
+
+
+.disabled:hover {
+    opacity: 0.6;
+    background-color: #4C6A92;
+    cursor: not-allowed;
+    color: darkslategray
+}
+
+button:hover {
+    background-color: #4C6A92; /* Green */
+    color: white;
+}
+
+.clicked {
+    background-color: #4C6A92; /* Green */
+    color: white;
+}
+
+.disabled {
+    opacity: 0.6;
+    background-color: #4C6A92;
+    cursor: not-allowed;
+}
+
+.check {
+    display: inline-block;
+    margin: 4px;
+    font-family: sans-serif;
+    font-size: 20px;
+}
+
+.checkbox-container {
+    text-align: center;
+}
+
+#place-menu-container {
+    border-top: 1px solid black;
+    text-align: center;
+}

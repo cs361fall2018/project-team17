@@ -17,12 +17,17 @@
     <li id="flex-player"><table id="player" class="battleGrid"></table></li>
 </ul>
 
-<ul id="place-menu" class="hide">
-    <li><button id="place_minesweeper">Place Minesweeper</button></li>
-    <li><button id="place_destroyer">Place Destroyer</button></li>
-    <li><button id="place_battleship">Place Battleship</button></li>
-    <li><input type="checkbox" id="is_vertical">Vertical</input></li>
-</ul>
+<div id="place-menu-container" class="hide">
+    <ul id="place-menu">
+        <li><button id="place_minesweeper">Place Minesweeper</button></li>
+        <li><button id="place_destroyer">Place Destroyer</button></li>
+        <li><button id="place_battleship">Place Battleship</button></li>
+    </ul>
+
+    <div class="checkbox-container">
+        <div class="check"><input type="checkbox" id="is_vertical" >Vertical</input></div>
+    </label>
+</div>
 
 <div id="attack-menu" class="hide">
     Click location on opponents board to attack that location

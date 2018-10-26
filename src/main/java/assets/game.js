@@ -96,6 +96,16 @@ function registerCellListener(f) {
     oldListener = f;
 }
 
+function disableShipButton(shipType){
+    if(shipType == "MINESWEEPER"){
+        document.getElementById("place_minesweeper").setAttribute("class", "disabled");
+    }else if(shipType == "DESTROYER"){
+        document.getElementById("place_destroyer").setAttribute("class", "disabled");
+    }else if(shipType == "BATTLESHIP"){
+        document.getElementById("place_battleship").setAttribute("class", "disabled");
+    }
+}
+
 function prepareAttackPhase() {
     document.getElementById("place-menu").setAttribute("class", "hide");
     document.getElementById("attack-menu").classList.remove("hide");
@@ -112,6 +122,7 @@ function cellClick() {
             game = data;
             redrawGrid();
             placedShips++;
+            disableShipButton(shipType);
             if (placedShips == 3) {
                 prepareAttackPhase();
                 isSetup = false;
@@ -172,18 +183,21 @@ function initGame() {
     makeGrid(document.getElementById("player"), true);
     document.getElementById("place_minesweeper").addEventListener("click", function(e) {
         shipType = "MINESWEEPER";
+        document.getElementById("place_minesweeper").setAttribute("class", "clicked");
        registerCellListener(place(2));
     });
     document.getElementById("place_destroyer").addEventListener("click", function(e) {
         shipType = "DESTROYER";
+        document.getElementById("place_destroyer").setAttribute("class", "clicked");
        registerCellListener(place(3));
     });
     document.getElementById("place_battleship").addEventListener("click", function(e) {
         shipType = "BATTLESHIP";
+        document.getElementById("place_battleship").setAttribute("class", "clicked");
        registerCellListener(place(4));
     });
     document.getElementById("start-button").addEventListener("click", function(){
-       document.getElementById("place-menu").classList.remove("hide");
+       document.getElementById("place-menu-container").classList.remove("hide");
        document.getElementById("start-button").setAttribute("class", "hide")
     });
     sendXhr("GET", "/game", {}, function(data) {
