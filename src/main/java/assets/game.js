@@ -126,7 +126,6 @@ function cellClick() {
 
     let row = this.parentNode.rowIndex + 1;
     let col = String.fromCharCode(this.cellIndex + 65);
-    console.log(this.parentNode.rowIndex);
     if(isSetup) {
         if(vertical){
             if(shipType == "MINESWEEPER"){
@@ -268,9 +267,7 @@ function cellClick() {
             disableShipButton(shipType);
             redrawGrid();
             placedShips++;
-            console.log(shipType);
             shipType = 0;
-            //disableShipButton(shipType);
             if (placedShips == 3) {
                 prepareAttackPhase();
                 isSetup = false;
