@@ -97,11 +97,14 @@ function registerCellListener(f) {
 }
 
 function disableShipButton(shipType){
-    if(shipType == "MINESWEEPER" || mine == 1){
+    if(shipType == "MINESWEEPER"){
+        document.getElementById("place_minesweeper").setAttribute("disabled", "disabled");
         document.getElementById("place_minesweeper").setAttribute("class", "disabled");
     }else if(shipType == "DESTROYER"){
+        document.getElementById("place_destroyer").setAttribute("disabled", "disabled");
         document.getElementById("place_destroyer").setAttribute("class", "disabled");
     }else if(shipType == "BATTLESHIP"){
+        document.getElementById("place_battleship").setAttribute("disabled", "disabled");
         document.getElementById("place_battleship").setAttribute("class", "disabled");
     }
 }
@@ -181,6 +184,9 @@ function place(size) {
 function placeShipButton(shipName, size) {
     shipType = shipName;
     var id = "place_" + shipName.toLowerCase();
+    for(var i = 0; i < document.getElementsByClassName('clicked').length; i++){
+        document.getElementsByClassName("clicked")[i].classList.remove("clicked");
+    }
     document.getElementById(id).setAttribute("class", "clicked");
     registerCellListener(place(size));
 }
