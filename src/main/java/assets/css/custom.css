@@ -7,9 +7,21 @@
 }
 
 
+h1 {
+  font-family: 'Anton', serif;
+  font-size: 86px;
+  text-align: center;
+  font-weight: normal;
+}
+
+body {
+    background-color: #fff9e3 ;
+}
+
 @keyframes fadein {
     from { opacity: 0; }
     to   { opacity: 1; }
+
 }
 
 @keyframes fadeout {
@@ -87,6 +99,25 @@ body {
     width: 25px;
 }
 
+#attack-menu {
+    margin:0 -50% 0 -50%;
+    text-align: center;
+    border-top: 1px solid black;
+    overflow: hidden;
+    width: 100%;
+    position:relative;
+    left: 50%;
+}
+span {
+    width: 100%;
+    overflow:hidden;
+    position:relative;
+    margin: 0 -50%;
+    white-space:nowrap;
+    font-size: 20px;
+    font family: "Verdana", Sans-serif;
+}
+
 #states {
     padding: 40px;
 }
@@ -119,6 +150,7 @@ body {
 
 #lose {
     background-color: lightcoral;
+
 }
 
 td:hover {
