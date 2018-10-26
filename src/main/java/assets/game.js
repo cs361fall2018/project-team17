@@ -108,6 +108,7 @@ function disableShipButton(shipType){
 
 function prepareAttackPhase() {
     document.getElementById("place-menu").setAttribute("class", "hide");
+    document.getElementsByClassName("checkbox-container")[0].setAttribute("class", "hide");
     document.getElementById("attack-menu").classList.remove("hide");
     document.getElementById("opponent").classList.remove("hide");
     document.getElementById("player").classList.add("shrink");

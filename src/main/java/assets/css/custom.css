@@ -1,6 +1,12 @@
 /* Add additional stylesheets below
 -------------------------------------------------- */
 
+
+.hide {
+    display: none;
+}
+
+
 @keyframes fadein {
     from { opacity: 0; }
     to   { opacity: 1; }
@@ -23,10 +29,6 @@
 
 body {
     background-color: lightgrey;
-}
-
-.hide {
-    display: none;
 }
 
 .boards {
