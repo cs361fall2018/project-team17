@@ -1,11 +1,11 @@
 /* Add additional stylesheets below
 -------------------------------------------------- */
 
-@media only screen and (max-width: 979px) {
-    .boards .media-player {
-        margin: 10px auto 10px 100px;
-    }
+
+.hide {
+    display: none;
 }
+
 
 h1 {
   font-family: 'Anton', serif;
@@ -18,13 +18,35 @@ body {
     background-color: #fff9e3 ;
 }
 
-.hide {
-    display: none;
+@keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+
+}
+
+@keyframes fadeout {
+    from { opacity: 1; }
+    to   { opacity: 0; }
+}
+
+.fadein {
+    opacity: 1;
+    animation: fadein 2s linear
+}
+
+.fadeout{
+    opacity: 0;
+    animation: fadeout 2s linear
+}
+
+body {
+    background-color: lightgrey;
 }
 
 .boards {
     display: flex;
     flex-flow: row wrap;
+    justify-content: center;
 }
 
 #flex-player {
@@ -39,7 +61,7 @@ body {
     background-size 490px 450px;
 }
 
-.boards li{
+.boards li,.win-lose li{
     list-style: none;
     padding: 5px 10px;
 }
@@ -48,21 +70,23 @@ body {
     margin-top: auto;
 }
 
-.battleGrid.shrink tr {
-    height: 25px;
-}
-
 .battleGrid {
     border: 1px solid white;
     border-spacing: 0px;
 }
 
+.battleGrid th {
+    padding: 0px;
+    width: 45px;
+    border: 1px solid black;
+    text-align: center;
+}
 .battleGrid tr {
     border: 1px solid white;
     height: 45px;
 }
 
-.battleGrid.shrink tr {
+.battleGrid.shrink tr,.battleGrid.shrink th {
     height: 25px;
 }
 
@@ -71,7 +95,7 @@ body {
     width: 45px;
 }
 
-.battleGrid.shrink td {
+.battleGrid.shrink td,.battleGrid.shrink th {
     width: 25px;
 }
 
@@ -92,6 +116,41 @@ span {
     white-space:nowrap;
     font-size: 20px;
     font family: "Verdana", Sans-serif;
+}
+
+#states {
+    padding: 40px;
+}
+
+.win-lose div {
+    padding: 5px 0px;
+    display: flex;
+    justify-content: center;
+}
+
+.win-lose {
+    padding: 40px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.win-lose li {
+    padding: 10px 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    font-size: 40px;
+    width: 550px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#win {
+    background-color: lightgreen;
+}
+
+#lose {
+    background-color: lightcoral;
+
 }
 
 td:hover {
@@ -116,4 +175,63 @@ td:hover {
 
 .miss {
     background-color: blue;
+}
+
+
+#place-menu > li {
+    display: inline;
+    padding: 20px;
+}
+
+button {
+    background-color: white;
+    color: black;
+    border: 2px solid #4C6A92; /* Green */
+    padding: 15px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 5px 5px 5px 5px;
+    width: 200px;
+}
+
+
+.disabled:hover {
+    opacity: 0.6;
+    background-color: #4C6A92;
+    cursor: not-allowed;
+    color: darkslategray
+}
+
+button:hover {
+    background-color: #4C6A92; /* Green */
+    color: white;
+}
+
+.clicked {
+    background-color: #4C6A92; /* Green */
+    color: white;
+}
+
+.disabled {
+    opacity: 0.6;
+    background-color: #4C6A92;
+    cursor: not-allowed;
+}
+
+.check {
+    display: inline-block;
+    margin: 4px;
+    font-family: sans-serif;
+    font-size: 20px;
+}
+
+.checkbox-container {
+    text-align: center;
+}
+
+#place-menu-container {
+    border-top: 1px solid black;
+    text-align: center;
 }
