@@ -235,3 +235,9 @@ button:hover {
     border-top: 1px solid black;
     text-align: center;
 }
+
+#error-menu {
+    color: red;
+    text-align: center;
+    padding: 20px;
+}
