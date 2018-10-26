@@ -7,6 +7,13 @@
     }
 }
 
+h1 {
+  font-family: 'Anton', serif;
+  font-size: 86px;
+  text-align: center;
+  font-weight: normal;
+}
+
 body {
     background-color: #fff9e3 ;
 }
