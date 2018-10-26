@@ -69,6 +69,7 @@ body {
     width: 45px;
     border: 1px solid white;
     text-align: center;
+    background-color: lightgrey;
 }
 .battleGrid tr {
     border: 1px solid white;
