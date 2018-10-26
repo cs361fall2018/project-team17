@@ -34,6 +34,22 @@ function makeGrid(table, isPlayer) {
     }
 }
 
+function displayEndGame(endGame) {
+    if(endGame.indexOf('won') > -1) {
+        document.getElementById('win').classList.remove('hide');
+    } else if(endGame.indexOf('lost') > -1) {
+        document.getElementById('lose').classList.remove('hide');
+    }
+
+    document.getElementById("states").classList.remove('hide');
+    document.getElementById("test").classList.add('fadeout');
+    document.getElementById("attack-menu").classList.add('hide');
+    setTimeout(function() {
+        document.getElementById("player").classList.add('hide');
+        document.getElementById("opponent").classList.add('hide');
+    }, (2000));
+}
+
 function markHits(board, elementId, surrenderText) {
     board.attacks.forEach((attack) => {
         let className;
@@ -44,7 +60,7 @@ function markHits(board, elementId, surrenderText) {
     else if (attack.result === "SUNK")
         className = "hit"
     else if (attack.result === "SURRENDER")
-        alert(surrenderText);// move this and make something cooler
+        displayEndGame(surrenderText);
     document.getElementById(elementId).rows[attack.location.row-1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add(className);
 });
 }
@@ -90,6 +106,14 @@ function disableShipButton(shipType){
     }
 }
 
+function prepareAttackPhase() {
+    document.getElementById("place-menu").setAttribute("class", "hide");
+    document.getElementById("attack-menu").classList.remove("hide");
+    document.getElementById("opponent").classList.remove("hide");
+    document.getElementById("player").classList.add("shrink");
+    document.getElementById("flex-player").classList.add("media-player");
+}
+
 function cellClick() {
     let row = this.parentNode.rowIndex + 1;
     let col = String.fromCharCode(this.cellIndex + 65);
@@ -100,11 +124,7 @@ function cellClick() {
             placedShips++;
             disableShipButton(shipType);
             if (placedShips == 3) {
-                document.getElementById("place-menu-container").setAttribute("class", "hide");
-                document.getElementById("attack-menu").classList.remove("hide");
-                document.getElementById("opponent").classList.remove("hide");
-                document.getElementById("player").classList.add("shrink");
-                document.getElementById("flex-player").classList.add("media-player");
+                prepareAttackPhase();
                 isSetup = false;
                 registerCellListener((e) => {});
             }
@@ -183,4 +203,4 @@ function initGame() {
     sendXhr("GET", "/game", {}, function(data) {
         game = data;
     });
-};
+}
