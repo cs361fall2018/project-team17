@@ -140,6 +140,8 @@ button:hover {
 .check {
     display: inline-block;
     margin: 4px;
+    font-family: sans-serif;
+    font-size: 20px;
 }
 
 .checkbox-container {
