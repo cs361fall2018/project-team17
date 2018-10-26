@@ -81,16 +81,14 @@ td:hover {
 
 #place-menu > li {
     display: inline;
-    color: darkslategray;
-    padding: 35px;
+    padding: 20px;
 }
 
 button {
     background-color: white;
     color: black;
-    border: 2px solid #4CAF50; /* Green */
-    padding: 15px 30px;
-    width: 10px
+    border: 2px solid #4C6A92; /* Green */
+    padding: 15px 20px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
@@ -99,12 +97,13 @@ button {
 }
 
 button:hover {
-    background-color: #4CAF50; /* Green */
+    background-color: #4C6A92; /* Green */
     color: white;
 }
 
-.button:focus {
-
+.clicked {
+    background-color: #4C6A92; /* Green */
+    color: white;
 }
 
 .disabled {
@@ -114,6 +113,6 @@ button:hover {
 
 #is_vertical {
     display: block;
+    margin: 40px;
+    left: 100px;
 }
-
-

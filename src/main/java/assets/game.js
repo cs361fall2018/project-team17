@@ -152,14 +152,17 @@ function initGame() {
     makeGrid(document.getElementById("player"), true);
     document.getElementById("place_minesweeper").addEventListener("click", function(e) {
         shipType = "MINESWEEPER";
+        document.getElementById("place-minesweeper").setAttribute("class", "clicked");
        registerCellListener(place(2));
     });
     document.getElementById("place_destroyer").addEventListener("click", function(e) {
         shipType = "DESTROYER";
+        document.getElementById("place-destroyerj").setAttribute("class", "clicked");
        registerCellListener(place(3));
     });
     document.getElementById("place_battleship").addEventListener("click", function(e) {
         shipType = "BATTLESHIP";
+        document.getElementById("place-battleship").setAttribute("class", "clicked");
        registerCellListener(place(4));
     });
     document.getElementById("start-button").addEventListener("click", function(){
