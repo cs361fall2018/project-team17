@@ -263,6 +263,11 @@ function cellClick() {
         //         return;
         //     }
         // }
+        if(shipType==undefined) {
+            document.getElementById("error-menu").classList.remove("hide");
+            document.getElementById("error-menu").innerHTML = "*You have not selected a ship. Please select one using the buttons below";
+            return;
+        }
         console.log(shipType);
         sendXhr("POST", "/place", {game: game, shipType: shipType, x: row, y: col, isVertical: vertical}, function(data) {
             game = data;
@@ -294,11 +299,8 @@ function cellClick() {
 function sendXhr(method, url, data, handler) {
     var req = new XMLHttpRequest();
     req.addEventListener("load", function(event) {
-        if (req.status != 200 || (shipType == undefined && method=="POST")) {
-            if(isSetup && shipType == undefined) {
-                document.getElementById("error-menu").classList.remove("hide");
-                document.getElementById("error-menu").innerHTML = "*You have not selected a ship. Please select one using the buttons below";
-            } else if (isSetup) {
+        if (req.status != 200) {
+            if (isSetup) {
                 document.getElementById("error-menu").classList.remove("hide");
                 document.getElementById("error-menu").innerHTML = "*You are trying to place a ship on an occupied space. Please place your ship on empty spaces";
             } else
