@@ -1,6 +1,7 @@
 package cs361.battleships.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jdk.jshell.Snippet;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,6 +51,19 @@ public class Board {
 		return attackResult;
 	}
 
+	public Result sinkAttack(int x, char y){
+		Ship tempShip = getShipAt(x, y);
+		int i;
+		for(i = 0; i < tempShip.getOccupiedSquares().size(); i++){
+			Result attackResult = attack(new Square(tempShip.getOccupiedSquares().get(i).getRow(), tempShip.getOccupiedSquares().get(i).getColumn()));
+			attacks.add(attackResult);
+			if(attackResult.getResult() == AtackStatus.SUNK){
+				return attackResult;
+			}
+		}
+		return attack(new Square(tempShip.getOccupiedSquares().get(i-1).getRow(), tempShip.getOccupiedSquares().get(i-1).getColumn()));
+	}
+
 	private Result attack(Square s) {
 		if (attacks.stream().anyMatch(r -> r.getLocation().equals(s))) {
 			var attackResult = new Result(s);
@@ -73,5 +87,38 @@ public class Board {
 
 	List<Ship> getShips() {
 		return ships;
+	}
+
+	Square getSquareAt(int x, char y) {
+		for(int i = 0; i < ships.size(); i++){
+			for(int j = 0; j < ships.get(i).getOccupiedSquares().size(); j++){
+//				System.out.println(ships.get(i).getOccupiedSquares().get(j).getRow());
+//				System.out.println(x);
+//				System.out.println("--");
+//				System.out.println(ships.get(i).getOccupiedSquares().get(j).getColumn());
+//				System.out.println(y);
+//				System.out.println("====");
+				if(ships.get(i).getOccupiedSquares().get(j).getRow() == x && ships.get(i).getOccupiedSquares().get(j).getColumn() == y){
+					return ships.get(i).getOccupiedSquares().get(j);
+				}
+			}
+		}
+		return null;
+	}
+
+	Ship getShipAt(int x, char y) {
+		for(int i = 0; i < ships.size(); i++){
+			for(int j = 0; j < ships.get(i).getOccupiedSquares().size(); j++){
+				System.out.println(ships.get(i).getOccupiedSquares().get(j).getRow());
+				System.out.println(x);
+				System.out.println("--");
+				System.out.println(ships.get(i).getOccupiedSquares().get(j).getColumn());
+
+				if(ships.get(i).getOccupiedSquares().get(j).getRow() == x && ships.get(i).getOccupiedSquares().get(j).getColumn() == y){
+					return ships.get(i);
+				}
+			}
+		}
+		return null;
 	}
 }

@@ -35,7 +35,25 @@ public class Game {
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
     public boolean attack(int x, char  y) {
-        Result playerAttack = opponentsBoard.attack(x, y);
+//    } else if(result.getLocation().getRow() == occupiedSquares.get(captainsQuarters).getRow() && result.getLocation().getColumn() == occupiedSquares.get(captainsQuarters).getColumn()) {
+//        System.out.println("MADE IT!!!!!!!!!!!!!!!!!!!!!!!!");
+//        for(int i = 0; i < size; i++){
+//            var otherLocation = new Square(occupiedSquares.get(i).getRow(), occupiedSquares.get(i).getColumn());
+////				occupiedSquares.get(i).getRow();
+//            var otherResult = new Result(otherLocation);
+//            otherResult.setShip(this);
+//            otherResult.setResult(AtackStatus.HIT);
+//        }
+//        result.setResult(AtackStatus.SUNK);
+        System.out.println(opponentsBoard.getSquareAt(x, y));
+        Result playerAttack = new Result();
+        if(opponentsBoard.getSquareAt(x, y) != null && opponentsBoard.getSquareAt(x, y).isCaptainsQuarters()){
+            for(int i = 0; i < opponentsBoard.getShips().size(); i++){
+                playerAttack.setResultClass(opponentsBoard.sinkAttack(x, y));
+            }
+        }else {
+            playerAttack.setResultClass(opponentsBoard.attack(x, y));
+        }
         if (playerAttack.getResult() == INVALID) {
             return false;
         }

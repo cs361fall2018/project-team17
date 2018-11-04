@@ -15,6 +15,7 @@ public class Ship {
 	@JsonProperty private String kind;
 	@JsonProperty private List<Square> occupiedSquares;
 	@JsonProperty private int size;
+	@JsonProperty private int captainsQuarters;
 
 	public Ship() {
 		occupiedSquares = new ArrayList<>();
@@ -26,12 +27,15 @@ public class Ship {
 		switch(kind) {
 			case "MINESWEEPER":
 				size = 2;
+				captainsQuarters = 0;
 				break;
 			case "DESTROYER":
 				size = 3;
+				captainsQuarters = 1;
 				break;
 			case "BATTLESHIP":
 				size = 4;
+				captainsQuarters = 2;
 				break;
 		}
 	}
@@ -48,6 +52,7 @@ public class Ship {
 				occupiedSquares.add(new Square(row, (char) (col + i)));
 			}
 		}
+		occupiedSquares.get(captainsQuarters).setCaptainsQuarters(true);
 	}
 
 	public boolean overlaps(Ship other) {
@@ -80,15 +85,22 @@ public class Ship {
 		attackedSquare.hit();
 		var result = new Result(attackedLocation);
 		result.setShip(this);
+		System.out.println(result.getLocation());
+		System.out.println(occupiedSquares.get(captainsQuarters));
+		System.out.println("------------------------------------------");
 		if (isSunk()) {
-			result.setResult(AtackStatus.SUNK);
-		} else {
-			result.setResult(AtackStatus.HIT);
+            result.setResult(AtackStatus.SUNK);
+        }else {
+ 			result.setResult(AtackStatus.HIT);
 		}
 		return result;
 	}
 
-	@JsonIgnore
+    public int getCaptainsQuarters() {
+        return captainsQuarters;
+    }
+
+    @JsonIgnore
 	public boolean isSunk() {
 		return getOccupiedSquares().stream().allMatch(s -> s.isHit());
 	}
