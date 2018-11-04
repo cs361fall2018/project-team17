@@ -57,7 +57,7 @@ public class Board {
 		for(i = 0; i < tempShip.getOccupiedSquares().size(); i++){
 			Result attackResult = attack(new Square(tempShip.getOccupiedSquares().get(i).getRow(), tempShip.getOccupiedSquares().get(i).getColumn()));
 			attacks.add(attackResult);
-			if(attackResult.getResult() == AtackStatus.SUNK){
+			if(attackResult.getResult() == AtackStatus.SUNK || attackResult.getResult() == AtackStatus.SURRENDER){
 				return attackResult;
 			}
 		}

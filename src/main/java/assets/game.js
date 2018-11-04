@@ -165,12 +165,14 @@ function cellClick() {
 function sendXhr(method, url, data, handler) {
     var req = new XMLHttpRequest();
     req.addEventListener("load", function(event) {
+        console.log("Status: ", req.status);
         if (req.status != 200) {
             if (isSetup) {
                 document.getElementById("error-menu").classList.remove("hide");
                 document.getElementById("error-menu").innerHTML = "*You are trying to place a ship on another or it is out of bounds. Please place your ship on empty spaces";
-            } else
+            } else {
                 alert("Cannot complete the action");
+            }
             return;
         }
         handler(JSON.parse(req.responseText));
