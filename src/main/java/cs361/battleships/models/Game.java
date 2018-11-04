@@ -59,11 +59,20 @@ public class Game {
             return false;
         }
 
-        Result opponentAttackResult;
+        Result opponentAttackResult = new Result();
         do {
+            int xRand = randRow();
+            char yRand = randCol();
+            if(playersBoard.getSquareAt(xRand, yRand) != null && playersBoard.getSquareAt(xRand, yRand).isCaptainsQuarters()){
+//            for(int i = 0; i < opponentsBoard.getShips().size(); i++){
+                opponentAttackResult.setResultClass(playersBoard.sinkAttack(xRand, yRand));
+//            }
+            }else {
+                opponentAttackResult.setResultClass(playersBoard.attack(xRand, yRand));
+            }
             // AI does random attacks, so it might attack the same spot twice
             // let it try until it gets it right
-            opponentAttackResult = playersBoard.attack(randRow(), randCol());
+//            opponentAttackResult = playersBoard.attack(randRow(), randCol());
         } while(opponentAttackResult.getResult() == INVALID);
 
         return true;
