@@ -84,10 +84,6 @@ public class Ship {
 		}
 		attackedSquare.hit();
 		var result = new Result(attackedLocation);
-		result.setShip(this);
-		System.out.println(result.getLocation());
-		System.out.println(occupiedSquares.get(captainsQuarters));
-		System.out.println("------------------------------------------");
 		if (isSunk()) {
             result.setResult(AtackStatus.SUNK);
         }else {
