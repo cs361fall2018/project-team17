@@ -57,8 +57,12 @@ function markHits(board, elementId, surrenderText) {
         className = "miss";
     else if (attack.result === "HIT")
         className = "hit";
-    else if (attack.result === "SUNK")
+    else if (attack.result === "SUNK") {
         className = "hit";
+        if(elementId === "opponent") {
+            document.getElementById("place_sonar").classList.remove('hide');
+        }
+    }
     else if (attack.result === "SURRENDER") {
         className = "hit";
         displayEndGame(surrenderText);
@@ -225,11 +229,12 @@ function placeSonar() {
         let row = this.parentNode.rowIndex;
         let col = this.cellIndex;
         let table = document.getElementById("opponent");
+        let tableRow;
 
         //Cross
         for (let i=0; i<3; i++) {
-            let tableRow = table.rows[row+i]; //Top side
 
+            tableRow = table.rows[row+i]; //Top side
             if (tableRow !== undefined) {checkSonarHover(tableRow.cells[col]);}
             tableRow = table.rows[row-i]; //Bottom side
             if (tableRow !== undefined) {checkSonarHover(tableRow.cells[col]);}
@@ -237,11 +242,20 @@ function placeSonar() {
             checkSonarHover(table.rows[row].cells[col+i]); //Right side
             checkSonarHover(table.rows[row].cells[col-i]); //Left side
         }
-    }
-}
 
-function placeSonarButton() {
-    registerCellListener(placeSonar(), "opponent");
+        //Bottom part of square corners
+        tableRow = table.rows[row+1];
+        if(tableRow !== undefined) {
+            checkSonarHover(tableRow.cells[col+1]); //bottom right corner
+            checkSonarHover(tableRow.cells[col-1]); //bottom left corner
+        }
+        //Top part of square corners
+        tableRow = table.rows[row-1];
+        if(tableRow !== undefined) {
+            checkSonarHover(tableRow.cells[col-1]); //top left corner
+            checkSonarHover(tableRow.cells[col+1]); //top right corner
+        }
+    }
 }
 
 function initGame() {
@@ -252,7 +266,7 @@ function initGame() {
     document.getElementById("place_destroyer").addEventListener("click", function(e) { placeShipButton("DESTROYER", 3)});
     document.getElementById("place_battleship").addEventListener("click", function(e) { placeShipButton("BATTLESHIP", 4)});
 
-    document.getElementById("place_sonar").addEventListener("click", function(e) { placeSonarButton()});
+    document.getElementById("place_sonar").addEventListener("click", function(e) { registerCellListener(placeSonar(), "opponent");});
 
     document.getElementById("start-button").addEventListener("click", function(){
        document.getElementById("place-menu-container").classList.remove("hide");

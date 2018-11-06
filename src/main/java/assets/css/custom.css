@@ -98,6 +98,12 @@ body {
     position:relative;
     left: 50%;
 }
+
+#attack-menu li {
+    padding: 20px;
+    list-style: none;
+}
+
 span {
     width: 100%;
     overflow:hidden;
