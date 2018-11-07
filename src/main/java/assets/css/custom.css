@@ -180,11 +180,11 @@ td:hover {
 }
 
 .sonar_ship {
-    background-color: lightgreen;
+    background-color: black;
 }
 
 .sonar_water {
-    background-color: pink;
+    background-color: grey;
 }
 
 #place-menu > li {
