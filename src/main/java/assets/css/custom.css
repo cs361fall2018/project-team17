@@ -179,6 +179,13 @@ td:hover {
     background-color: blue;
 }
 
+.sonar_ship {
+    background-color: lightgreen;
+}
+
+.sonar_water {
+    background-color: pink;
+}
 
 #place-menu > li {
     display: inline;
