@@ -92,10 +92,6 @@ public class Ship {
 		return result;
 	}
 
-    public int getCaptainsQuarters() {
-        return captainsQuarters;
-    }
-
     @JsonIgnore
 	public boolean isSunk() {
 		return getOccupiedSquares().stream().allMatch(s -> s.isHit());
@@ -121,5 +117,9 @@ public class Ship {
 	@Override
 	public String toString() {
 		return kind + occupiedSquares.toString();
+	}
+
+	public int getCaptainsQuarters(){
+		return captainsQuarters;
 	}
 }

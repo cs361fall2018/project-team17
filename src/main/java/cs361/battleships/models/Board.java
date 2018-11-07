@@ -92,12 +92,6 @@ public class Board {
 	Square getSquareAt(int x, char y) {
 		for(int i = 0; i < ships.size(); i++){
 			for(int j = 0; j < ships.get(i).getOccupiedSquares().size(); j++){
-//				System.out.println(ships.get(i).getOccupiedSquares().get(j).getRow());
-//				System.out.println(x);
-//				System.out.println("--");
-//				System.out.println(ships.get(i).getOccupiedSquares().get(j).getColumn());
-//				System.out.println(y);
-//				System.out.println("====");
 				if(ships.get(i).getOccupiedSquares().get(j).getRow() == x && ships.get(i).getOccupiedSquares().get(j).getColumn() == y){
 					return ships.get(i).getOccupiedSquares().get(j);
 				}
@@ -109,11 +103,6 @@ public class Board {
 	Ship getShipAt(int x, char y) {
 		for(int i = 0; i < ships.size(); i++){
 			for(int j = 0; j < ships.get(i).getOccupiedSquares().size(); j++){
-				System.out.println(ships.get(i).getOccupiedSquares().get(j).getRow());
-				System.out.println(x);
-				System.out.println("--");
-				System.out.println(ships.get(i).getOccupiedSquares().get(j).getColumn());
-
 				if(ships.get(i).getOccupiedSquares().get(j).getRow() == x && ships.get(i).getOccupiedSquares().get(j).getColumn() == y){
 					return ships.get(i);
 				}
