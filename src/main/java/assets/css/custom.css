@@ -179,6 +179,24 @@ td:hover {
     background-color: blue;
 }
 
+.sonar_container .sonar_tooltip {
+    visibility: hidden;
+    width: 300px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+    position: absolute;
+    top: 1px;
+    left: 55%;
+    z-index: 1;
+}
+
+#place_sonar:hover .sonar_tooltip {
+    visibility: visible;
+}
+
 .sonar_ship {
     background-color: black;
 }

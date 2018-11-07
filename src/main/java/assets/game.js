@@ -81,13 +81,13 @@ function markSonar(board, elementId) {
     else if (sonar.result === "HIDDEN")
         className = "sonar_water";
     var cell = document.getElementById(elementId).rows[sonar.location.row-1].cells[sonar.location.column.charCodeAt(0) - 'A'.charCodeAt(0)];
-    if(sonar.center === true) {
-        let center = document.createElement('div');
-        center.classList.add('sonar_center');
-        cell.appendChild(center);
-    }
 
     if(!cell.classList.contains("hit") && !cell.classList.contains("miss")) {
+        if(sonar.center === true) {
+            let center = document.createElement('div');
+            center.classList.add('sonar_center');
+            cell.appendChild(center);
+        }
         cell.classList.add(className);
 
     }
