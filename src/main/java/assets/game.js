@@ -73,6 +73,18 @@ function markHits(board, elementId, surrenderText) {
 });
 }
 
+function markSonar(board, elementId) {
+    board.sonar.forEach((sonar) => {
+        let className;
+    if (sonar.result === "VISIBLE")
+        className = "sonar_ship";
+    else if (sonar.result === "HIDDEN")
+        className = "sonar_water";
+
+    document.getElementById(elementId).rows[sonar.location.row-1].cells[sonar.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add(className);
+});
+}
+
 function redrawGrid() {
     Array.from(document.getElementById("opponent").childNodes).forEach((row) => row.remove());
     Array.from(document.getElementById("player").childNodes).forEach((row) => row.remove());
@@ -87,6 +99,7 @@ function redrawGrid() {
     }));
     markHits(game.opponentsBoard, "opponent", "You won the game");
     markHits(game.playersBoard, "player", "You lost the game");
+    markSonar(game.opponentsBoard, "opponent");
 }
 
 var oldListener;
