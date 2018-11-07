@@ -74,9 +74,14 @@ public class Board {
 	}
 
 	public boolean sonar(int x, char y) {
-		for(int j = 0; j < 5; j++) {
+		Square s = new Square(x, y);
+		if(s.isOutOfBounds()) {
+			return false;
+		} else {
+			checkSonarShip(s, true);
+		}
+		for(int j = 0; j < 4; j++) {
 			for (int i = 1; i < 3; i++) {
-				Square s;
 				switch (j) {
 					case 0:
 						s = new Square( x + i, y);
@@ -93,25 +98,25 @@ public class Board {
 					default:
 						s = new Square(x, y);
 				}
-				checkSonarShip(s);
+				checkSonarShip(s, false);
 			}
 		}
-		Square s = new Square(x+1, (char)(y + (char)1));
-		checkSonarShip(s);
+		s = new Square(x+1, (char)(y + (char)1));
+		checkSonarShip(s, false);
 		s = new Square(x+1, (char)(y - (char)1));
-		checkSonarShip(s);
+		checkSonarShip(s, false);
 		s = new Square(x-1, (char)(y + (char)1));
-		checkSonarShip(s);
+		checkSonarShip(s, false);
 		s = new Square(x-1, (char)(y - (char)1));
-		checkSonarShip(s);
+		checkSonarShip(s, false);
 
 		return true;
 	}
 
-	private void checkSonarShip(Square s) {
+	private void checkSonarShip(Square s, boolean center) {
 		if (!s.isOutOfBounds()) {
 			var shipsAtLocation = ships.stream().filter(ship -> ship.isAtLocation(s)).collect(Collectors.toList());
-			Sonar ping = new Sonar(s);
+			Sonar ping = new Sonar(s, center);
 			if (shipsAtLocation.size() != 0) {
 				sonar.add(ping);
 			} else {

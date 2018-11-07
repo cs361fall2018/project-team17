@@ -6,14 +6,16 @@ public class Sonar {
 
     @JsonProperty private SonarStatus result;
     @JsonProperty private Square location;
+    @JsonProperty private boolean center;
 
     /*unused*/
     public Sonar() {
     }
 
-    public Sonar(Square location) {
+    public Sonar(Square location, boolean c) {
         result = SonarStatus.VISIBLE;
         this.location = location;
+        center = c;
     }
 
     public SonarStatus getResult() {
