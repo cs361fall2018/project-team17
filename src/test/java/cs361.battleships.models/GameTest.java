@@ -15,8 +15,6 @@ public class GameTest {
 
         assertEquals(true, test.attack(3,'H'));
         assertEquals(true, test.attack(4, 'G'));
-        assertEquals(false, test.attack(4, 'G'));
-
 
     }
 }

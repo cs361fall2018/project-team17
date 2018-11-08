@@ -77,7 +77,12 @@ public class Ship {
 			return new Result(attackedLocation);
 		}
 		var attackedSquare = square.get();
-		if (attackedSquare.isHit()) {
+		if ((attackedSquare.getHit() == 0) && attackedSquare.isCaptainsQuarters() && !(kind.equals("MINESWEEPER"))) {
+		    attackedSquare.hit();
+            var result = new Result(attackedLocation);
+			result.setResult(AtackStatus.CAPTAIN);
+			return result;
+		}else if(attackedSquare.isHit(kind)){
 			var result = new Result(attackedLocation);
 			result.setResult(AtackStatus.INVALID);
 			return result;
@@ -85,7 +90,7 @@ public class Ship {
 		attackedSquare.hit();
 		var result = new Result(attackedLocation);
 		if (isSunk()) {
-            result.setResult(AtackStatus.SUNK);
+		    result.setResult(AtackStatus.SUNK);
         }else {
  			result.setResult(AtackStatus.HIT);
 		}
@@ -94,7 +99,7 @@ public class Ship {
 
     @JsonIgnore
 	public boolean isSunk() {
-		return getOccupiedSquares().stream().allMatch(s -> s.isHit());
+		return getOccupiedSquares().stream().allMatch(s -> s.isHit(kind));
 	}
 
 	@Override

@@ -167,16 +167,21 @@ td:hover {
     background-color: black;
 }
 
+
+.captain {
+    background-color: lightcoral;
+}
+
 .hit {
-    background-color: red;
+    background-color: darkred;
 }
 
 .sink {
-    background-color: red;
+    background-color: darkred;
 }
 
 .miss {
-    background-color: blue;
+    background-color: lightblue;
 }
 
 .sonar_container .sonar_tooltip {

@@ -48,7 +48,7 @@ public class BoardTest {
         board.placeShip(minesweeper, 1, 'A', true);
         board.attack(1, 'A');
         Result result = board.attack(1, 'A');
-        assertEquals(AtackStatus.INVALID, result.getResult());
+        assertEquals(AtackStatus.MISS, result.getResult());
     }
 
     @Test
@@ -56,15 +56,7 @@ public class BoardTest {
         Result initialResult = board.attack(1, 'A');
         assertEquals(AtackStatus.MISS, initialResult.getResult());
         Result result = board.attack(1, 'A');
-        assertEquals(AtackStatus.INVALID, result.getResult());
-    }
-
-    @Test
-    public void testSurrender() {
-        board.placeShip(new Ship("MINESWEEPER"), 2, 'B', true);
-        board.attack(2, 'B');
-        var result = board.attack(3, 'B');
-        assertEquals(AtackStatus.SURRENDER, result.getResult());
+        assertEquals(AtackStatus.MISS, result.getResult());
     }
 
     @Test
@@ -97,7 +89,10 @@ public class BoardTest {
         assertEquals(AtackStatus.SUNK, sink.getResult());
 
         Result sink2 = test.sinkAttack(6, 'H');
-        assertEquals(AtackStatus.SURRENDER, sink2.getResult());
+        assertEquals(AtackStatus.CAPTAIN, sink2.getResult());
+
+        Result sink3 = test.sinkAttack(6, 'H');
+        assertEquals(AtackStatus.SURRENDER, sink3.getResult());
     }
 
     @Test
@@ -107,7 +102,7 @@ public class BoardTest {
         test.placeShip(mine, 3, 'D', true);
 
         Square tempSquare = test.getSquareAt(3, 'D');
-        assertEquals(false, tempSquare.isHit());
+        assertEquals(false, tempSquare.isHit(mine.getKind()));
         assertEquals(true, tempSquare.isCaptainsQuarters());
         assertEquals(3, tempSquare.getRow());
         assertEquals('D', tempSquare.getColumn());
@@ -115,7 +110,7 @@ public class BoardTest {
         test.sinkAttack(3, 'D');
         tempSquare = test.getSquareAt(4, 'D');
 
-        assertEquals(true, tempSquare.isHit());
+        assertEquals(true, tempSquare.isHit(mine.getKind()));
         assertEquals(false, tempSquare.isCaptainsQuarters());
         assertEquals(4, tempSquare.getRow());
         assertEquals('D', tempSquare.getColumn());
