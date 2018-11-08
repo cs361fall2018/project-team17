@@ -11,6 +11,7 @@ public class Board {
 
 	@JsonProperty private List<Ship> ships;
 	@JsonProperty private List<Result> attacks;
+	@JsonProperty private List<Sonar> sonar;
 
 	/*
 	DO NOT change the signature of this method. It is used by the grading scripts.
@@ -18,6 +19,7 @@ public class Board {
 	public Board() {
 		ships = new ArrayList<>();
 		attacks = new ArrayList<>();
+		sonar = new ArrayList<>();
 	}
 
 	/*
@@ -83,6 +85,59 @@ public class Board {
 			}
 		}
 		return attackResult;
+	}
+
+	public boolean sonar(int x, char y) {
+		Square s = new Square(x, y);
+		if(s.isOutOfBounds()) {
+			return false;
+		} else {
+			checkSonarShip(s, true);
+		}
+		for(int j = 0; j < 4; j++) {
+			for (int i = 1; i < 3; i++) {
+				switch (j) {
+					case 0:
+						s = new Square( x + i, y);
+						break;
+					case 1:
+						s = new Square(x - i, y);
+						break;
+					case 2:
+						s = new Square(x, (char)(y + (char)i));
+						break;
+					case 3:
+						s = new Square(x, (char)(y - (char)i));
+						break;
+					default:
+						s = new Square(x, y);
+				}
+				checkSonarShip(s, false);
+			}
+		}
+		s = new Square(x+1, (char)(y + (char)1));
+		checkSonarShip(s, false);
+		s = new Square(x+1, (char)(y - (char)1));
+		checkSonarShip(s, false);
+		s = new Square(x-1, (char)(y + (char)1));
+		checkSonarShip(s, false);
+		s = new Square(x-1, (char)(y - (char)1));
+		checkSonarShip(s, false);
+
+		return true;
+	}
+
+	private void checkSonarShip(Square s, boolean center) {
+		if (!s.isOutOfBounds()) {
+			var shipsAtLocation = ships.stream().filter(ship -> ship.isAtLocation(s)).collect(Collectors.toList());
+			Sonar ping = new Sonar(s, center);
+			if (shipsAtLocation.size() != 0) {
+				sonar.add(ping);
+			} else {
+				ping.setResult(SonarStatus.HIDDEN);
+				sonar.add(ping);
+			}
+		}
 	}
 
 	List<Ship> getShips() {

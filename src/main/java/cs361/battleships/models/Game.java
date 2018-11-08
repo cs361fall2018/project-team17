@@ -61,6 +61,10 @@ public class Game {
         return true;
     }
 
+    public boolean sonar(int x, char y) {
+        return opponentsBoard.sonar(x, y);
+    }
+
     private char randCol() {
         int random = new Random().nextInt(10) + 1;
         return (char) ('A' + random);
