@@ -139,7 +139,6 @@ public class ShipTest {
         minesweeper.place('A', 1, true);
 
         minesweeper.attack(2, 'A');
-        minesweeper.attack(1, 'A');
         Result result = minesweeper.attack(1, 'A');
         result.setShip(minesweeper);
 
@@ -160,7 +159,7 @@ public class ShipTest {
     @Test
     public void testAttackSameSquareTwice() {
         Ship minesweeper = new Minesweeper();
-        minesweeper.place('A', 1, true);
+        minesweeper.place('A', 2, true);
         var result = minesweeper.attack(2, 'A');
         assertEquals(AtackStatus.HIT, result.getResult());
         result = minesweeper.attack(2, 'A');
@@ -178,7 +177,7 @@ public class ShipTest {
         result = minesweeper2.attack(4, 'D');
         assertEquals(AtackStatus.HIT, result.getResult());
         result = minesweeper2.attack(4, 'D');
-        assertEquals(AtackStatus.HIT, result.getResult());
+        assertEquals(AtackStatus.INVALID, result.getResult());
     }
 
     @Test
