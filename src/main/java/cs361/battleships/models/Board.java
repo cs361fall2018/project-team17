@@ -173,4 +173,6 @@ public class Board {
 		}
 		return null;
 	}
+
+	List<Sonar> getSonar() {return sonar;}
 }

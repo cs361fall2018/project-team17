@@ -9,8 +9,7 @@ public class Sonar {
     @JsonProperty private boolean center;
 
     /*unused*/
-    public Sonar() {
-    }
+    public Sonar() {}
 
     public Sonar(Square location, boolean c) {
         result = SonarStatus.VISIBLE;

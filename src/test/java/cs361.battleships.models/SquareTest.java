@@ -81,4 +81,10 @@ public class SquareTest {
         assertFalse(test.isCaptainsQuarters());
 
     }
+
+    @Test
+    public void testToString() {
+        Square test = new Square( 6, 'E');
+        assertEquals(test.toString(), "(6, E)");
+    }
 }
