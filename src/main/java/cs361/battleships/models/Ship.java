@@ -40,6 +40,12 @@ public class Ship {
 		}
 	}
 
+	public Ship(String kind, int size, int captainsQuarters){
+		this.kind = kind;
+		this.size = size;
+		this.captainsQuarters = captainsQuarters;
+	}
+
 	public List<Square> getOccupiedSquares() {
 		return occupiedSquares;
 	}
