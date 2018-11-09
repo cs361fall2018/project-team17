@@ -85,7 +85,6 @@ public class Ship {
         }else {
  			result.setResult(AtackStatus.HIT);
 		}
-		System.out.printf(result.getResult().toString());
 		return result;
 	}
 

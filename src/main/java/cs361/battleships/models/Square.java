@@ -48,7 +48,7 @@ public class Square {
 	public boolean isHit(String kind) {
 		if((captainsQuarters && hit == 2)){
 			return true;
-		}else if((!captainsQuarters && hit == 1)){
+		}else if((!captainsQuarters && hit == 1) || (kind.equals("MINESWEEPER") && hit == 1)){
 			return true;
 		}else{
 			return false;
