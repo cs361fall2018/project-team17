@@ -19,4 +19,18 @@ public class GameTest {
 
 
     }
+
+    @Test
+    public void testPlaceShip() {
+        Game test = new Game();
+        assertTrue(test.placeShip(new Ship("MINESWEEPER"), 2, 'B', false));
+        assertFalse(test.placeShip(new Ship("MINESWEEPER"), 1, 'A', false));
+    }
+
+    @Test
+    public void testSonarAttack() {
+        Game test = new Game();
+
+        assertTrue(test.sonar(6, 'E'));
+    }
 }

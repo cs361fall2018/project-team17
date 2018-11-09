@@ -10,6 +10,14 @@ import static org.junit.Assert.*;
 public class ShipTest {
 
     @Test
+    public void testBaseConstructor() {
+        Ship blankShip = new Ship();
+        assertTrue(blankShip.getOccupiedSquares().size() == 0);
+        assertTrue(blankShip.getKind() == null);
+        assertTrue(blankShip.getCaptainsQuarters() == 0);
+    }
+
+    @Test
     public void testPlaceMinesweeperHorizontaly() {
         Ship minesweeper = new Ship("MINESWEEPER");
         minesweeper.place('A', 1, false);
@@ -178,6 +186,13 @@ public class ShipTest {
         assertEquals(1, ship2.getCaptainsQuarters());
         assertEquals(2, ship3.getCaptainsQuarters());
 
+    }
+
+    @Test
+    public void testToString() {
+        Ship test = new Ship("MINESWEEPER");
+
+        assertEquals(test.toString(), "MINESWEEPER[]");
     }
 
 }
