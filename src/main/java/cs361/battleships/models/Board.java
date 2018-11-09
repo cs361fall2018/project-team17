@@ -32,7 +32,16 @@ public class Board {
 		if (ships.stream().anyMatch(s -> s.getKind().equals(ship.getKind()))) {
 			return false;
 		}
-		final var placedShip = new Ship(ship.getKind());
+		Ship placedShip;
+		if (ship.getKind().equals("MINESWEEPER")){
+			placedShip = new Minesweeper();
+		}
+		else if (ship.getKind().equals("DESTROYER")){
+			placedShip = new Destroyer();
+		}
+		else {
+			placedShip = new Battleship();
+		}
 		placedShip.place(y, x, isVertical);
 		if (ships.stream().anyMatch(s -> s.overlaps(placedShip))) {
 			return false;

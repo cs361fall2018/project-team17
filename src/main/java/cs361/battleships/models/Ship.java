@@ -21,26 +21,9 @@ public class Ship {
 		occupiedSquares = new ArrayList<>();
 	}
 	
-	public Ship(String kind) {
-		this();
-		this.kind = kind;
-		switch(kind) {
-			case "MINESWEEPER":
-				size = 2;
-				captainsQuarters = 0;
-				break;
-			case "DESTROYER":
-				size = 3;
-				captainsQuarters = 1;
-				break;
-			case "BATTLESHIP":
-				size = 4;
-				captainsQuarters = 2;
-				break;
-		}
-	}
 
 	public Ship(String kind, int size, int captainsQuarters){
+		this();
 		this.kind = kind;
 		this.size = size;
 		this.captainsQuarters = captainsQuarters;
@@ -58,7 +41,9 @@ public class Ship {
 				occupiedSquares.add(new Square(row, (char) (col + i)));
 			}
 		}
-		occupiedSquares.get(captainsQuarters).setCaptainsQuarters(true);
+		if (!(kind.equals("MINESWEEPER"))) {
+			occupiedSquares.get(captainsQuarters).setCaptainsQuarters(true);
+		}
 	}
 
 	public boolean overlaps(Ship other) {

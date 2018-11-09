@@ -30,7 +30,6 @@ public class ApplicationController {
         else {
             ship = new Battleship();
         }
-        //Ship ship = new Ship(g.getShipType());
         boolean result = game.placeShip(ship, g.getActionRow(), g.getActionColumn(), g.isVertical());
         if (result) {
             return Results.json().render(game);
