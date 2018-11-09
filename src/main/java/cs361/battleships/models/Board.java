@@ -56,22 +56,30 @@ public class Board {
 	public Result sinkAttack(int x, char y){
 		Ship tempShip = getShipAt(x, y);
 		int i;
+		if((getSquareAt(x, y).getHit() == 0) && !tempShip.getKind().equals("MINESWEEPER")){
+		    Result attackResult = attack(new Square(x, y));
+            attacks.add(attackResult);
+            return attackResult;
+        }
+
 		for(i = 0; i < tempShip.getOccupiedSquares().size(); i++){
-			Result attackResult = attack(new Square(tempShip.getOccupiedSquares().get(i).getRow(), tempShip.getOccupiedSquares().get(i).getColumn()));
+		    Result attackResult = attack(new Square(tempShip.getOccupiedSquares().get(i).getRow(), tempShip.getOccupiedSquares().get(i).getColumn()));
 			attacks.add(attackResult);
 			if(attackResult.getResult() == AtackStatus.SUNK || attackResult.getResult() == AtackStatus.SURRENDER){
-				return attackResult;
+			    return attackResult;
 			}
 		}
-		return attack(new Square(tempShip.getOccupiedSquares().get(i-1).getRow(), tempShip.getOccupiedSquares().get(i-1).getColumn()));
+		return attack(new Square(x, y));
 	}
 
+
 	private Result attack(Square s) {
-		if (attacks.stream().anyMatch(r -> r.getLocation().equals(s))) {
-			var attackResult = new Result(s);
-			attackResult.setResult(AtackStatus.INVALID);
-			return attackResult;
-		}
+//		if (attacks.stream().anyMatch(r -> r.getLocation().equals(s)) && !(s.isCaptainsQuarters())){// && getShipAt(s.getRow(), s.getColumn()) != null && !s.isHit(getShipAt(s.getRow(), s.getColumn()).getKind())) {
+//			var attackResult = new Result(s);
+//			System.out.println(s.isCaptainsQuarters());
+//			attackResult.setResult(AtackStatus.INVALID);
+//			return attackResult;
+//		}
 		var shipsAtLocation = ships.stream().filter(ship -> ship.isAtLocation(s)).collect(Collectors.toList());
 		if (shipsAtLocation.size() == 0) {
 			var attackResult = new Result(s);

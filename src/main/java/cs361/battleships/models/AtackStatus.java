@@ -12,6 +12,11 @@ public enum AtackStatus {
 	 */
 	HIT,
 
+    /**
+     * The result if the captains quarters is hit
+     */
+    CAPTAIN,
+
 	/**
 	 * THe result if an attack sinks the enemy ship
 	 */

@@ -25,10 +25,29 @@ public class SquareTest {
     @Test
     public void testIsHit() {
         Square square = new Square(1, 'A');
-        assertFalse(square.isHit());
+        assertFalse(square.isHit("MINESWEEPER"));
 
         square.hit();
-        assertTrue(square.isHit());
+        assertTrue(square.isHit("MINESWEEPER"));
+
+
+        Square square2 = new Square(4, 'C');
+        square2.setCaptainsQuarters(true);
+        assertFalse(square2.isHit("DESTROYER"));
+
+        square2.hit();
+        assertFalse(square2.isHit("DESTROYER"));
+
+
+        square2.hit();
+        assertTrue(square2.isHit("DESTROYER"));
+
+
+        Square square3 = new Square(4, 'C');
+        assertFalse(square3.isHit("DESTROYER"));
+
+        square3.hit();
+        assertTrue(square3.isHit("DESTROYER"));
     }
 
     @Test
