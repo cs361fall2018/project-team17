@@ -41,9 +41,9 @@ public class Ship {
 				occupiedSquares.add(new Square(row, (char) (col + i)));
 			}
 		}
-		if (!(kind.equals("MINESWEEPER"))) {
-			occupiedSquares.get(captainsQuarters).setCaptainsQuarters(true);
-		}
+
+		occupiedSquares.get(captainsQuarters).setCaptainsQuarters(true);
+
 	}
 
 	public boolean overlaps(Ship other) {
@@ -85,6 +85,7 @@ public class Ship {
         }else {
  			result.setResult(AtackStatus.HIT);
 		}
+		System.out.printf(result.getResult().toString());
 		return result;
 	}
 
