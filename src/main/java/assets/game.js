@@ -84,7 +84,7 @@ function markSonar(board, elementId) {
         className = "sonar_water";
     var cell = document.getElementById(elementId).rows[sonar.location.row-1].cells[sonar.location.column.charCodeAt(0) - 'A'.charCodeAt(0)];
 
-    if(!cell.classList.contains("hit") && !cell.classList.contains("miss")) {
+    if(!cell.classList.contains("hit") && !cell.classList.contains("miss") && !cell.classList.contains("captain")) {
         if(sonar.center === true) {
             let center = document.createElement('div');
             center.classList.add('sonar_center');
