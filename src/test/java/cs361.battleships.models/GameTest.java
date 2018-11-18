@@ -17,4 +17,18 @@ public class GameTest {
         assertEquals(true, test.attack(4, 'G'));
 
     }
+
+    @Test
+    public void testPlaceShip() {
+        Game test = new Game();
+        assertTrue(test.placeShip(new Minesweeper(), 2, 'B', false));
+        assertFalse(test.placeShip(new Minesweeper(), 1, 'A', false));
+    }
+
+    @Test
+    public void testSonarAttack() {
+        Game test = new Game();
+
+        assertTrue(test.sonar(6, 'E'));
+    }
 }

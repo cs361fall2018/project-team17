@@ -10,11 +10,20 @@ public class Result {
 
 	@SuppressWarnings("unused")
 	public Result() {
+		result = AtackStatus.INVALID;
+		location = null;
+		ship = null;
 	}
 
 	public Result(Square location) {
 		result = AtackStatus.MISS;
 		this.location = location;
+	}
+
+	public void setResultClass(Result fill){
+		result = fill.getResult();
+		location = fill.getLocation();
+		ship = fill.getShip();
 	}
 
 	public AtackStatus getResult() {

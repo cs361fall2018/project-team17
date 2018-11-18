@@ -8,10 +8,10 @@ public class Square {
 
 	@JsonProperty private int row;
 	@JsonProperty private char column;
-	@JsonProperty private boolean hit = false;
+	@JsonProperty private int hit = 0;
+	@JsonProperty private boolean captainsQuarters = false;
 
-	public Square() {
-	}
+	public Square() {}
 
 	public Square(int row, char column) {
 		this.row = row;
@@ -45,16 +45,34 @@ public class Square {
 		return row > 11 || row < 2 || column > 'K' || column < 'B';
 	}
 
-	public boolean isHit() {
-		return hit;
+	public boolean isHit(String kind) {
+		if((captainsQuarters && hit == 2)){
+			return true;
+		}else if((!captainsQuarters && hit == 1) || (kind.equals("MINESWEEPER") && hit == 1)){
+			return true;
+		}else{
+			return false;
+		}
 	}
 
+	public int getHit() {
+	    return hit;
+    }
+
 	public void hit() {
-		hit = true;
+		hit = hit + 1;
 	}
 
 	@Override
 	public String toString() {
 		return "(" + row + ", " + column + ')';
+	}
+
+	public void setCaptainsQuarters(boolean captainsQuarters){
+		this.captainsQuarters = captainsQuarters;
+	}
+
+	public boolean isCaptainsQuarters() {
+		return captainsQuarters;
 	}
 }

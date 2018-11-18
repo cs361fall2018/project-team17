@@ -15,25 +15,18 @@ public class Ship {
 	@JsonProperty private String kind;
 	@JsonProperty private List<Square> occupiedSquares;
 	@JsonProperty private int size;
+	@JsonProperty private int captainsQuarters;
 
 	public Ship() {
 		occupiedSquares = new ArrayList<>();
 	}
 	
-	public Ship(String kind) {
+
+	public Ship(String kind, int size, int captainsQuarters){
 		this();
 		this.kind = kind;
-		switch(kind) {
-			case "MINESWEEPER":
-				size = 2;
-				break;
-			case "DESTROYER":
-				size = 3;
-				break;
-			case "BATTLESHIP":
-				size = 4;
-				break;
-		}
+		this.size = size;
+		this.captainsQuarters = captainsQuarters;
 	}
 
 	public List<Square> getOccupiedSquares() {
@@ -48,6 +41,9 @@ public class Ship {
 				occupiedSquares.add(new Square(row, (char) (col + i)));
 			}
 		}
+
+		occupiedSquares.get(captainsQuarters).setCaptainsQuarters(true);
+
 	}
 
 	public boolean overlaps(Ship other) {
@@ -72,25 +68,29 @@ public class Ship {
 			return new Result(attackedLocation);
 		}
 		var attackedSquare = square.get();
-		if (attackedSquare.isHit()) {
+		if ((attackedSquare.getHit() == 0) && attackedSquare.isCaptainsQuarters() && !(kind.equals("MINESWEEPER"))) {
+		    attackedSquare.hit();
+            var result = new Result(attackedLocation);
+			result.setResult(AtackStatus.CAPTAIN);
+			return result;
+		}else if(attackedSquare.isHit(kind)){
 			var result = new Result(attackedLocation);
 			result.setResult(AtackStatus.INVALID);
 			return result;
 		}
 		attackedSquare.hit();
 		var result = new Result(attackedLocation);
-		result.setShip(this);
 		if (isSunk()) {
-			result.setResult(AtackStatus.SUNK);
-		} else {
-			result.setResult(AtackStatus.HIT);
+		    result.setResult(AtackStatus.SUNK);
+        }else {
+ 			result.setResult(AtackStatus.HIT);
 		}
 		return result;
 	}
 
-	@JsonIgnore
+    @JsonIgnore
 	public boolean isSunk() {
-		return getOccupiedSquares().stream().allMatch(s -> s.isHit());
+		return getOccupiedSquares().stream().allMatch(s -> s.isHit(kind));
 	}
 
 	@Override
@@ -113,5 +113,9 @@ public class Ship {
 	@Override
 	public String toString() {
 		return kind + occupiedSquares.toString();
+	}
+
+	public int getCaptainsQuarters(){
+		return captainsQuarters;
 	}
 }

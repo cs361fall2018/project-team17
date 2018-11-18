@@ -10,8 +10,16 @@ import static org.junit.Assert.*;
 public class ShipTest {
 
     @Test
+    public void testBaseConstructor() {
+        Ship blankShip = new Ship();
+        assertTrue(blankShip.getOccupiedSquares().size() == 0);
+        assertTrue(blankShip.getKind() == null);
+        assertTrue(blankShip.getCaptainsQuarters() == 0);
+    }
+
+    @Test
     public void testPlaceMinesweeperHorizontaly() {
-        Ship minesweeper = new Ship("MINESWEEPER");
+        Ship minesweeper = new Minesweeper();
         minesweeper.place('A', 1, false);
         List<Square> occupiedSquares = minesweeper.getOccupiedSquares();
         ArrayList<Object> expected = new ArrayList<>();
@@ -22,7 +30,7 @@ public class ShipTest {
 
     @Test
     public void testPlaceMinesweeperVertically() {
-        Ship minesweeper = new Ship("MINESWEEPER");
+        Ship minesweeper = new Minesweeper();
         minesweeper.place('A', 1, true);
         List<Square> occupiedSquares = minesweeper.getOccupiedSquares();
         ArrayList<Object> expected = new ArrayList<>();
@@ -33,7 +41,7 @@ public class ShipTest {
 
     @Test
     public void testPlaceDestroyerHorizontaly() {
-        Ship minesweeper = new Ship("DESTROYER");
+        Ship minesweeper = new Destroyer();
         minesweeper.place('A', 1, false);
         List<Square> occupiedSquares = minesweeper.getOccupiedSquares();
         ArrayList<Object> expected = new ArrayList<>();
@@ -45,7 +53,7 @@ public class ShipTest {
 
     @Test
     public void testPlaceDestroyerVertically() {
-        Ship minesweeper = new Ship("DESTROYER");
+        Ship minesweeper = new Destroyer();
         minesweeper.place('A', 1, true);
         List<Square> occupiedSquares = minesweeper.getOccupiedSquares();
         ArrayList<Object> expected = new ArrayList<>();
@@ -57,7 +65,7 @@ public class ShipTest {
 
     @Test
     public void testPlaceBattleshipHorizontaly() {
-        Ship minesweeper = new Ship("BATTLESHIP");
+        Ship minesweeper = new Battleship();
         minesweeper.place('A', 1, false);
         List<Square> occupiedSquares = minesweeper.getOccupiedSquares();
         ArrayList<Object> expected = new ArrayList<>();
@@ -70,7 +78,7 @@ public class ShipTest {
 
     @Test
     public void testPlaceBattleshipVertically() {
-        Ship minesweeper = new Ship("BATTLESHIP");
+        Ship minesweeper = new Battleship();
         minesweeper.place('A', 1, true);
         List<Square> occupiedSquares = minesweeper.getOccupiedSquares();
         ArrayList<Object> expected = new ArrayList<>();
@@ -83,10 +91,10 @@ public class ShipTest {
 
     @Test
     public void testShipOverlaps() {
-        Ship minesweeper1 = new Ship("MINESWEEPER");
+        Ship minesweeper1 = new Minesweeper();
         minesweeper1.place('A', 1, true);
 
-        Ship minesweeper2 = new Ship("MINESWEEPER");
+        Ship minesweeper2 = new Minesweeper();
         minesweeper2.place('A', 1, true);
 
         assertTrue(minesweeper1.overlaps(minesweeper2));
@@ -94,10 +102,10 @@ public class ShipTest {
 
     @Test
     public void testShipsDontOverlap() {
-        Ship minesweeper1 = new Ship("MINESWEEPER");
+        Ship minesweeper1 = new Minesweeper();
         minesweeper1.place('A', 1, true);
 
-        Ship minesweeper2 = new Ship("MINESWEEPER");
+        Ship minesweeper2 = new Minesweeper();
         minesweeper2.place('C', 2, true);
 
         assertFalse(minesweeper1.overlaps(minesweeper2));
@@ -105,7 +113,7 @@ public class ShipTest {
 
     @Test
     public void testIsAtLocation() {
-        Ship minesweeper = new Ship("BATTLESHIP");
+        Ship minesweeper = new Battleship();
         minesweeper.place('A', 1, true);
 
         assertTrue(minesweeper.isAtLocation(new Square(1, 'A')));
@@ -114,7 +122,7 @@ public class ShipTest {
 
     @Test
     public void testHit() {
-        Ship minesweeper = new Ship("BATTLESHIP");
+        Ship minesweeper = new Battleship();
         minesweeper.place('B', 2, true);
 
         Result result = minesweeper.attack(2, 'B');
@@ -127,11 +135,10 @@ public class ShipTest {
 
     @Test
     public void testSink() {
-        Ship minesweeper = new Ship("MINESWEEPER");
+        Ship minesweeper = new Minesweeper();
         minesweeper.place('A', 1, true);
 
         minesweeper.attack(2, 'A');
-        minesweeper.attack(1, 'A');
         Result result = minesweeper.attack(1, 'A');
         result.setShip(minesweeper);
 
@@ -142,8 +149,8 @@ public class ShipTest {
 
     @Test
     public void testOverlapsBug() {
-        Ship minesweeper = new Ship("MINESWEEPER");
-        Ship destroyer = new Ship("DESTROYER");
+        Ship minesweeper = new Minesweeper();
+        Ship destroyer = new Destroyer();
         minesweeper.place('C', 5, false);
         destroyer.place('C', 5, false);
         assertTrue(minesweeper.overlaps(destroyer));
@@ -151,33 +158,33 @@ public class ShipTest {
 
     @Test
     public void testAttackSameSquareTwice() {
-        Ship minesweeper = new Ship("MINESWEEPER");
-        minesweeper.place('A', 1, true);
+        Ship minesweeper = new Minesweeper();
+        minesweeper.place('A', 2, true);
         var result = minesweeper.attack(2, 'A');
         assertEquals(AtackStatus.HIT, result.getResult());
         result = minesweeper.attack(2, 'A');
         assertEquals(AtackStatus.INVALID, result.getResult());
 
-        Ship destroyer = new Ship("DESTROYER");
+        Ship destroyer = new Destroyer();
         destroyer.place('D', 4, true);
         result = destroyer.attack(5, 'D');
         assertEquals(AtackStatus.CAPTAIN, result.getResult());
         result = destroyer.attack(5, 'D');
         assertEquals(AtackStatus.HIT, result.getResult());
 
-        Ship minesweeper2 = new Ship("MINESWEEPER");
+        Ship minesweeper2 = new Minesweeper();
         minesweeper2.place('D', 4, true);
         result = minesweeper2.attack(4, 'D');
         assertEquals(AtackStatus.HIT, result.getResult());
         result = minesweeper2.attack(4, 'D');
-        assertEquals(AtackStatus.HIT, result.getResult());
+        assertEquals(AtackStatus.INVALID, result.getResult());
     }
 
     @Test
     public void testEquals() {
-        Ship minesweeper1 = new Ship("MINESWEEPER");
+        Ship minesweeper1 = new Minesweeper();
         minesweeper1.place('A', 1, true);
-        Ship minesweeper2 = new Ship("MINESWEEPER");
+        Ship minesweeper2 = new Minesweeper();
         minesweeper2.place('A', 1, true);
         assertTrue(minesweeper1.equals(minesweeper2));
         assertEquals(minesweeper1.hashCode(), minesweeper2.hashCode());
@@ -185,14 +192,21 @@ public class ShipTest {
 
     @Test
     public void testCaptainsQuarters(){
-        Ship ship1 = new Ship("MINESWEEPER");
-        Ship ship2 = new Ship("DESTROYER");
-        Ship ship3 = new Ship("BATTLESHIP");
+        Ship ship1 = new Minesweeper();
+        Ship ship2 = new Destroyer();
+        Ship ship3 = new Battleship();
 
         assertEquals(0, ship1.getCaptainsQuarters());
         assertEquals(1, ship2.getCaptainsQuarters());
         assertEquals(2, ship3.getCaptainsQuarters());
 
+    }
+
+    @Test
+    public void testToString() {
+        Ship test = new Minesweeper();
+
+        assertEquals(test.toString(), "MINESWEEPER[]");
     }
 
 }

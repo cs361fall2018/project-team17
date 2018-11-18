@@ -35,19 +35,34 @@ public class Game {
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
     public boolean attack(int x, char  y) {
-        Result playerAttack = opponentsBoard.attack(x, y);
+        Result playerAttack = new Result();
+        if(opponentsBoard.getSquareAt(x, y) != null && opponentsBoard.getSquareAt(x, y).isCaptainsQuarters()){
+            playerAttack.setResultClass(opponentsBoard.sinkAttack(x, y));
+        }else {
+            playerAttack.setResultClass(opponentsBoard.attack(x, y));
+        }
         if (playerAttack.getResult() == INVALID) {
             return false;
         }
 
-        Result opponentAttackResult;
+        Result opponentAttackResult = new Result();
         do {
             // AI does random attacks, so it might attack the same spot twice
             // let it try until it gets it right
-            opponentAttackResult = playersBoard.attack(randRow(), randCol());
+            int xRand = randRow();
+            char yRand = randCol();
+            if(playersBoard.getSquareAt(xRand, yRand) != null && playersBoard.getSquareAt(xRand, yRand).isCaptainsQuarters()){
+                opponentAttackResult.setResultClass(playersBoard.sinkAttack(xRand, yRand));
+            }else {
+                opponentAttackResult.setResultClass(playersBoard.attack(xRand, yRand));
+            }
         } while(opponentAttackResult.getResult() == INVALID);
 
         return true;
+    }
+
+    public boolean sonar(int x, char y) {
+        return opponentsBoard.sonar(x, y);
     }
 
     private char randCol() {

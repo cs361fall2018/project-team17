@@ -1,4 +1,6 @@
 var isSetup = true;
+var sonarClicked=false;
+var sonarUsed=0;
 var placedShips = 0;
 var game;
 var shipType;
@@ -59,15 +61,38 @@ function markHits(board, elementId, surrenderText) {
         className = "hit";
     else if (attack.result === "SUNK") {
         className = "hit";
-        if(elementId === "opponent") {
+        if(elementId === "opponent" && sonarUsed == 0) {
             document.getElementById("place_sonar").classList.remove('hide');
         }
+    }else if( attack.result === "CAPTAIN"){
+        className = "captain";
     }
     else if (attack.result === "SURRENDER") {
         className = "hit";
         displayEndGame(surrenderText);
     }
     document.getElementById(elementId).rows[attack.location.row-1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add(className);
+});
+}
+
+function markSonar(board, elementId) {
+    board.sonar.forEach((sonar) => {
+        let className;
+    if (sonar.result === "VISIBLE")
+        className = "sonar_ship";
+    else if (sonar.result === "HIDDEN")
+        className = "sonar_water";
+    var cell = document.getElementById(elementId).rows[sonar.location.row-1].cells[sonar.location.column.charCodeAt(0) - 'A'.charCodeAt(0)];
+
+    if(!cell.classList.contains("hit") && !cell.classList.contains("miss") && !cell.classList.contains("captain")) {
+        if(sonar.center === true) {
+            let center = document.createElement('div');
+            center.classList.add('sonar_center');
+            cell.appendChild(center);
+        }
+        cell.classList.add(className);
+
+    }
 });
 }
 
@@ -80,11 +105,18 @@ function redrawGrid() {
         return;
     }
 
+    //add in to see the opponents ships, for easy debug
+    // game.opponentsBoard.ships.forEach((ship) => ship.occupiedSquares.forEach((square) => {
+    //     document.getElementById("opponent").rows[square.row-1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("occupied");
+    // }));
+
     game.playersBoard.ships.forEach((ship) => ship.occupiedSquares.forEach((square) => {
         document.getElementById("player").rows[square.row-1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("occupied");
     }));
     markHits(game.opponentsBoard, "opponent", "You won the game");
+    markHits(game.opponentsBoard, "opponent", "You won the game");
     markHits(game.playersBoard, "player", "You lost the game");
+    markSonar(game.opponentsBoard, "opponent");
 }
 
 var oldListener;
@@ -152,15 +184,29 @@ function cellClick() {
         });
 
     } else {
-        if(document.getElementById("opponent").rows[this.parentNode.rowIndex].cells[this.cellIndex].classList.contains("hit") || document.getElementById("opponent").rows[this.parentNode.rowIndex].cells[this.cellIndex].classList.contains("miss")){
-            document.getElementById("error-menu").classList.remove("hide");
-            document.getElementById("error-menu").innerHTML = "*You have already selected that space. Please select a different one";
-            return;
+        if(!sonarClicked) {
+            if (document.getElementById("opponent").rows[this.parentNode.rowIndex].cells[this.cellIndex].classList.contains("hit") || document.getElementById("opponent").rows[this.parentNode.rowIndex].cells[this.cellIndex].classList.contains("miss")) {
+                document.getElementById("error-menu").classList.remove("hide");
+                document.getElementById("error-menu").innerHTML = "*You have already selected that space. Please select a different one";
+                return;
+            }
+            sendXhr("POST", "/attack", {game: game, x: row, y: col}, function (data) {
+                game = data;
+                redrawGrid();
+            });
         }
-        sendXhr("POST", "/attack", {game: game, x: row, y: col}, function(data) {
-            game = data;
-            redrawGrid();
-        })
+        else if (sonarClicked) {
+            sendXhr("POST", "/sonar", {game: game, x:row, y:col}, function(data) {
+                game = data;
+                redrawGrid();
+                sonarUsed++;
+                if(sonarUsed == 2) {
+                    document.getElementById("place_sonar").classList.add('hide');
+                }
+            });
+            sonarClicked=false;
+            document.getElementById("place_sonar").classList.remove("clicked");
+        }
     }
 
 }
@@ -168,12 +214,14 @@ function cellClick() {
 function sendXhr(method, url, data, handler) {
     var req = new XMLHttpRequest();
     req.addEventListener("load", function(event) {
+        console.log("Status: ", req.status);
         if (req.status != 200) {
             if (isSetup) {
                 document.getElementById("error-menu").classList.remove("hide");
                 document.getElementById("error-menu").innerHTML = "*You are trying to place a ship on another or it is out of bounds. Please place your ship on empty spaces";
-            } else
+            } else {
                 alert("Cannot complete the action");
+            }
             return;
         }
         handler(JSON.parse(req.responseText));
@@ -266,7 +314,7 @@ function initGame() {
     document.getElementById("place_destroyer").addEventListener("click", function(e) { placeShipButton("DESTROYER", 3)});
     document.getElementById("place_battleship").addEventListener("click", function(e) { placeShipButton("BATTLESHIP", 4)});
 
-    document.getElementById("place_sonar").addEventListener("click", function(e) { registerCellListener(placeSonar(), "opponent");});
+    document.getElementById("place_sonar").addEventListener("click", function(e) { sonarClicked=true; document.getElementById("place_sonar").classList.add("clicked"); registerCellListener(placeSonar(), "opponent");});
 
     document.getElementById("start-button").addEventListener("click", function(){
        document.getElementById("place-menu-container").classList.remove("hide");
