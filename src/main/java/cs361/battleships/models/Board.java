@@ -3,6 +3,7 @@ package cs361.battleships.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jdk.jshell.Snippet;
 
+import javax.validation.constraints.Min;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -49,7 +50,22 @@ public class Board {
 		if (placedShip.getOccupiedSquares().stream().anyMatch(s -> s.isOutOfBounds())) {
 			return false;
 		}
-		ships.add(placedShip);
+		if (ship.getKind().equals("MINESWEEPER")){
+			Minesweeper tempShip = new Minesweeper();
+			tempShip.place(y, x, isVertical);
+			ships.add(tempShip);
+		}
+		else if (ship.getKind().equals("DESTROYER")){
+			Destroyer tempShip = new Destroyer();
+			tempShip.place(y, x, isVertical);
+			ships.add(tempShip);
+		}
+		else {
+			Battleship tempShip = new Battleship();
+			tempShip.place(y, x, isVertical);
+			ships.add(tempShip);
+		}
+//		ships.add(placedShip);
 		return true;
 	}
 
@@ -94,7 +110,16 @@ public class Board {
 			var attackResult = new Result(s);
 			return attackResult;
 		}
-		var hitShip = shipsAtLocation.get(0);
+		Ship hitShip; // = shipsAtLocation.get(0);
+		if (shipsAtLocation.get(0).getKind().equals("MINESWEEPER")){
+			hitShip = (Minesweeper)shipsAtLocation.get(0);
+		}
+		else if (shipsAtLocation.get(0).getKind().equals("DESTROYER")){
+			hitShip = (Destroyer)shipsAtLocation.get(0);
+		}
+		else {
+			hitShip = (Battleship)shipsAtLocation.get(0);
+		}
 		var attackResult = hitShip.attack(s.getRow(), s.getColumn());
 		if (attackResult.getResult() == AtackStatus.SUNK) {
 			if (ships.stream().allMatch(ship -> ship.isSunk())) {
