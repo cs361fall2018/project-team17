@@ -144,6 +144,9 @@ function disableShipButton(shipType){
     }else if(shipType == "BATTLESHIP"){
         document.getElementById("place_battleship").setAttribute("disabled", "disabled");
         document.getElementById("place_battleship").setAttribute("class", "disabled");
+    }else if(shipType == "SUBMARINE"){
+        document.getElementById("place_submarine").setAttribute("disabled", "disabled");
+        document.getElementById("place_submarine").setAttribute("class", "disabled");
     }
 }
 
@@ -313,6 +316,7 @@ function initGame() {
     document.getElementById("place_minesweeper").addEventListener("click", function(e){ placeShipButton("MINESWEEPER", 2)});
     document.getElementById("place_destroyer").addEventListener("click", function(e) { placeShipButton("DESTROYER", 3)});
     document.getElementById("place_battleship").addEventListener("click", function(e) { placeShipButton("BATTLESHIP", 4)});
+    document.getElementById("place_submarine").addEventListener("click", function(e) {placeShipButton("SUBMARINE", 5)});
 
     document.getElementById("place_sonar").addEventListener("click", function(e) { sonarClicked=true; document.getElementById("place_sonar").classList.add("clicked"); registerCellListener(placeSonar(), "opponent");});
 

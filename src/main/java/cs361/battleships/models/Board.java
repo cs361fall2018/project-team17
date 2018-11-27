@@ -112,13 +112,13 @@ public class Board {
 		}
 		Ship hitShip; // = shipsAtLocation.get(0);
 		if (shipsAtLocation.get(0).getKind().equals("MINESWEEPER")){
-			hitShip = (Minesweeper)shipsAtLocation.get(0);
+			hitShip = shipsAtLocation.get(0);
 		}
 		else if (shipsAtLocation.get(0).getKind().equals("DESTROYER")){
-			hitShip = (Destroyer)shipsAtLocation.get(0);
+			hitShip = shipsAtLocation.get(0);
 		}
 		else {
-			hitShip = (Battleship)shipsAtLocation.get(0);
+			hitShip = shipsAtLocation.get(0);
 		}
 		var attackResult = hitShip.attack(s.getRow(), s.getColumn());
 		if (attackResult.getResult() == AtackStatus.SUNK) {
