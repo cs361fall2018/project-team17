@@ -1,6 +1,7 @@
 var isSetup = true;
 var sonarClicked=false;
 var sonarUsed=0;
+var moveFleet=0;
 var placedShips = 0;
 var game;
 var shipType;
@@ -61,6 +62,12 @@ function markHits(board, elementId, surrenderText) {
         className = "hit";
     else if (attack.result === "SUNK") {
         className = "hit";
+        if(elementId === "opponent" && moveFleet === 1){
+            document.getElementById("move-fleet").classList.remove('hide');
+            moveFleet++;
+        }else if(elementId === "opponent" && moveFleet < 1){
+            moveFleet++;
+        }
         if(elementId === "opponent" && sonarUsed == 0) {
             document.getElementById("place_sonar").classList.remove('hide');
         }
@@ -313,6 +320,14 @@ function initGame() {
     document.getElementById("place_minesweeper").addEventListener("click", function(e){ placeShipButton("MINESWEEPER", 2)});
     document.getElementById("place_destroyer").addEventListener("click", function(e) { placeShipButton("DESTROYER", 3)});
     document.getElementById("place_battleship").addEventListener("click", function(e) { placeShipButton("BATTLESHIP", 4)});
+
+    document.getElementById("move-fleet").addEventListener("click", function(e) {
+        if(moveFleet < 4){
+
+        }else{
+            //remove button
+        }
+    });
 
     document.getElementById("place_sonar").addEventListener("click", function(e) { sonarClicked=true; document.getElementById("place_sonar").classList.add("clicked"); registerCellListener(placeSonar(), "opponent");});
 

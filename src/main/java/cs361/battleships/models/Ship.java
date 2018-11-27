@@ -88,6 +88,11 @@ public class Ship {
 		return result;
 	}
 
+	public void moveShip(char direction){
+	    occupiedSquares.forEach(s -> s.move(direction));
+    }
+
+
     @JsonIgnore
 	public boolean isSunk() {
 		return getOccupiedSquares().stream().allMatch(s -> s.isHit(kind));

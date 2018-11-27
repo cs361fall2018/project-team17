@@ -65,6 +65,10 @@ public class Game {
         return opponentsBoard.sonar(x, y);
     }
 
+    public void move(char direction){
+        playersBoard.moveFleet(direction);
+    }
+
     private char randCol() {
         int random = new Random().nextInt(10) + 1;
         return (char) ('A' + random);

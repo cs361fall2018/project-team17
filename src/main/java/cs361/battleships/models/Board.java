@@ -182,6 +182,10 @@ public class Board {
 		}
 	}
 
+	void moveFleet(char direction){
+		ships.forEach(s -> s.moveShip(direction));
+	}
+
 	List<Ship> getShips() {
 		return ships;
 	}

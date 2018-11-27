@@ -75,4 +75,24 @@ public class Square {
 	public boolean isCaptainsQuarters() {
 		return captainsQuarters;
 	}
+
+    public void move(char direction){
+		if(direction == 'N'){
+            if(row > 2){
+                row++;
+            }
+		}else if(direction == 'E'){
+            if(column < 'J'){
+                column++;
+            }
+		}else if(direction == 'S'){
+            if(row < 10){
+                row--;
+            }
+		}else if(direction == 'W'){
+            if(column > 'A'){
+                column--;
+            }
+		}
+    }
 }
