@@ -62,10 +62,10 @@ function markHits(board, elementId, surrenderText) {
         className = "hit";
     else if (attack.result === "SUNK") {
         className = "hit";
-        if(elementId === "opponent" && moveFleet === 1){
+        if(elementId === "opponent" && moveFleet === 2){
             document.getElementById("move-fleet").classList.remove('hide');
             moveFleet++;
-        }else if(elementId === "opponent" && moveFleet < 1){
+        }else if(elementId === "opponent" && moveFleet < 3){
             moveFleet++;
         }
         if(elementId === "opponent" && sonarUsed == 0) {
@@ -113,9 +113,9 @@ function redrawGrid() {
     }
 
     //add in to see the opponents ships, for easy debug
-    // game.opponentsBoard.ships.forEach((ship) => ship.occupiedSquares.forEach((square) => {
-    //     document.getElementById("opponent").rows[square.row-1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("occupied");
-    // }));
+    game.opponentsBoard.ships.forEach((ship) => ship.occupiedSquares.forEach((square) => {
+        document.getElementById("opponent").rows[square.row-1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("occupied");
+    }));
 
     game.playersBoard.ships.forEach((ship) => ship.occupiedSquares.forEach((square) => {
         document.getElementById("player").rows[square.row-1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("occupied");
@@ -220,6 +220,7 @@ function cellClick() {
 
 function sendXhr(method, url, data, handler) {
     var req = new XMLHttpRequest();
+    console.log("Status1: ", req.status);
     req.addEventListener("load", function(event) {
         console.log("Status: ", req.status);
         if (req.status != 200) {
@@ -313,6 +314,19 @@ function placeSonar() {
     }
 }
 
+function move(direction){
+    document.getElementById("move-fleet-" + direction).classList.add("clicked");
+    sendXhr("POST", "/moveFleet", {Game: game, direction: direction}, function(data){
+       game = data;
+       redrawGrid();
+       document.getElementById("move-fleet-" + direction).classList.remove("clicked");
+       moveFleet++;
+       if(moveFleet === 5){
+           document.getElementById("move-fleet").classList.add("hide");
+       }
+    });
+}
+
 function initGame() {
     makeGrid(document.getElementById("opponent"), false);
     makeGrid(document.getElementById("player"), true);
@@ -321,12 +335,21 @@ function initGame() {
     document.getElementById("place_destroyer").addEventListener("click", function(e) { placeShipButton("DESTROYER", 3)});
     document.getElementById("place_battleship").addEventListener("click", function(e) { placeShipButton("BATTLESHIP", 4)});
 
-    document.getElementById("move-fleet").addEventListener("click", function(e) {
-        if(moveFleet < 4){
-
-        }else{
-            //remove button
-        }
+    document.getElementById("move-fleet-N").addEventListener("click", function(e) {
+        // document.getElementById("move-fleet-N").classList.add("clicked");
+        move("N");
+    });
+    document.getElementById("move-fleet-E").addEventListener("click", function(e) {
+        // document.getElementById("move-fleet-E").classList.add("clicked");
+        move("E");
+    });
+    document.getElementById("move-fleet-S").addEventListener("click", function(e) {
+        // document.getElementById("move-fleet-S").classList.add("clicked");
+        move("S");
+    });
+    document.getElementById("move-fleet-W").addEventListener("click", function(e) {
+        // document.getElementById("move-fleet-W").classList.add("clicked");
+        move("W");
     });
 
     document.getElementById("place_sonar").addEventListener("click", function(e) { sonarClicked=true; document.getElementById("place_sonar").classList.add("clicked"); registerCellListener(placeSonar(), "opponent");});
