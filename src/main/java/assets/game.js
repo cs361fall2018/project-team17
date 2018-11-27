@@ -316,7 +316,7 @@ function placeSonar() {
 
 function move(direction){
     document.getElementById("move-fleet-" + direction).classList.add("clicked");
-    sendXhr("POST", "/moveFleet", {Game: game, direction: direction}, function(data){
+    sendXhr("POST", "/move", {Game: game, direction: direction}, function(data){
        game = data;
        redrawGrid();
        document.getElementById("move-fleet-" + direction).classList.remove("clicked");
@@ -337,19 +337,19 @@ function initGame() {
 
     document.getElementById("move-fleet-N").addEventListener("click", function(e) {
         // document.getElementById("move-fleet-N").classList.add("clicked");
-        move("N");
+        move('N');
     });
     document.getElementById("move-fleet-E").addEventListener("click", function(e) {
         // document.getElementById("move-fleet-E").classList.add("clicked");
-        move("E");
+        move('E');
     });
     document.getElementById("move-fleet-S").addEventListener("click", function(e) {
         // document.getElementById("move-fleet-S").classList.add("clicked");
-        move("S");
+        move('S');
     });
     document.getElementById("move-fleet-W").addEventListener("click", function(e) {
         // document.getElementById("move-fleet-W").classList.add("clicked");
-        move("W");
+        move('W');
     });
 
     document.getElementById("place_sonar").addEventListener("click", function(e) { sonarClicked=true; document.getElementById("place_sonar").classList.add("clicked"); registerCellListener(placeSonar(), "opponent");});
