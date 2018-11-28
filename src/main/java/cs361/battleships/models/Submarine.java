@@ -8,6 +8,7 @@ public class Submarine extends Ship {
 
     @Override
     public void place(char col, int row, boolean isVertical) {
+        System.out.print("Test\n");
         for (int i=0; i<size-1; i++) {
             if (isVertical) {
                 occupiedSquares.add(new Square(row+i, col));

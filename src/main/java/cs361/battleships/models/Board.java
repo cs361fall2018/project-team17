@@ -40,8 +40,11 @@ public class Board {
 		else if (ship.getKind().equals("DESTROYER")){
 			placedShip = new Destroyer();
 		}
-		else {
+		else if (ship.getKind().equals("BATTLESHIP")){
 			placedShip = new Battleship();
+		}
+		else {
+			placedShip = new Submarine();
 		}
 		placedShip.place(y, x, isVertical);
 		if (ships.stream().anyMatch(s -> s.overlaps(placedShip))) {
@@ -50,7 +53,7 @@ public class Board {
 		if (placedShip.getOccupiedSquares().stream().anyMatch(s -> s.isOutOfBounds())) {
 			return false;
 		}
-		if (ship.getKind().equals("MINESWEEPER")){
+		/*if (ship.getKind().equals("MINESWEEPER")){
 			Minesweeper tempShip = new Minesweeper();
 			tempShip.place(y, x, isVertical);
 			ships.add(tempShip);
@@ -64,8 +67,8 @@ public class Board {
 			Battleship tempShip = new Battleship();
 			tempShip.place(y, x, isVertical);
 			ships.add(tempShip);
-		}
-//		ships.add(placedShip);
+		}*/
+		ships.add(placedShip);
 		return true;
 	}
 
