@@ -16,8 +16,8 @@ public class Game {
     /*
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
-    public boolean placeShip(Ship ship, int x, char y, boolean isVertical) {
-        boolean successful = playersBoard.placeShip(ship, x, y, isVertical);
+    public boolean placeShip(Ship ship, int x, char y, boolean isVertical, boolean submerged) {
+        boolean successful = playersBoard.placeShip(ship, x, y, isVertical, submerged);
         if (!successful)
             return false;
 
@@ -25,7 +25,10 @@ public class Game {
         do {
             // AI places random ships, so it might try and place overlapping ships
             // let it try until it gets it right
-            opponentPlacedSuccessfully = opponentsBoard.placeShip(ship, randRow(), randCol(), randVertical());
+            if (ship.kind.equals("SUBMARINE")){
+                opponentPlacedSuccessfully = opponentsBoard.placeShip(ship, randRow(), randCol(), randVertical(), randSubmerged());
+            }
+            opponentPlacedSuccessfully = opponentsBoard.placeShip(ship, randRow(), randCol(), randVertical(), false);
         } while (!opponentPlacedSuccessfully);
 
         return true;
@@ -75,6 +78,10 @@ public class Game {
     }
 
     private boolean randVertical() {
+        return new Random().nextBoolean();
+    }
+
+    private boolean randSubmerged() {
         return new Random().nextBoolean();
     }
 }

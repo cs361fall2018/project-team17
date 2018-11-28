@@ -5,6 +5,7 @@ var placedShips = 0;
 var game;
 var shipType;
 var vertical;
+var submerged;
 
 function makeGrid(table, isPlayer) {
     var header=true; var sides=true; var skip=true;
@@ -239,6 +240,11 @@ function place(size) {
         let row = this.parentNode.rowIndex;
         let col = this.cellIndex;
         vertical = document.getElementById("is_vertical").checked;
+        if (shipType == "SUBMARINE"){
+            submerged = document.getElementById("submerge").checked;
+        } else {
+            submerged = 0;
+        }
         let table = document.getElementById("player");
         if(shipType == "SUBMARINE"){
                 for (let i=0; i<size-1; i++) {

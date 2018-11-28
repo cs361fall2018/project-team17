@@ -2,8 +2,8 @@ package cs361.battleships.models;
 
 public class Submarine extends Ship {
 
-    public Submarine(){
-        super("SUBMARINE", 5, 4);
+    public Submarine(boolean submerged){
+        super("SUBMARINE", 5, 4, submerged);
     }
 
     @Override

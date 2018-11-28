@@ -31,9 +31,9 @@ public class ApplicationController {
             ship = new Battleship();
         }
         else {
-            ship = new Submarine();
+            ship = new Submarine(g.getSubmerged());
         }
-        boolean result = game.placeShip(ship, g.getActionRow(), g.getActionColumn(), g.isVertical());
+        boolean result = game.placeShip(ship, g.getActionRow(), g.getActionColumn(), g.isVertical(), g.getSubmerged());
         if (result) {
             return Results.json().render(game);
         } else {
