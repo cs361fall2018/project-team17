@@ -121,7 +121,7 @@ public class Ship {
 		return captainsQuarters;
 	}
 
-	public boolean getSubmerge(){
+	public boolean getSubmerged(){
 		return submerged;
 	}
 }

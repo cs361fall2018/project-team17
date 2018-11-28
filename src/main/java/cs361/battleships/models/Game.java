@@ -27,8 +27,9 @@ public class Game {
             // let it try until it gets it right
             if (ship.kind.equals("SUBMARINE")){
                 opponentPlacedSuccessfully = opponentsBoard.placeShip(ship, randRow(), randCol(), randVertical(), randSubmerged());
+            }else {
+                opponentPlacedSuccessfully = opponentsBoard.placeShip(ship, randRow(), randCol(), randVertical(), false);
             }
-            opponentPlacedSuccessfully = opponentsBoard.placeShip(ship, randRow(), randCol(), randVertical(), false);
         } while (!opponentPlacedSuccessfully);
 
         return true;
