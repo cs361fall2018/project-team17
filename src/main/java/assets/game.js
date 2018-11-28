@@ -220,9 +220,9 @@ function cellClick() {
 
 function sendXhr(method, url, data, handler) {
     var req = new XMLHttpRequest();
-    console.log("Status1: ", req.status);
-    req.addEventListener("load", function(event) {
-        console.log("Status: ", req.status);
+    req.addEventListener("load", function (event) {
+        console.log("Load Status: ", req.status);
+        console.log("Req: ", req);
         if (req.status != 200) {
             if (isSetup) {
                 document.getElementById("error-menu").classList.remove("hide");
@@ -316,7 +316,7 @@ function placeSonar() {
 
 function move(direction){
     document.getElementById("move-fleet-" + direction).classList.add("clicked");
-    sendXhr("POST", "/move", {Game: game, direction: direction}, function(data){
+    sendXhr("POST", "/move", {game: game, direction: direction}, function(data){
        game = data;
        redrawGrid();
        document.getElementById("move-fleet-" + direction).classList.remove("clicked");
