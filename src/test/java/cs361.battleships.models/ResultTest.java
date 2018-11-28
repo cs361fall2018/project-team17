@@ -20,7 +20,7 @@ public class ResultTest {
         test1 = new Result( square1 );
 
         Destroyer testShip = new Destroyer();
-        testShip.setOccupiedSquares(4, 'C', true);
+        testShip.place('C', 4, true);
         Square square2 = new Square(4, 'C', true);
         test2 = new Result(square2, testShip);
 
@@ -31,7 +31,7 @@ public class ResultTest {
         test4 = new Result(square4, testShip);
 
         Minesweeper lastShip = new Minesweeper();
-        lastShip.setOccupiedSquares(2, 'A', true);
+        lastShip.place('A', 2,true);
         Square square5 = new Square(2, 'A', true);
         lastResult = new Result(square5, lastShip);
 
@@ -42,16 +42,18 @@ public class ResultTest {
 
     @Test
     public void testGetStatus(){
-        assertEquals(AtackStatus.MISS, test1.getStatus(3));
+        test1.setResult(AtackStatus.MISS);
+        assertEquals(AtackStatus.MISS, test1.getResult());
 
-        assertEquals(AtackStatus.HIT, test2.getStatus(3));
-        assertEquals(AtackStatus.INVALID, test2.getStatus(3));
+        test2.setResult(AtackStatus.HIT);
+        assertEquals(AtackStatus.HIT, test2.getResult());
+        test2.setResult(AtackStatus.INVALID);
+        assertEquals(AtackStatus.INVALID, test2.getResult());
 
-        test3.getStatus(3);
+        test4.setResult(AtackStatus.SUNK);
+        assertEquals(AtackStatus.SUNK, test4.getResult());
 
-        assertEquals(AtackStatus.SUNK, test4.getStatus(3));
-
-        lastResult.getStatus(1);
-        assertEquals(AtackStatus.SURRENDER, lastResult2.getStatus(1));
+        lastResult2.setResult(AtackStatus.SURRENDER);
+        assertEquals(AtackStatus.SURRENDER, lastResult2.getResult());
     }
 }

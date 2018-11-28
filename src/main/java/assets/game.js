@@ -203,7 +203,7 @@ function cellClick() {
             });
         }
         else if (sonarClicked) {
-            sendXhr("POST", "/sonar", {game: game, x:row, y:col}, function(data) {
+            sendXhr("POST", "/sonar", {game: game, x: row, y: col}, function(data) {
                 game = data;
                 redrawGrid();
                 sonarUsed++;
@@ -322,9 +322,10 @@ function move(direction){
        document.getElementById("move-fleet-" + direction).classList.remove("clicked");
        moveFleet++;
        if(moveFleet === 5){
-           document.getElementById("move-fleet").classList.add("hide");
+           document.getElementById("mo  ve-fleet").classList.add("hide");
        }
     });
+    document.getElementById("move-fleet-" + direction).classList.remove("clicked");
 }
 
 function initGame() {
@@ -335,22 +336,10 @@ function initGame() {
     document.getElementById("place_destroyer").addEventListener("click", function(e) { placeShipButton("DESTROYER", 3)});
     document.getElementById("place_battleship").addEventListener("click", function(e) { placeShipButton("BATTLESHIP", 4)});
 
-    document.getElementById("move-fleet-N").addEventListener("click", function(e) {
-        // document.getElementById("move-fleet-N").classList.add("clicked");
-        move('N');
-    });
-    document.getElementById("move-fleet-E").addEventListener("click", function(e) {
-        // document.getElementById("move-fleet-E").classList.add("clicked");
-        move('E');
-    });
-    document.getElementById("move-fleet-S").addEventListener("click", function(e) {
-        // document.getElementById("move-fleet-S").classList.add("clicked");
-        move('S');
-    });
-    document.getElementById("move-fleet-W").addEventListener("click", function(e) {
-        // document.getElementById("move-fleet-W").classList.add("clicked");
-        move('W');
-    });
+    document.getElementById("move-fleet-N").addEventListener("click", function(e) { move('N'); });
+    document.getElementById("move-fleet-E").addEventListener("click", function(e) { move('E'); });
+    document.getElementById("move-fleet-S").addEventListener("click", function(e) { move('S'); });
+    document.getElementById("move-fleet-W").addEventListener("click", function(e) { move('W'); });
 
     document.getElementById("place_sonar").addEventListener("click", function(e) { sonarClicked=true; document.getElementById("place_sonar").classList.add("clicked"); registerCellListener(placeSonar(), "opponent");});
 

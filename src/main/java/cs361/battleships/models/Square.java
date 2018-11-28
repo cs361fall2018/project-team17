@@ -18,6 +18,12 @@ public class Square {
 		this.column = column;
 	}
 
+	public Square(int row, char column, boolean captainsQuarters){
+		this.row = row;
+		this.column = column;
+		this.captainsQuarters = captainsQuarters;
+	}
+
 	public char getColumn() {
 		return column;
 	}
@@ -79,7 +85,7 @@ public class Square {
     public void move(char direction){
 		if(direction == 'N'){
             if(row > 2){
-                row++;
+                row--;
             }
 		}else if(direction == 'E'){
             if(column < 'J'){
@@ -87,7 +93,7 @@ public class Square {
             }
 		}else if(direction == 'S'){
             if(row < 10){
-                row--;
+                row++;
             }
 		}else if(direction == 'W'){
             if(column > 'A'){

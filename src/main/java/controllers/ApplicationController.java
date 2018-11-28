@@ -58,7 +58,7 @@ public class ApplicationController {
         }
     }
 
-    public Result MoveFleet(Context context, MoveFleetAction g){
+    public Result moveFleet(Context context, MoveFleetAction g){
         Game game = g.getGame();
         boolean result = game.move(g.getDirection());
         if(result) {
