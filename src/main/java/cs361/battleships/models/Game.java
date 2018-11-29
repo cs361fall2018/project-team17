@@ -38,7 +38,7 @@ public class Game {
     /*
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
-    public boolean attack(int x, char  y) {
+    public boolean attack(int x, char  y, boolean spaceLaser) {
         Result playerAttack = new Result();
         if(opponentsBoard.getSquareAt(x, y) != null && opponentsBoard.getSquareAt(x, y).isCaptainsQuarters()){
             playerAttack.setResultClass(opponentsBoard.sinkAttack(x, y));

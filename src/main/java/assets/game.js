@@ -1,5 +1,6 @@
 var isSetup = true;
 var sonarClicked=false;
+var attackMethod="/attack";
 var sonarUsed=0;
 var placedShips = 0;
 var game;
@@ -63,6 +64,7 @@ function markHits(board, elementId, surrenderText) {
     else if (attack.result === "SUNK") {
         className = "hit";
         if(elementId === "opponent" && sonarUsed == 0) {
+            attackMethod = "/attackLaser"
             document.getElementById("place_sonar").classList.remove('hide');
         }
     }else if( attack.result === "CAPTAIN"){
@@ -194,7 +196,7 @@ function cellClick() {
                 document.getElementById("error-menu").innerHTML = "*You have already selected that space. Please select a different one";
                 return;
             }
-            sendXhr("POST", "/attack", {game: game, x: row, y: col}, function (data) {
+            sendXhr("POST", attackMethod, {game: game, x: row, y: col}, function (data) {
                 game = data;
                 redrawGrid();
             });
