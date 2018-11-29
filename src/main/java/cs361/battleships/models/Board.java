@@ -110,15 +110,8 @@ public class Board {
 			return attackResult;
 		}
 		Ship hitShip; // = shipsAtLocation.get(0);
-		if (shipsAtLocation.get(0).getKind().equals("MINESWEEPER")){
-			hitShip = shipsAtLocation.get(0);
-		}
-		else if (shipsAtLocation.get(0).getKind().equals("DESTROYER")){
-			hitShip = shipsAtLocation.get(0);
-		}
-		else {
-			hitShip = shipsAtLocation.get(0);
-		}
+
+		hitShip = shipsAtLocation.get(0);
 		var attackResult = hitShip.attack(s.getRow(), s.getColumn());
 		if (attackResult.getResult() == AtackStatus.SUNK) {
 			if (ships.stream().allMatch(ship -> ship.isSunk())) {
