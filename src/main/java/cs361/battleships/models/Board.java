@@ -182,11 +182,37 @@ public class Board {
 	}
 
 	void moveFleet(char direction){
-//		for(int i = 0; i < ships.size(); i++){
-//			ships.get(i).moveShip(direction);
-//		}
-		ships.forEach(s -> s.moveShip(direction));
+		int count = 0;
+		for(int i = 0; i < ships.size(); i++){
+			for(int j = 0; j < ships.get(i).getOccupiedSquares().size(); j++) {
+				if (overLaps(ships.get(i).ifMoved(direction, j), ships.get(i))) {
+					System.out.println("OVERlAPS: " + count);
+					count++;
+				}
+			}
+			if(count == 0) {
+				ships.get(i).moveShip(direction);
+			}
+		}
 
+//		ships.forEach(s -> s.moveShip(direction));
+
+	}
+
+	public boolean overLaps(Square square, Ship ship) {
+		int count = 0;
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < ships.get(i).getOccupiedSquares().size(); j++) {
+				if (ships.get(i).getOccupiedSquares().get(j).equals(square)) {
+					count++;
+				}
+			}
+		}
+		System.out.println("IN THE OVERLAP FUNCTION: " + count);
+		if(count > ship.getOccupiedSquares().size()){
+			return false;
+		}
+		return true;
 	}
 
 	List<Ship> getShips() {

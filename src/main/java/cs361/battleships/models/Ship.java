@@ -36,9 +36,9 @@ public class Ship {
 	public void place(char col, int row, boolean isVertical) {
 		for (int i=0; i<size; i++) {
 			if (isVertical) {
-				occupiedSquares.add(new Square(row+i, col));
+				occupiedSquares.add(new Square(true, row+i, col));
 			} else {
-				occupiedSquares.add(new Square(row, (char) (col + i)));
+				occupiedSquares.add(new Square(true, row, (char) (col + i)));
 			}
 		}
 
@@ -104,6 +104,18 @@ public class Ship {
 		}
 //		occupiedSquares.forEach(s -> s.move(direction));
     }
+
+    public Square ifMoved(char direction, int idx){
+//		if(direction == 'N' || direction == 'W'){
+			Square temp = new Square(occupiedSquares.get(idx).getRow(), occupiedSquares.get(0).getColumn());
+			temp.move(direction);
+			return temp;
+//		}else{
+//			Square temp = new Square(occupiedSquares.get(occupiedSquares.size()-1).getRow(), occupiedSquares.get(occupiedSquares.size()-1).getColumn());
+//			temp.move(direction);
+//			return temp;
+//		}
+	}
 
 
     @JsonIgnore
