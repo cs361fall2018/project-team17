@@ -59,8 +59,12 @@ function markHits(board, elementId, surrenderText) {
         let className;
     if (attack.result === "MISS")
         className = "miss";
+    else if (attack.result === "MISSLASER")
+        className = "missLaser";
     else if (attack.result === "HIT")
         className = "hit";
+    else if (attack.result === "HITLASER")
+        className = "hitLaser";
     else if (attack.result === "SUNK") {
         className = "hit";
         if(elementId === "opponent" && sonarUsed == 0) {
@@ -74,7 +78,12 @@ function markHits(board, elementId, surrenderText) {
         className = "hit";
         displayEndGame(surrenderText);
     }
-    document.getElementById(elementId).rows[attack.location.row-1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add(className);
+    var cell = document.getElementById(elementId).rows[attack.location.row-1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)];
+    cell.classList.add(className);
+    if(cell.classList.contains("miss") && (className.includes("hitLaser") || className.includes("captain")) && attackMethod === "/attackLaser") {
+        cell.classList.remove("miss");
+    }
+
 });
 }
 
@@ -109,14 +118,13 @@ function redrawGrid() {
     }
 
 //    add in to see the opponents ships, for easy debug
-//     game.opponentsBoard.ships.forEach((ship) => ship.occupiedSquares.forEach((square) => {
-//         document.getElementById("opponent").rows[square.row-1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("occupied");
-//     }));
+    game.opponentsBoard.ships.forEach((ship) => ship.occupiedSquares.forEach((square) => {
+        document.getElementById("opponent").rows[square.row-1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("occupied");
+    }));
 
     game.playersBoard.ships.forEach((ship) => ship.occupiedSquares.forEach((square) => {
         document.getElementById("player").rows[square.row-1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("occupied");
     }));
-    markHits(game.opponentsBoard, "opponent", "You won the game");
     markHits(game.opponentsBoard, "opponent", "You won the game");
     markHits(game.playersBoard, "player", "You lost the game");
     markSonar(game.opponentsBoard, "opponent");
@@ -192,9 +200,18 @@ function cellClick() {
     } else {
         if(!sonarClicked) {
             if (document.getElementById("opponent").rows[this.parentNode.rowIndex].cells[this.cellIndex].classList.contains("hit") || document.getElementById("opponent").rows[this.parentNode.rowIndex].cells[this.cellIndex].classList.contains("miss")) {
-                document.getElementById("error-menu").classList.remove("hide");
-                document.getElementById("error-menu").innerHTML = "*You have already selected that space. Please select a different one";
-                return;
+                if(attackMethod === "/attack") {
+                    document.getElementById("error-menu").classList.remove("hide");
+                    document.getElementById("error-menu").innerHTML = "*You have already selected that space. Please select a different one";
+                    return;
+                }
+            }
+            if (document.getElementById("opponent").rows[this.parentNode.rowIndex].cells[this.cellIndex].classList.contains("hitLaser") || document.getElementById("opponent").rows[this.parentNode.rowIndex].cells[this.cellIndex].classList.contains("missLaser")) {
+                if(attackMethod === "/attackLaser") {
+                    document.getElementById("error-menu").classList.remove("hide");
+                    document.getElementById("error-menu").innerHTML = "*You have already selected that space. Please select a different one";
+                    return;
+                }
             }
             sendXhr("POST", attackMethod, {game: game, x: row, y: col}, function (data) {
                 game = data;
@@ -225,6 +242,9 @@ function sendXhr(method, url, data, handler) {
             if (isSetup) {
                 document.getElementById("error-menu").classList.remove("hide");
                 document.getElementById("error-menu").innerHTML = "*You are trying to place a ship on another or it is out of bounds. Please place your ship on empty spaces";
+            } else if (attackMethod === "/attackLaser") {
+                document.getElementById("error-menu").classList.remove("hide");
+                document.getElementById("error-menu").innerHTML = "*You have already selected that space. Please select a different one";
             } else {
                 alert("Cannot complete the action");
             }

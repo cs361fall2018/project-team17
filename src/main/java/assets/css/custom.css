@@ -176,12 +176,20 @@ td:hover {
     background-color: darkred;
 }
 
+.hitLaser {
+    background-color: #610000;
+}
+
 .sink {
     background-color: darkred;
 }
 
 .miss {
     background-color: lightblue;
+}
+
+.missLaser {
+    background-color: #9bc2cf;
 }
 
 .sonar_container .sonar_tooltip {
