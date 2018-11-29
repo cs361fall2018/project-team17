@@ -271,9 +271,6 @@ function place(size) {
                 } else {
                     cell = table.rows[row-1].cells[col+2];
                 }
-                /*if (cell === undefined) {
-                    break;
-                }*/
                 cell.classList.toggle("placed");
         } else {
             for (let i=0; i<size; i++) {
@@ -303,6 +300,12 @@ function placeShipButton(shipName, size) {
     var id = "place_" + shipName.toLowerCase();
     for(var i = 0; i < document.getElementsByClassName('clicked').length; i++){
         document.getElementsByClassName("clicked")[i].classList.remove("clicked");
+    }
+    if (shipType == "SUBMARINE"){
+        document.getElementById("submerge-option").classList.remove("hide");
+    }
+    else {
+        document.getElementById("submerge-option").setAttribute("class", "hide");
     }
     document.getElementById(id).setAttribute("class", "clicked");
     registerCellListener(place(size), "player");
@@ -359,6 +362,7 @@ function initGame() {
 
     document.getElementById("start-button").addEventListener("click", function(){
        document.getElementById("place-menu-container").classList.remove("hide");
+       document.getElementById("submerge-option").setAttribute("class", "hide");
        document.getElementById("start-button").setAttribute("class", "hide")
     });
     sendXhr("GET", "/game", {}, function(data) {

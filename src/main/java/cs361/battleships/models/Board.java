@@ -47,27 +47,23 @@ public class Board {
 			placedShip = new Submarine(submerged);
 		}
 		placedShip.place(y, x, isVertical);
+		int i;
+		boolean blocked = false;
 		if (ships.stream().anyMatch(s -> s.overlaps(placedShip)) && !(submerged)) {
-			return false;
+			var overlap = ships.stream().filter(s -> s.overlaps(placedShip)).collect(Collectors.toList());
+			for (i = 0; i < overlap.size(); i++ ){
+				var overlapShip = overlap.get(i);
+				if (!(overlapShip.getSubmerged())) {
+					 blocked = true;
+				}
+			}
+			if (blocked) {
+				return false;
+			}
 		}
 		if (placedShip.getOccupiedSquares().stream().anyMatch(s -> s.isOutOfBounds())) {
 			return false;
 		}
-		/*if (ship.getKind().equals("MINESWEEPER")){
-			Minesweeper tempShip = new Minesweeper();
-			tempShip.place(y, x, isVertical);
-			ships.add(tempShip);
-		}
-		else if (ship.getKind().equals("DESTROYER")){
-			Destroyer tempShip = new Destroyer();
-			tempShip.place(y, x, isVertical);
-			ships.add(tempShip);
-		}
-		else {
-			Battleship tempShip = new Battleship();
-			tempShip.place(y, x, isVertical);
-			ships.add(tempShip);
-		}*/
 		ships.add(placedShip);
 		return true;
 	}
