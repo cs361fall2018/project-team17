@@ -82,23 +82,32 @@ public class Square {
 		return captainsQuarters;
 	}
 
-    public void move(char direction){
+    public boolean move(char direction){
 		if(direction == 'N'){
             if(row > 2){
                 row--;
+            }else{
+                return false;
             }
 		}else if(direction == 'E'){
-            if(column < 'J'){
+            if(column < 'K'){
                 column++;
+            }else {
+                return false;
             }
 		}else if(direction == 'S'){
-            if(row < 10){
+            if(row < 11){
                 row++;
+            }else{
+                return false;
             }
 		}else if(direction == 'W'){
-            if(column > 'A'){
+            if(column > 'B'){
                 column--;
+            }else{
+                return false;
             }
 		}
+		return true;
     }
 }
