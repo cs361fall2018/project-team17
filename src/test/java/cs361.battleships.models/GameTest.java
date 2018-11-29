@@ -21,8 +21,8 @@ public class GameTest {
     @Test
     public void testPlaceShip() {
         Game test = new Game();
-        assertTrue(test.placeShip(new Minesweeper(), 2, 'B', false));
-        assertFalse(test.placeShip(new Minesweeper(), 1, 'A', false));
+        assertTrue(test.placeShip(new Minesweeper(), 2, 'B', false, false));
+        assertFalse(test.placeShip(new Minesweeper(), 1, 'A', false, false));
     }
 
     @Test
