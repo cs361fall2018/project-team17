@@ -5,6 +5,7 @@ var placedShips = 0;
 var game;
 var shipType;
 var vertical;
+var submerged;
 
 function makeGrid(table, isPlayer) {
     var header=true; var sides=true; var skip=true;
@@ -105,10 +106,10 @@ function redrawGrid() {
         return;
     }
 
-    //add in to see the opponents ships, for easy debug
-    // game.opponentsBoard.ships.forEach((ship) => ship.occupiedSquares.forEach((square) => {
-    //     document.getElementById("opponent").rows[square.row-1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("occupied");
-    // }));
+//    add in to see the opponents ships, for easy debug
+//     game.opponentsBoard.ships.forEach((ship) => ship.occupiedSquares.forEach((square) => {
+//         document.getElementById("opponent").rows[square.row-1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("occupied");
+//     }));
 
     game.playersBoard.ships.forEach((ship) => ship.occupiedSquares.forEach((square) => {
         document.getElementById("player").rows[square.row-1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("occupied");
@@ -144,6 +145,9 @@ function disableShipButton(shipType){
     }else if(shipType == "BATTLESHIP"){
         document.getElementById("place_battleship").setAttribute("disabled", "disabled");
         document.getElementById("place_battleship").setAttribute("class", "disabled");
+    }else if(shipType == "SUBMARINE"){
+        document.getElementById("place_submarine").setAttribute("disabled", "disabled");
+        document.getElementById("place_submarine").setAttribute("class", "disabled");
     }
 }
 
@@ -170,13 +174,13 @@ function cellClick() {
             document.getElementById("error-menu").innerHTML = "*You have not selected a ship. Please select one using the buttons below";
             return;
         }
-        sendXhr("POST", "/place", {game: game, shipType: shipType, x: row, y: col, isVertical: vertical}, function(data) {
+        sendXhr("POST", "/place", {game: game, shipType: shipType, x: row, y: col, isVertical: vertical, submerged: submerged}, function(data) {
             game = data;
             disableShipButton(shipType);
             redrawGrid();
             placedShips++;
             shipType = undefined;
-            if (placedShips == 3) {
+            if (placedShips == 4) {
                 prepareAttackPhase();
                 isSetup = false;
                 registerCellListener((e) => {}, "player");
@@ -236,25 +240,58 @@ function place(size) {
         let row = this.parentNode.rowIndex;
         let col = this.cellIndex;
         vertical = document.getElementById("is_vertical").checked;
-        let table = document.getElementById("player");
-        for (let i=0; i<size; i++) {
-            let cell;
-            if(vertical) {
-                let tableRow = table.rows[row+i];
-                if (tableRow === undefined) {
-                    // ship is over the edge; let the back end deal with it
-                    break;
-                }
-                cell = tableRow.cells[col];
-            } else {
-                cell = table.rows[row].cells[col+i];
-            }
-            if (cell === undefined) {
-                // ship is over the edge; let the back end deal with it
-                break;
-            }
-            cell.classList.toggle("placed");
+        if (shipType == "SUBMARINE"){
+            submerged = document.getElementById("submerge").checked;
+        } else {
+            submerged = 0;
         }
+        let table = document.getElementById("player");
+        if(shipType == "SUBMARINE"){
+                for (let i=0; i<size-1; i++) {
+                    let cell;
+                    if(vertical) {
+                        let tableRow = table.rows[row+i];
+                        if (tableRow === undefined) {
+                            // ship is over the edge; let the back end deal with it
+                            break;
+                        }
+                        cell = tableRow.cells[col];
+                    } else {
+                        cell = table.rows[row].cells[col+i];
+                    }
+                    if (cell === undefined) {
+                        // ship is over the edge; let the back end deal with it
+                        break;
+                    }
+                    cell.classList.toggle("placed");
+                }
+                let cell;
+                if(vertical) {
+                    cell = table.rows[row+2].cells[col+1];
+                } else {
+                    cell = table.rows[row-1].cells[col+2];
+                }
+                cell.classList.toggle("placed");
+        } else {
+            for (let i=0; i<size; i++) {
+             let cell;
+             if(vertical) {
+                 let tableRow = table.rows[row+i];
+                 if (tableRow === undefined) {
+                     // ship is over the edge; let the back end deal with it
+                     break;
+                 }
+                 cell = tableRow.cells[col];
+             } else {
+                 cell = table.rows[row].cells[col+i];
+             }
+             if (cell === undefined) {
+                 // ship is over the edge; let the back end deal with it
+                 break;
+             }
+             cell.classList.toggle("placed");
+            }
+         }
     }
 }
 
@@ -263,6 +300,12 @@ function placeShipButton(shipName, size) {
     var id = "place_" + shipName.toLowerCase();
     for(var i = 0; i < document.getElementsByClassName('clicked').length; i++){
         document.getElementsByClassName("clicked")[i].classList.remove("clicked");
+    }
+    if (shipType == "SUBMARINE"){
+        document.getElementById("submerge-option").classList.remove("hide");
+    }
+    else {
+        document.getElementById("submerge-option").setAttribute("class", "hide");
     }
     document.getElementById(id).setAttribute("class", "clicked");
     registerCellListener(place(size), "player");
@@ -313,11 +356,13 @@ function initGame() {
     document.getElementById("place_minesweeper").addEventListener("click", function(e){ placeShipButton("MINESWEEPER", 2)});
     document.getElementById("place_destroyer").addEventListener("click", function(e) { placeShipButton("DESTROYER", 3)});
     document.getElementById("place_battleship").addEventListener("click", function(e) { placeShipButton("BATTLESHIP", 4)});
+    document.getElementById("place_submarine").addEventListener("click", function(e) {placeShipButton("SUBMARINE", 5)});
 
     document.getElementById("place_sonar").addEventListener("click", function(e) { sonarClicked=true; document.getElementById("place_sonar").classList.add("clicked"); registerCellListener(placeSonar(), "opponent");});
 
     document.getElementById("start-button").addEventListener("click", function(){
        document.getElementById("place-menu-container").classList.remove("hide");
+       document.getElementById("submerge-option").setAttribute("class", "hide");
        document.getElementById("start-button").setAttribute("class", "hide")
     });
     sendXhr("GET", "/game", {}, function(data) {

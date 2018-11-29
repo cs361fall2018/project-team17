@@ -16,17 +16,19 @@ public class Ship {
 	@JsonProperty protected List<Square> occupiedSquares;
 	@JsonProperty protected int size;
 	@JsonProperty protected int captainsQuarters;
+	@JsonProperty protected boolean submerged;
 
 	public Ship() {
 		occupiedSquares = new ArrayList<>();
 	}
 	
 
-	public Ship(String kind, int size, int captainsQuarters){
+	public Ship(String kind, int size, int captainsQuarters, boolean submerged){
 		this();
 		this.kind = kind;
 		this.size = size;
 		this.captainsQuarters = captainsQuarters;
+		this.submerged = submerged;
 	}
 
 	public List<Square> getOccupiedSquares() {
@@ -117,5 +119,9 @@ public class Ship {
 
 	public int getCaptainsQuarters(){
 		return captainsQuarters;
+	}
+
+	public boolean getSubmerged(){
+		return submerged;
 	}
 }

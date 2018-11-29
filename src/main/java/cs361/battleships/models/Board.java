@@ -26,8 +26,8 @@ public class Board {
 	/*
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
-	public boolean placeShip(Ship ship, int x, char y, boolean isVertical) {
-		if (ships.size() >= 3) {
+	public boolean placeShip(Ship ship, int x, char y, boolean isVertical, boolean submerged) {
+		if (ships.size() >= 4) {
 			return false;
 		}
 		if (ships.stream().anyMatch(s -> s.getKind().equals(ship.getKind()))) {
@@ -40,32 +40,31 @@ public class Board {
 		else if (ship.getKind().equals("DESTROYER")){
 			placedShip = new Destroyer();
 		}
-		else {
+		else if (ship.getKind().equals("BATTLESHIP")){
 			placedShip = new Battleship();
 		}
+		else {
+			placedShip = new Submarine(submerged);
+		}
 		placedShip.place(y, x, isVertical);
-		if (ships.stream().anyMatch(s -> s.overlaps(placedShip))) {
-			return false;
+		int i;
+		boolean blocked = false;
+		if (ships.stream().anyMatch(s -> s.overlaps(placedShip)) && !(submerged)) {
+			var overlap = ships.stream().filter(s -> s.overlaps(placedShip)).collect(Collectors.toList());
+			for (i = 0; i < overlap.size(); i++ ){
+				var overlapShip = overlap.get(i);
+				if (!(overlapShip.getSubmerged())) {
+					 blocked = true;
+				}
+			}
+			if (blocked) {
+				return false;
+			}
 		}
 		if (placedShip.getOccupiedSquares().stream().anyMatch(s -> s.isOutOfBounds())) {
 			return false;
 		}
-		if (ship.getKind().equals("MINESWEEPER")){
-			Minesweeper tempShip = new Minesweeper();
-			tempShip.place(y, x, isVertical);
-			ships.add(tempShip);
-		}
-		else if (ship.getKind().equals("DESTROYER")){
-			Destroyer tempShip = new Destroyer();
-			tempShip.place(y, x, isVertical);
-			ships.add(tempShip);
-		}
-		else {
-			Battleship tempShip = new Battleship();
-			tempShip.place(y, x, isVertical);
-			ships.add(tempShip);
-		}
-//		ships.add(placedShip);
+		ships.add(placedShip);
 		return true;
 	}
 
@@ -111,15 +110,8 @@ public class Board {
 			return attackResult;
 		}
 		Ship hitShip; // = shipsAtLocation.get(0);
-		if (shipsAtLocation.get(0).getKind().equals("MINESWEEPER")){
-			hitShip = (Minesweeper)shipsAtLocation.get(0);
-		}
-		else if (shipsAtLocation.get(0).getKind().equals("DESTROYER")){
-			hitShip = (Destroyer)shipsAtLocation.get(0);
-		}
-		else {
-			hitShip = (Battleship)shipsAtLocation.get(0);
-		}
+
+		hitShip = shipsAtLocation.get(0);
 		var attackResult = hitShip.attack(s.getRow(), s.getColumn());
 		if (attackResult.getResult() == AtackStatus.SUNK) {
 			if (ships.stream().allMatch(ship -> ship.isSunk())) {
