@@ -8,9 +8,19 @@ public enum AtackStatus {
 	MISS,
 
 	/**
+	 * The result if an attack results in a miss.
+	 */
+	MISSLASER,
+
+	/**
 	 * The result if an attack results in a hit on an enemy ship.
 	 */
 	HIT,
+
+	/**
+	 * The result if an attack results in a hit on an enemy ship.
+	 */
+	HITLASER,
 
     /**
      * The result if the captains quarters is hit
