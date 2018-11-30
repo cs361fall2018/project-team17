@@ -231,11 +231,6 @@ td:hover {
     border-radius: 25px;
 }
 
-#place-menu > li {
-    display: inline;
-    padding: 20px;
-}
-
 button {
     background-color: white;
     color: black;
@@ -287,6 +282,18 @@ button:hover {
 #place-menu-container {
     border-top: 1px solid black;
     text-align: center;
+}
+
+.place {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    margin-bottom: 0px;
+}
+
+#place-menu > li {
+    display: inline;
+    padding: 20px;
 }
 
 #error-menu {
