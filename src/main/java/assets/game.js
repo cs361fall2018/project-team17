@@ -71,17 +71,28 @@ function markHits(board, elementId, surrenderText) {
             attackMethod = "/attackLaser"
             document.getElementById("place_sonar").classList.remove('hide');
         }
-    }else if( attack.result === "CAPTAIN"){
+    } else if (attack.result === "SUNKLASER")
+        className = "hitLaser";
+    else if( attack.result === "CAPTAIN"){
         className = "captain";
     }
+    else if (attack.result === "CAPTAINLASER")
+        className = "captainLaser";
     else if (attack.result === "SURRENDER") {
         className = "hit";
         displayEndGame(surrenderText);
     }
     var cell = document.getElementById(elementId).rows[attack.location.row-1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)];
     cell.classList.add(className);
+    if(cell.classList.contains("hit") && cell.classList.contains("captainLaser")) {
+        cell.classList.remove("hit");
+    }
     if(cell.classList.contains("miss") && (className.includes("hitLaser") || className.includes("captain")) && attackMethod === "/attackLaser") {
         cell.classList.remove("miss");
+    }
+    if((cell.classList.contains("sonar_ship") || cell.classList.contains("sonar_water")) && ((className.includes("hitLaser") || className.includes("captain")))) {
+        cell.classList.remove("sonar_ship");
+        cell.classList.remove("sonar_water");
     }
 
 });

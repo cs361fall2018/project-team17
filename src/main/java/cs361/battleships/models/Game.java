@@ -32,6 +32,11 @@ public class Game {
             }
         } while (!opponentPlacedSuccessfully);
 
+//        boolean woo = opponentsBoard.placeShip(new Destroyer(), 8, 'F', false, false);
+//        woo = opponentsBoard.placeShip(new Minesweeper(), 3, 'B', false, false);
+//        woo = opponentsBoard.placeShip(new Battleship(), 5, 'F', false, false);
+//        woo = opponentsBoard.placeShip(new Submarine(true), 5, 'E', false, true);
+
         return true;
     }
 
@@ -42,17 +47,7 @@ public class Game {
         Result playerAttack = new Result();
         playerAttack.setResultClass(opponentsBoard.checkDoubleMiss(x, y, spaceLaser));
         if(playerAttack.getResult() != INVALID) {
-            if (opponentsBoard.getSquareAt(x, y) != null && opponentsBoard.getSquareAt(x, y).isCaptainsQuarters()) {
-                if (!(opponentsBoard.getShipAt(x, y).getSubmerged()) && !spaceLaser) {
-                    playerAttack.setResultClass(opponentsBoard.sinkAttack(x, y, spaceLaser));
-                } else if (spaceLaser) {
-                    playerAttack.setResultClass(opponentsBoard.sinkAttack(x, y, spaceLaser));
-                } else {
-                    playerAttack.setResultClass(opponentsBoard.attack(x, y, spaceLaser));
-                }
-            } else {
-                playerAttack.setResultClass(opponentsBoard.attack(x, y, spaceLaser));
-            }
+            playerAttack.setResultClass(opponentsBoard.attack(x, y, spaceLaser));
         }
         if (playerAttack.getResult() == INVALID) {
             return false;
@@ -66,19 +61,8 @@ public class Game {
             char yRand = randCol();
             opponentAttackResult.setResultClass(playersBoard.checkDoubleMiss(xRand, yRand, spaceLaser));
             if(opponentAttackResult.getResult() != INVALID) {
-                if (playersBoard.getSquareAt(xRand, yRand) != null && playersBoard.getSquareAt(xRand, yRand).isCaptainsQuarters()) {
-                    if (!(playersBoard.getShipAt(xRand, yRand).getSubmerged()) && !spaceLaser) {
-                        opponentAttackResult.setResultClass(playersBoard.sinkAttack(xRand, yRand, spaceLaser));
-                    } else if (spaceLaser) {
-                        opponentAttackResult.setResultClass(playersBoard.sinkAttack(xRand, yRand, spaceLaser));
-                    } else {
-                        opponentAttackResult.setResultClass(playersBoard.attack(xRand, yRand, spaceLaser));
-                    }
-                } else {
-                    opponentAttackResult.setResultClass(playersBoard.attack(xRand, yRand, spaceLaser));
-                }
+                opponentAttackResult.setResultClass(playersBoard.attack(xRand, yRand, spaceLaser));
             }
-
         } while(opponentAttackResult.getResult() == INVALID);
 
         return true;

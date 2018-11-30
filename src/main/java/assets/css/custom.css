@@ -172,6 +172,10 @@ td:hover {
     background-color: lightcoral;
 }
 
+.captainLaser {
+    background-color: #c06666;
+}
+
 .hit {
     background-color: darkred;
 }

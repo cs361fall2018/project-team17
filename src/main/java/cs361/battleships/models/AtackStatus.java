@@ -27,10 +27,20 @@ public enum AtackStatus {
      */
     CAPTAIN,
 
+    /**
+     * The result if the captains quarters is hit
+     */
+    CAPTAINLASER,
+
 	/**
 	 * THe result if an attack sinks the enemy ship
 	 */
 	SUNK,
+
+	/**
+	 * THe result if an attack sinks the enemy ship
+	 */
+	SUNKLASER,
 
 	/**
 	 * The results if an attack results in the defeat of the opponent (a
