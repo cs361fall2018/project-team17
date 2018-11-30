@@ -1,6 +1,5 @@
 <#import "../layout/defaultLayout.ftl.html" as layout> 
-<@layout.myLayout "Home page">    
-
+<@layout.myLayout "Home page">
 
 <div id="button-container"><button id="start-button"> Start Game </button></div>
 
@@ -13,6 +12,16 @@
 <ul id="board-container" class="boards">
     <li><table id="opponent" class="battleGrid hide"></table></li>
     <li id="flex-player"><table id="player" class="battleGrid"></table></li>
+</ul>
+
+<ul id="info-menu" class="fadein-fast hide">
+    <li>
+        <div id="first-sunk-info">
+            <p class="info-header">ONE TIME TOOLTIP:</p>
+            <button id="close-info">X</button>
+            <p class="info-text">You have sunk your first ship! Your bombs have now changed to a Space Laser! It can now penetrate through the water. You may have to re-hit old locations since something could have been there!
+                You also now have access to the sonar pulse. Hover over the button to see what it does!</p>
+        </div></li>
 </ul>
 
 <div id="error-menu" class="hide">

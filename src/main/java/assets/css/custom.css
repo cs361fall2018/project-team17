@@ -6,7 +6,6 @@
     display: none;
 }
 
-
 h1 {
   font-family: 'Anton', serif;
   font-size: 86px;
@@ -34,9 +33,19 @@ body {
     animation: fadein 2s linear;
 }
 
+.fadein-fast {
+    opacity: 1;
+    animation: fadein 1s linear;
+}
+
 .fadeout{
     opacity: 0;
     animation: fadeout 2s linear;
+}
+
+.fadeout-fast {
+    opacity: 0;
+    animation: fadeout 0.5s linear;
 }
 
 body {
@@ -300,4 +309,36 @@ button:hover {
     color: red;
     text-align: center;
     padding: 20px;
+}
+
+#info-menu > li {
+    list-style: none;
+}
+
+#first-sunk-info {
+    padding: 10px;
+    position: fixed;
+    width: 350px;
+    top: 40%;
+    left: 45%;
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 5px 5px 5px 5px;
+}
+
+#first-sunk-info > .info-text {
+    font-size: 20px;
+}
+.info-header {
+    text-align: center;
+    font-weight: bold;
+}
+
+#close-info {
+    border: 1px solid black;
+    padding: 0px;
+    width: 20px;
+    position: absolute;
+    right: 40px;
+    top: 25px;
 }

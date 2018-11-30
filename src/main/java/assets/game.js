@@ -1,6 +1,7 @@
 var isSetup = true;
 var sonarClicked=false;
 var attackMethod="/attack";
+var showToolTip=true;
 var sonarUsed=0;
 var placedShips = 0;
 var game;
@@ -70,6 +71,10 @@ function markHits(board, elementId, surrenderText) {
         if(elementId === "opponent" && sonarUsed == 0) {
             attackMethod = "/attackLaser"
             document.getElementById("place_sonar").classList.remove('hide');
+            if(showToolTip) {
+                document.getElementById("info-menu").classList.remove("hide");
+                showToolTip=false;
+            }
         }
     } else if (attack.result === "SUNKLASER")
         className = "hitLaser";
@@ -102,19 +107,20 @@ function markSonar(board, elementId) {
     board.sonar.forEach((sonar) => {
         let className;
     if (sonar.result === "VISIBLE")
-        className = "sonar_ship";
+        className = "occupied";
     else if (sonar.result === "HIDDEN")
         className = "sonar_water";
     var cell = document.getElementById(elementId).rows[sonar.location.row-1].cells[sonar.location.column.charCodeAt(0) - 'A'.charCodeAt(0)];
 
     if(!cell.classList.contains("hit") && !cell.classList.contains("miss") && !cell.classList.contains("captain")) {
-        if(sonar.center === true) {
-            let center = document.createElement('div');
-            center.classList.add('sonar_center');
-            cell.appendChild(center);
+        if (!cell.classList.contains("hitLaser") && !cell.classList.contains("missLaser") && !cell.classList.contains("captainLaser")) {
+            if (sonar.center === true) {
+                let center = document.createElement('div');
+                center.classList.add('sonar_center');
+                cell.appendChild(center);
+            }
+            cell.classList.add(className);
         }
-        cell.classList.add(className);
-
     }
 });
 }
@@ -397,6 +403,13 @@ function initGame() {
        document.getElementById("place-menu-container").classList.remove("hide");
        document.getElementById("submerge-option").setAttribute("class", "hide");
        document.getElementById("start-button").setAttribute("class", "hide")
+    });
+
+    document.getElementById("close-info").addEventListener("click", function () {
+        document.getElementById("info-menu").classList.add("fadeout-fast");
+        setTimeout(function() {
+            document.getElementById("info-menu").classList.add('hide');
+        }, (500));
     });
     sendXhr("GET", "/game", {}, function(data) {
         game = data;
