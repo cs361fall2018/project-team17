@@ -88,20 +88,23 @@ public class Ship {
 		return result;
 	}
 
-	public void moveShip(char direction){
+	public boolean moveShip(char direction){
 		if(direction == 'N' || direction == 'W'){
 			for(int i = 0; i < occupiedSquares.size(); i++){
 				if(!occupiedSquares.get(i).move(direction)){
-					break;
+					return false;
+//					break;
 				}
 			}
 		}else{
 			for (int i = occupiedSquares.size(); i > 0; i--) {
 				if (!occupiedSquares.get(i-1).move(direction)) {
-					break;
+					return false;
+//					break;
 				}
 			}
 		}
+		return true;
 //		occupiedSquares.forEach(s -> s.move(direction));
     }
 

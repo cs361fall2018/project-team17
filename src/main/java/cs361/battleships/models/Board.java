@@ -184,14 +184,30 @@ public class Board {
 	void moveFleet(char direction){
 		int count = 0;
 		for(int i = 0; i < ships.size(); i++){
+			count = 0;
+//			ships.get(i).moveShip(direction);
 			for(int j = 0; j < ships.get(i).getOccupiedSquares().size(); j++) {
 				if (overLaps(ships.get(i).ifMoved(direction, j), ships.get(i))) {
-					System.out.println("OVERlAPS: " + count);
+//					System.out.println("OVERlAPS: " + count);
 					count++;
 				}
 			}
-			if(count == 0) {
-				ships.get(i).moveShip(direction);
+			boolean result = ships.get(i).moveShip(direction);
+			System.out.println("SHIP: " + ships.get(i).getKind() + " - count: " + count + " - result: " + result);
+			if(count !=	0 && result){//ships.get(i).getOccupiedSquares().size()) {
+				if(direction == 'N'){
+					ships.get(i).moveShip('S');
+
+				}else if(direction == 'E'){
+					ships.get(i).moveShip('W');
+
+				}else if(direction == 'S'){
+					ships.get(i).moveShip('N');
+
+				}else{
+					ships.get(i).moveShip('E');
+				}
+//				ships.get(i).moveShip(direction);
 			}
 		}
 
@@ -208,11 +224,11 @@ public class Board {
 				}
 			}
 		}
-		System.out.println("IN THE OVERLAP FUNCTION: " + count);
-		if(count > ship.getOccupiedSquares().size()){
-			return false;
+		System.out.println("      count: " + count);
+		if(count > 0){//ship.getOccupiedSquares().size()){
+			return true;
 		}
-		return true;
+		return false;
 	}
 
 	List<Ship> getShips() {
