@@ -207,9 +207,9 @@ public class BoardTest {
     @Test
     public void testMoveFleet(){
         Board test = new Board();
-        test.placeShip(new Minesweeper(), 3, 'C', true);
-        test.placeShip(new Destroyer(), 5, 'C', true);
-        test.placeShip(new Battleship(), 8, 'C', true);
+        test.placeShip(new Minesweeper(), 3, 'C', true, false);
+        test.placeShip(new Destroyer(), 5, 'C', true, false);
+        test.placeShip(new Battleship(), 8, 'C', true, false);
 
         assertEquals(3, test.getShips().get(0).getOccupiedSquares().get(0).getRow());
         assertEquals('C', test.getShips().get(0).getOccupiedSquares().get(0).getColumn());
