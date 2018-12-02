@@ -238,7 +238,7 @@ function cellClick() {
             document.getElementById("error-menu").innerHTML = "*You have not selected a ship. Please select one using the buttons below";
             return;
         }
-        sendXhr("POST", "/place", {game: game, shipType: shipType, x: row, y: col, isVertical: vertical}, function(data) {
+        sendXhr("POST", "/place", {game: game, shipType: shipType, x: row, y: col, isVertical: vertical, submerged: submerged}, function(data) {
             game = data;
             disableShipButton(shipType);
             redrawGrid();
