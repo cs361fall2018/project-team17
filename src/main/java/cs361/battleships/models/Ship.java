@@ -38,9 +38,9 @@ public class Ship {
 	public void place(char col, int row, boolean isVertical) {
 		for (int i=0; i<size; i++) {
 			if (isVertical) {
-				occupiedSquares.add(new Square(row+i, col));
+				occupiedSquares.add(new Square(true, row+i, col));
 			} else {
-				occupiedSquares.add(new Square(row, (char) (col + i)));
+				occupiedSquares.add(new Square(true, row, (char) (col + i)));
 			}
 		}
 
@@ -63,7 +63,7 @@ public class Ship {
 		return kind;
 	}
 
-	public Result attack(int x, char y) {
+	public Result attack(int x, char y, boolean spaceLaser) {
 		var attackedLocation = new Square(x, y);
 		var square = getOccupiedSquares().stream().filter(s -> s.equals(attackedLocation)).findFirst();
 		if (!square.isPresent()) {
@@ -73,7 +73,11 @@ public class Ship {
 		if ((attackedSquare.getHit() == 0) && attackedSquare.isCaptainsQuarters() && !(kind.equals("MINESWEEPER"))) {
 		    attackedSquare.hit();
             var result = new Result(attackedLocation);
-			result.setResult(AtackStatus.CAPTAIN);
+            if(spaceLaser) {
+                result.setResult(AtackStatus.CAPTAINLASER);
+            } else {
+                result.setResult(AtackStatus.CAPTAIN);
+            }
 			return result;
 		}else if(attackedSquare.isHit(kind)){
 			var result = new Result(attackedLocation);
@@ -83,12 +87,44 @@ public class Ship {
 		attackedSquare.hit();
 		var result = new Result(attackedLocation);
 		if (isSunk()) {
-		    result.setResult(AtackStatus.SUNK);
+		    if(spaceLaser) {
+                result.setResult(AtackStatus.SUNKLASER);
+            } else {
+                result.setResult(AtackStatus.SUNK);
+            }
         }else {
- 			result.setResult(AtackStatus.HIT);
+			if(spaceLaser) {
+				result.setResult(AtackStatus.HITLASER);
+			} else {
+				result.setResult(AtackStatus.HIT);
+			}
 		}
 		return result;
 	}
+
+	public boolean moveShip(char direction){
+		if(direction == 'N' || direction == 'W'){
+			for(int i = 0; i < occupiedSquares.size(); i++){
+				if(!occupiedSquares.get(i).move(direction)){
+					return false;
+				}
+			}
+		}else{
+			for (int i = occupiedSquares.size(); i > 0; i--) {
+				if (!occupiedSquares.get(i-1).move(direction)) {
+					return false;
+				}
+			}
+		}
+		return true;
+    }
+
+    public Square ifMoved(char direction, int idx){
+			Square temp = new Square(occupiedSquares.get(idx).getRow(), occupiedSquares.get(0).getColumn());
+			temp.move(direction);
+			return temp;
+	}
+
 
     @JsonIgnore
 	public boolean isSunk() {

@@ -9,9 +9,16 @@ public class Square {
 	@JsonProperty private int row;
 	@JsonProperty private char column;
 	@JsonProperty private int hit = 0;
+	@JsonProperty private boolean hasShip = false;
 	@JsonProperty private boolean captainsQuarters = false;
 
 	public Square() {}
+
+	public Square(boolean hasShip, int row, char column) {
+		this.row = row;
+		this.column = column;
+		this.hasShip = hasShip;
+	}
 
 	public Square(int row, char column) {
 		this.row = row;
@@ -80,5 +87,38 @@ public class Square {
 
 	public boolean isCaptainsQuarters() {
 		return captainsQuarters;
+	}
+
+    public boolean move(char direction){
+		if(direction == 'N'){
+            if(row > 2){
+                row--;
+            }else{
+                return false;
+            }
+		}else if(direction == 'E'){
+            if(column < 'K'){
+                column++;
+            }else {
+                return false;
+            }
+		}else if(direction == 'S'){
+            if(row < 11){
+                row++;
+            }else{
+                return false;
+            }
+		}else if(direction == 'W'){
+            if(column > 'B'){
+                column--;
+            }else{
+                return false;
+            }
+		}
+		return true;
+    }
+
+    public boolean isHasShip(){
+		return hasShip;
 	}
 }
