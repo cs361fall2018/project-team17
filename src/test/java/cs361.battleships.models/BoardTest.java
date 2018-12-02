@@ -28,6 +28,12 @@ public class BoardTest {
     }
 
     @Test
+    public void testPlaceShipsOnTopOfEachOther() {
+        board.placeShip(new Minesweeper(), 2, 'B', true, false);
+        assertFalse(board.placeShip(new Destroyer(), 2, 'B', true, false));
+    }
+
+    @Test
     public void testAttackEmptySquare() {
         board.placeShip(new Minesweeper(), 2, 'B', true, false);
         Result result = board.attack(2, 'E', false);

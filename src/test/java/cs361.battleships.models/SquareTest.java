@@ -2,10 +2,27 @@ package cs361.battleships.models;
 
 import org.junit.Test;
 
+import javax.validation.constraints.Null;
+
 import static org.junit.Assert.*;
 
 
 public class SquareTest {
+
+    @Test
+    public void testDefaultConstructors() {
+        Square square = new Square();
+        assertEquals(square.getRow(), 0);
+        assertEquals(square.getColumn(), '\0');
+        assertEquals(square.getHit(), 0);
+        assertEquals(square.isCaptainsQuarters(), false);
+
+        Square square2 = new Square(10, 'B', true);
+        assertEquals(square2.getRow(), 10);
+        assertEquals(square2.getColumn(), 'B');
+        assertEquals(square2.getHit(), 0);
+        assertEquals(square2.isCaptainsQuarters(), true);
+    }
 
     @Test
     public void testIsOutOfBoundTest() {
@@ -57,6 +74,8 @@ public class SquareTest {
 
         assertTrue(square1.equals(square2));
         assertEquals(square1.hashCode(), square2.hashCode());
+
+        assertFalse(square1.equals(new Result()));
     }
 
     @Test

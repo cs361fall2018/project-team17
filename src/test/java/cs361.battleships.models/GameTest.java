@@ -16,6 +16,7 @@ public class GameTest {
         assertEquals(true, test.attack(3,'H', false));
         assertEquals(true, test.attack(4, 'G', false));
 
+
     }
 
     @Test
@@ -23,6 +24,7 @@ public class GameTest {
         Game test = new Game();
         assertTrue(test.placeShip(new Minesweeper(), 2, 'B', false, false));
         assertFalse(test.placeShip(new Minesweeper(), 1, 'A', false, false));
+        assertEquals(test.placeShip( new Submarine(true), 5, 'E', false, true), true);
     }
 
     @Test
@@ -31,4 +33,6 @@ public class GameTest {
 
         assertTrue(test.sonar(6, 'E'));
     }
+
+
 }
