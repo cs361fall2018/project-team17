@@ -32,11 +32,6 @@ public class Game {
             }
         } while (!opponentPlacedSuccessfully);
 
-//        boolean woo = opponentsBoard.placeShip(new Destroyer(), 8, 'F', false, false);
-//        woo = opponentsBoard.placeShip(new Minesweeper(), 3, 'B', false, false);
-//        woo = opponentsBoard.placeShip(new Battleship(), 5, 'F', false, false);
-//        woo = opponentsBoard.placeShip(new Submarine(true), 5, 'E', false, true);
-
         return true;
     }
 

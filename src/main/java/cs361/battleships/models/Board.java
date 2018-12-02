@@ -136,7 +136,8 @@ public class Board {
 
 		for(i = 0; i < ship.getOccupiedSquares().size(); i++){
 		    Result attackResult = attack(new Square(ship.getOccupiedSquares().get(i).getRow(), ship.getOccupiedSquares().get(i).getColumn()), ship, spaceLaser);
-			attacks.add(attackResult);
+		    if(attackResult.getResult() != AtackStatus.INVALID)
+				attacks.add(attackResult);
 			if(attackResult.getResult() == AtackStatus.SUNK || attackResult.getResult() == AtackStatus.SURRENDER || attackResult.getResult() == AtackStatus.SUNKLASER){
 			    return attackResult;
 			}
