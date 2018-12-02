@@ -20,6 +20,11 @@ public class Result {
 		this.location = location;
 	}
 
+	public Result(Square location, Ship ship){
+		this.location = location;
+		this.ship = ship;
+	}
+
 	public void setResultClass(Result fill){
 		result = fill.getResult();
 		location = fill.getLocation();

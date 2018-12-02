@@ -3,6 +3,7 @@ var sonarClicked=false;
 var attackMethod="/attack";
 var showToolTip=true;
 var sonarUsed=0;
+var moveFleet=0;
 var placedShips = 0;
 var game;
 var shipType;
@@ -96,6 +97,12 @@ function markHits(board, elementId, surrenderText) {
         className = "hitLaser";
     else if (attack.result === "SUNK") {
         className = "hit";
+        if(elementId === "opponent" && moveFleet === 1){
+            document.getElementById("move-fleet").classList.remove('hide');
+            moveFleet++;
+        }else if(elementId === "opponent" && moveFleet < 3){
+            moveFleet++;
+        }
         if(elementId === "opponent" && sonarUsed == 0) {
             attackMethod = "/attackLaser"
             document.getElementById("place_sonar").classList.remove('hide');
@@ -164,10 +171,10 @@ function redrawGrid() {
         return;
     }
 
-//    add in to see the opponents ships, for easy debug
-//     game.opponentsBoard.ships.forEach((ship) => ship.occupiedSquares.forEach((square) => {
-//         document.getElementById("opponent").rows[square.row-1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("occupied");
-//     }));
+    //add in to see the opponents ships, for easy debug
+    // game.opponentsBoard.ships.forEach((ship) => ship.occupiedSquares.forEach((square) => {
+    //     document.getElementById("opponent").rows[square.row-1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("occupied");
+    // }));
 
     game.playersBoard.ships.forEach((ship) => ship.occupiedSquares.forEach((square) => {
         document.getElementById("player").rows[square.row-1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("occupied");
@@ -231,7 +238,7 @@ function cellClick() {
             document.getElementById("error-menu").innerHTML = "*You have not selected a ship. Please select one using the buttons below";
             return;
         }
-        sendXhr("POST", "/place", {game: game, shipType: shipType, x: row, y: col, isVertical: vertical, submerged: submerged}, function(data) {
+        sendXhr("POST", "/place", {game: game, shipType: shipType, x: row, y: col, isVertical: vertical}, function(data) {
             game = data;
             disableShipButton(shipType);
             redrawGrid();
@@ -266,7 +273,7 @@ function cellClick() {
             });
         }
         else if (sonarClicked) {
-            sendXhr("POST", "/sonar", {game: game, x:row, y:col}, function(data) {
+            sendXhr("POST", "/sonar", {game: game, x: row, y: col}, function(data) {
                 game = data;
                 redrawGrid();
                 sonarUsed++;
@@ -418,6 +425,20 @@ function placeSonar() {
     }
 }
 
+function move(direction){
+    document.getElementById("move-fleet-" + direction).classList.add("clicked");
+    sendXhr("POST", "/move", {game: game, direction: direction}, function(data){
+       game = data;
+       redrawGrid();
+       document.getElementById("move-fleet-" + direction).classList.remove("clicked");
+       moveFleet++;
+       if(moveFleet === 5){
+           document.getElementById("move-fleet").classList.add("hide");
+       }
+    });
+    document.getElementById("move-fleet-" + direction).classList.remove("clicked");
+}
+
 function initGame() {
     makeGrid(document.getElementById("opponent"), false);
     makeGrid(document.getElementById("player"), true);
@@ -426,6 +447,11 @@ function initGame() {
     document.getElementById("place_destroyer").addEventListener("click", function(e) { placeShipButton("DESTROYER", 3)});
     document.getElementById("place_battleship").addEventListener("click", function(e) { placeShipButton("BATTLESHIP", 4)});
     document.getElementById("place_submarine").addEventListener("click", function(e) {placeShipButton("SUBMARINE", 5)});
+
+    document.getElementById("move-fleet-N").addEventListener("click", function(e) { move('N'); });
+    document.getElementById("move-fleet-E").addEventListener("click", function(e) { move('E'); });
+    document.getElementById("move-fleet-S").addEventListener("click", function(e) { move('S'); });
+    document.getElementById("move-fleet-W").addEventListener("click", function(e) { move('W'); });
 
     document.getElementById("place_sonar").addEventListener("click", function(e) { sonarClicked=true; document.getElementById("place_sonar").classList.add("clicked"); registerCellListener(placeSonar(), "opponent");});
 

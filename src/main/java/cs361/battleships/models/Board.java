@@ -1,9 +1,7 @@
 package cs361.battleships.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jdk.jshell.Snippet;
 
-import javax.validation.constraints.Min;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -227,6 +225,53 @@ public class Board {
 				sonar.add(ping);
 			}
 		}
+	}
+
+	void moveFleet(char direction){
+		int count = 0;
+        boolean result = true;
+		for(int i = 0; i < ships.size(); i++){
+			count = 0;
+            boolean thisShip = false;
+            for(int j = 0; j < ships.get(i).getOccupiedSquares().size(); j++) {
+                if (overLaps(ships.get(i).ifMoved(direction, j), ships.get(i))) {
+                    count++;
+                }
+            }
+
+			if(!ships.get(i).moveShip(direction)){
+			    result = false;
+			    thisShip = true;
+            }
+			if(count > 1 && !result && !thisShip){//ships.get(i).getOccupiedSquares().size()) {
+				if(direction == 'N'){
+					ships.get(i).moveShip('S');
+				}else if(direction == 'E'){
+					ships.get(i).moveShip('W');
+				}else if(direction == 'S'){
+					ships.get(i).moveShip('N');
+				}else{
+					ships.get(i).moveShip('E');
+				}
+			}
+		}
+
+
+	}
+
+	public boolean overLaps(Square square, Ship ship) {
+		int count = 0;
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < ships.get(i).getOccupiedSquares().size(); j++) {
+				if (ships.get(i).getOccupiedSquares().get(j).equals(square)) {
+					count++;
+				}
+			}
+		}
+		if(count > 0){//ship.getOccupiedSquares().size()){
+			return true;
+		}
+		return false;
 	}
 
 	List<Ship> getShips() {

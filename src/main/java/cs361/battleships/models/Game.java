@@ -2,8 +2,6 @@ package cs361.battleships.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 import static cs361.battleships.models.AtackStatus.*;
@@ -65,6 +63,11 @@ public class Game {
 
     public boolean sonar(int x, char y) {
         return opponentsBoard.sonar(x, y);
+    }
+
+    public boolean move(char direction){
+        playersBoard.moveFleet(direction);
+        return true;
     }
 
     private char randCol() {

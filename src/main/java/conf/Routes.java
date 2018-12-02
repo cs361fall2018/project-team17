@@ -17,6 +17,7 @@ public class Routes implements ApplicationRoutes {
         router.POST().route("/attack").with(ApplicationController::attack);
         router.POST().route("/attackLaser").with(ApplicationController::attackLaser);
         router.POST().route("/sonar").with(ApplicationController::sonar);
+        router.POST().route("/move").with(ApplicationController::moveFleet);
 
         ///////////////////////////////////////////////////////////////////////
         // Assets (pictures / javascript)
