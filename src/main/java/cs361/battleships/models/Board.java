@@ -48,22 +48,6 @@ public class Board {
 		if (placedShip.getOccupiedSquares().stream().anyMatch(s -> s.isOutOfBounds())) {
 			return false;
 		}
-//		placedShip.place(y, x, isVertical);
-//		if (ship.getKind().equals("MINESWEEPER")){
-//			placedShip = new Minesweeper();
-////			tempShip.place(y, x, isVertical);
-////			ships.add(tempShip);
-//		}
-//		else if (ship.getKind().equals("DESTROYER")){
-//			Destroyer tempShip = new Destroyer();
-//			tempShip.place(y, x, isVertical);
-//			ships.add(tempShip);
-//		}
-//		else {
-//			Battleship tempShip = new Battleship();
-//			tempShip.place(y, x, isVertical);
-//			ships.add(tempShip);
-//		}
 		ships.add(placedShip);
 		return true;
 	}
@@ -98,27 +82,12 @@ public class Board {
 
 
 	private Result attack(Square s) {
-//		if (attacks.stream().anyMatch(r -> r.getLocation().equals(s)) && !(s.isCaptainsQuarters())){// && getShipAt(s.getRow(), s.getColumn()) != null && !s.isHit(getShipAt(s.getRow(), s.getColumn()).getKind())) {
-//			var attackResult = new Result(s);
-//			System.out.println(s.isCaptainsQuarters());
-//			attackResult.setResult(AtackStatus.INVALID);
-//			return attackResult;
-//		}
 		var shipsAtLocation = ships.stream().filter(ship -> ship.isAtLocation(s)).collect(Collectors.toList());
 		if (shipsAtLocation.size() == 0) {
 			var attackResult = new Result(s);
 			return attackResult;
 		}
 		Ship hitShip = shipsAtLocation.get(0);
-//		if (shipsAtLocation.get(0).getKind().equals("MINESWEEPER")){
-//			hitShip = (Minesweeper)shipsAtLocation.get(0);
-//		}
-//		else if (shipsAtLocation.get(0).getKind().equals("DESTROYER")){
-//			hitShip = (Destroyer)shipsAtLocation.get(0);
-//		}
-//		else {
-//			hitShip = (Battleship)shipsAtLocation.get(0);
-//		}
 		var attackResult = hitShip.attack(s.getRow(), s.getColumn());
 		if (attackResult.getResult() == AtackStatus.SUNK) {
 			if (ships.stream().allMatch(ship -> ship.isSunk())) {
@@ -183,35 +152,33 @@ public class Board {
 
 	void moveFleet(char direction){
 		int count = 0;
+        boolean result = true;
 		for(int i = 0; i < ships.size(); i++){
 			count = 0;
-//			ships.get(i).moveShip(direction);
-			for(int j = 0; j < ships.get(i).getOccupiedSquares().size(); j++) {
-				if (overLaps(ships.get(i).ifMoved(direction, j), ships.get(i))) {
-//					System.out.println("OVERlAPS: " + count);
-					count++;
-				}
-			}
-			boolean result = ships.get(i).moveShip(direction);
-			System.out.println("SHIP: " + ships.get(i).getKind() + " - count: " + count + " - result: " + result);
-			if(count !=	0 && result){//ships.get(i).getOccupiedSquares().size()) {
+            boolean thisShip = false;
+            for(int j = 0; j < ships.get(i).getOccupiedSquares().size(); j++) {
+                if (overLaps(ships.get(i).ifMoved(direction, j), ships.get(i))) {
+                    count++;
+                }
+            }
+
+			if(!ships.get(i).moveShip(direction)){
+			    result = false;
+			    thisShip = true;
+            }
+			if(count > 1 && !result && !thisShip){//ships.get(i).getOccupiedSquares().size()) {
 				if(direction == 'N'){
 					ships.get(i).moveShip('S');
-
 				}else if(direction == 'E'){
 					ships.get(i).moveShip('W');
-
 				}else if(direction == 'S'){
 					ships.get(i).moveShip('N');
-
 				}else{
 					ships.get(i).moveShip('E');
 				}
-//				ships.get(i).moveShip(direction);
 			}
 		}
 
-//		ships.forEach(s -> s.moveShip(direction));
 
 	}
 
@@ -224,7 +191,6 @@ public class Board {
 				}
 			}
 		}
-		System.out.println("      count: " + count);
 		if(count > 0){//ship.getOccupiedSquares().size()){
 			return true;
 		}

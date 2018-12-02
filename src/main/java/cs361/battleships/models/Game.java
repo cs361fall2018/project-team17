@@ -64,7 +64,6 @@ public class Game {
     }
 
     public boolean move(char direction){
-        System.out.println("HOMEII");
         playersBoard.moveFleet(direction);
         return true;
     }

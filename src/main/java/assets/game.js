@@ -62,7 +62,7 @@ function markHits(board, elementId, surrenderText) {
         className = "hit";
     else if (attack.result === "SUNK") {
         className = "hit";
-        if(elementId === "opponent" && moveFleet === 2){
+        if(elementId === "opponent" && moveFleet === 1){
             document.getElementById("move-fleet").classList.remove('hide');
             moveFleet++;
         }else if(elementId === "opponent" && moveFleet < 3){
@@ -322,7 +322,7 @@ function move(direction){
        document.getElementById("move-fleet-" + direction).classList.remove("clicked");
        moveFleet++;
        if(moveFleet === 5){
-           document.getElementById("mo  ve-fleet").classList.add("hide");
+           document.getElementById("move-fleet").classList.add("hide");
        }
     });
     document.getElementById("move-fleet-" + direction).classList.remove("clicked");

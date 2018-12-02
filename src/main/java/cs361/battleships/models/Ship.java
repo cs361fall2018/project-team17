@@ -93,31 +93,22 @@ public class Ship {
 			for(int i = 0; i < occupiedSquares.size(); i++){
 				if(!occupiedSquares.get(i).move(direction)){
 					return false;
-//					break;
 				}
 			}
 		}else{
 			for (int i = occupiedSquares.size(); i > 0; i--) {
 				if (!occupiedSquares.get(i-1).move(direction)) {
 					return false;
-//					break;
 				}
 			}
 		}
 		return true;
-//		occupiedSquares.forEach(s -> s.move(direction));
     }
 
     public Square ifMoved(char direction, int idx){
-//		if(direction == 'N' || direction == 'W'){
 			Square temp = new Square(occupiedSquares.get(idx).getRow(), occupiedSquares.get(0).getColumn());
 			temp.move(direction);
 			return temp;
-//		}else{
-//			Square temp = new Square(occupiedSquares.get(occupiedSquares.size()-1).getRow(), occupiedSquares.get(occupiedSquares.size()-1).getColumn());
-//			temp.move(direction);
-//			return temp;
-//		}
 	}
 
 
