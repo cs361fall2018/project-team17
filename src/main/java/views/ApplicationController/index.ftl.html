@@ -1,6 +1,5 @@
 <#import "../layout/defaultLayout.ftl.html" as layout> 
-<@layout.myLayout "Home page">    
-
+<@layout.myLayout "Home page">
 
 <div id="button-container"><button id="start-button"> Start Game </button></div>
 
@@ -15,11 +14,21 @@
     <li id="flex-player"><table id="player" class="battleGrid"></table></li>
 </ul>
 
+<ul id="info-menu" class="fadein-fast hide">
+    <li>
+        <div id="first-sunk-info">
+            <p class="info-header">ONE TIME TOOLTIP:</p>
+            <button id="close-info">X</button>
+            <p class="info-text">You have sunk your first ship! Your bombs have now changed to a Space Laser! It can now penetrate through the water. You may have to re-hit old locations since something could have been there!
+                You also now have access to the sonar pulse. Hover over the button to see what it does!</p>
+        </div></li>
+</ul>
+
 <div id="error-menu" class="hide">
 </div>
 
 <div id="place-menu-container" class="hide">
-    <ul id="place-menu">
+    <ul id="place-menu" class="place">
         <li><button id="place_minesweeper">Place Minesweeper</button></li>
         <li><button id="place_destroyer">Place Destroyer</button></li>
         <li><button id="place_battleship">Place Battleship</button></li>
@@ -39,6 +48,12 @@
                 The radar exposes open water (grey), ships (black), and the center of the sonar pulse with a black circle. You get two sonar pulses!
             </div>
         </button>
+        <div id="move-fleet" class="hide"> Move Fleet
+            <button id="move-fleet-N">North</button>
+            <button id="move-fleet-E">East</button>
+            <button id="move-fleet-S">South</button>
+            <button id="move-fleet-W">West</button>
+        </div>
     </li>
     <span> Click location on opponents board to attack that location </span>
 </div>

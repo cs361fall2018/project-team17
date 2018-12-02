@@ -1,9 +1,7 @@
 package cs361.battleships.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jdk.jshell.Snippet;
 
-import javax.validation.constraints.Min;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -71,50 +69,105 @@ public class Board {
 	/*
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
-	public Result attack(int x, char y) {
-		Result attackResult = attack(new Square(x, y));
-		attacks.add(attackResult);
-		return attackResult;
+	public Result attack(int x, char y, boolean spaceLaser) {
+		Ship hitShip1 = null;
+		Ship hitShip2 = null;
+		Square s = new Square(x, y);
+
+		var shipsAtLocation = ships.stream().filter(ship -> ship.isAtLocation(s)).collect(Collectors.toList());
+		if (shipsAtLocation.size() == 0) {
+			var attackResult = new Result(s);
+			if(spaceLaser && attackResult.getResult() == AtackStatus.MISS) { attackResult.setResult(AtackStatus.MISSLASER); }
+			attacks.add(attackResult);
+			return attackResult;
+		}
+		if(shipsAtLocation.size() == 2) {
+			if(shipsAtLocation.get(0).getSubmerged()) {
+				hitShip2 = shipsAtLocation.get(0);
+				hitShip1 = shipsAtLocation.get(1);
+			} else {
+				hitShip1 = shipsAtLocation.get(0);
+				hitShip2 = shipsAtLocation.get(1);
+			}
+		} else if (shipsAtLocation.get(0).getSubmerged() && !spaceLaser) {
+			var attackResult = new Result(s);
+			attacks.add(attackResult);
+			return attackResult;
+		}
+		else { hitShip1 = shipsAtLocation.get(0); }
+
+		if(!spaceLaser) {
+			return attackOrSink(s, hitShip1, spaceLaser);
+		} else {
+			if(hitShip2 != null) {
+				Result attk1 = attackOrSink(s, hitShip1, spaceLaser);
+				Result attk2 = attackOrSink(s, hitShip2, spaceLaser);
+				if(attk1.getResult() == AtackStatus.INVALID && attk2.getResult() != AtackStatus.INVALID) {
+					return attk2;
+				} else {
+					return attk1;
+				}
+			} else {
+				return attackOrSink(s, hitShip1, spaceLaser);
+			}
+		}
 	}
 
-	public Result sinkAttack(int x, char y){
-		Ship tempShip = getShipAt(x, y);
+	private Result attackOrSink(Square s, Ship ship, boolean spaceLaser) {
+		var square = ship.getOccupiedSquares().stream().filter(sq -> sq.equals(s)).findFirst();
+		if(square.get() != null && square.get().isCaptainsQuarters()) {
+			return sinkAttack(s.getRow(), s.getColumn(), ship, spaceLaser);
+		} else {
+			Result attackResult = attack(s, ship, spaceLaser);
+			attacks.add(attackResult);
+			return attackResult;
+		}
+	}
+
+	private Result sinkAttack(int x, char y, Ship ship, boolean spaceLaser){
 		int i;
-		if((getSquareAt(x, y).getHit() == 0) && !tempShip.getKind().equals("MINESWEEPER")){
-		    Result attackResult = attack(new Square(x, y));
+		if((ship.getOccupiedSquares().get(ship.captainsQuarters).getHit() == 0) && !ship.getKind().equals("MINESWEEPER")){
+		    Result attackResult = attack(new Square(x, y), ship, spaceLaser);
             attacks.add(attackResult);
             return attackResult;
         }
 
-		for(i = 0; i < tempShip.getOccupiedSquares().size(); i++){
-		    Result attackResult = attack(new Square(tempShip.getOccupiedSquares().get(i).getRow(), tempShip.getOccupiedSquares().get(i).getColumn()));
-			attacks.add(attackResult);
-			if(attackResult.getResult() == AtackStatus.SUNK || attackResult.getResult() == AtackStatus.SURRENDER){
+		for(i = 0; i < ship.getOccupiedSquares().size(); i++){
+		    Result attackResult = attack(new Square(ship.getOccupiedSquares().get(i).getRow(), ship.getOccupiedSquares().get(i).getColumn()), ship, spaceLaser);
+		    if(attackResult.getResult() != AtackStatus.INVALID)
+				attacks.add(attackResult);
+			if(attackResult.getResult() == AtackStatus.SUNK || attackResult.getResult() == AtackStatus.SURRENDER || attackResult.getResult() == AtackStatus.SUNKLASER){
 			    return attackResult;
 			}
 		}
-		return attack(new Square(x, y));
+		return attack(new Square(x, y), ship, spaceLaser);
+	}
+
+	public Result checkDoubleMiss(int x, char y, boolean spaceLaser) {
+		Square s = new Square(x, y);
+		var missAttakcs = attacks.stream().filter(r -> r.getResult().equals(AtackStatus.MISS)).collect(Collectors.toList());
+		if(!spaceLaser) {
+			for (int i = 0; i < missAttakcs.size(); i++) {
+				if (missAttakcs.get(i).getLocation().getColumn() == s.getColumn() && missAttakcs.get(i).getLocation().getRow() == s.getRow()) {
+					return new Result();
+				}
+			}
+		} else {
+			missAttakcs = attacks.stream().filter(r -> r.getResult().equals(AtackStatus.MISSLASER)).collect(Collectors.toList());
+			for (int i = 0; i < missAttakcs.size(); i++) {
+				if (missAttakcs.get(i).getLocation().getColumn() == s.getColumn() && missAttakcs.get(i).getLocation().getRow() == s.getRow()) {
+					return new Result();
+				}
+			}
+		}return new Result(s);
 	}
 
 
-	private Result attack(Square s) {
-//		if (attacks.stream().anyMatch(r -> r.getLocation().equals(s)) && !(s.isCaptainsQuarters())){// && getShipAt(s.getRow(), s.getColumn()) != null && !s.isHit(getShipAt(s.getRow(), s.getColumn()).getKind())) {
-//			var attackResult = new Result(s);
-//			System.out.println(s.isCaptainsQuarters());
-//			attackResult.setResult(AtackStatus.INVALID);
-//			return attackResult;
-//		}
-		var shipsAtLocation = ships.stream().filter(ship -> ship.isAtLocation(s)).collect(Collectors.toList());
-		if (shipsAtLocation.size() == 0) {
-			var attackResult = new Result(s);
-			return attackResult;
-		}
-		Ship hitShip; // = shipsAtLocation.get(0);
+	private Result attack(Square s, Ship ship, boolean spaceLaser) {
 
-		hitShip = shipsAtLocation.get(0);
-		var attackResult = hitShip.attack(s.getRow(), s.getColumn());
-		if (attackResult.getResult() == AtackStatus.SUNK) {
-			if (ships.stream().allMatch(ship -> ship.isSunk())) {
+		var attackResult = ship.attack(s.getRow(), s.getColumn(), spaceLaser);
+		if (attackResult.getResult() == AtackStatus.SUNK || attackResult.getResult() == AtackStatus.SUNKLASER) {
+			if (ships.stream().allMatch(shipss -> shipss.isSunk())) {
 				attackResult.setResult(AtackStatus.SURRENDER);
 			}
 		}
@@ -172,6 +225,53 @@ public class Board {
 				sonar.add(ping);
 			}
 		}
+	}
+
+	void moveFleet(char direction){
+		int count = 0;
+        boolean result = true;
+		for(int i = 0; i < ships.size(); i++){
+			count = 0;
+            boolean thisShip = false;
+            for(int j = 0; j < ships.get(i).getOccupiedSquares().size(); j++) {
+                if (overLaps(ships.get(i).ifMoved(direction, j), ships.get(i))) {
+                    count++;
+                }
+            }
+
+			if(!ships.get(i).moveShip(direction)){
+			    result = false;
+			    thisShip = true;
+            }
+			if(count > 1 && !result && !thisShip){//ships.get(i).getOccupiedSquares().size()) {
+				if(direction == 'N'){
+					ships.get(i).moveShip('S');
+				}else if(direction == 'E'){
+					ships.get(i).moveShip('W');
+				}else if(direction == 'S'){
+					ships.get(i).moveShip('N');
+				}else{
+					ships.get(i).moveShip('E');
+				}
+			}
+		}
+
+
+	}
+
+	public boolean overLaps(Square square, Ship ship) {
+		int count = 0;
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < ships.get(i).getOccupiedSquares().size(); j++) {
+				if (ships.get(i).getOccupiedSquares().get(j).equals(square)) {
+					count++;
+				}
+			}
+		}
+		if(count > 0){//ship.getOccupiedSquares().size()){
+			return true;
+		}
+		return false;
 	}
 
 	List<Ship> getShips() {

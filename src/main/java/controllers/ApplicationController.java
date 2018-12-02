@@ -43,7 +43,17 @@ public class ApplicationController {
 
     public Result attack(Context context, AttackGameAction g) {
         Game game = g.getGame();
-        boolean result = game.attack(g.getActionRow(), g.getActionColumn());
+        boolean result = game.attack(g.getActionRow(), g.getActionColumn(), false);
+        if (result) {
+            return Results.json().render(game);
+        } else {
+            return Results.badRequest();
+        }
+    }
+
+    public Result attackLaser(Context context, AttackGameAction g) {
+        Game game = g.getGame();
+        boolean result = game.attack(g.getActionRow(), g.getActionColumn(), true);
         if (result) {
             return Results.json().render(game);
         } else {
@@ -57,6 +67,17 @@ public class ApplicationController {
         if (result) {
             return Results.json().render(game);
         } else {
+            return Results.badRequest();
+        }
+    }
+
+    public Result moveFleet(Context context, MoveFleetAction g){
+        Game game = g.getGame();
+        boolean result = game.move(g.getDirection());
+        if(result) {
+            return Results.json().render(game);
+        }else{
+
             return Results.badRequest();
         }
     }

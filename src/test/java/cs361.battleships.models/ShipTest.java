@@ -153,7 +153,7 @@ public class ShipTest {
         Ship minesweeper = new Battleship();
         minesweeper.place('B', 2, true);
 
-        Result result = minesweeper.attack(2, 'B');
+        Result result = minesweeper.attack(2, 'B', false);
         result.setShip(minesweeper);
 
         assertEquals(AtackStatus.HIT, result.getResult());
@@ -166,8 +166,8 @@ public class ShipTest {
         Ship minesweeper = new Minesweeper();
         minesweeper.place('A', 1, true);
 
-        minesweeper.attack(2, 'A');
-        Result result = minesweeper.attack(1, 'A');
+        minesweeper.attack(2, 'A', false);
+        Result result = minesweeper.attack(1, 'A', false);
         result.setShip(minesweeper);
 
         assertEquals(AtackStatus.SUNK, result.getResult());
@@ -188,23 +188,23 @@ public class ShipTest {
     public void testAttackSameSquareTwice() {
         Ship minesweeper = new Minesweeper();
         minesweeper.place('A', 2, true);
-        var result = minesweeper.attack(2, 'A');
+        var result = minesweeper.attack(2, 'A', false);
         assertEquals(AtackStatus.HIT, result.getResult());
-        result = minesweeper.attack(2, 'A');
+        result = minesweeper.attack(2, 'A', false);
         assertEquals(AtackStatus.INVALID, result.getResult());
 
         Ship destroyer = new Destroyer();
         destroyer.place('D', 4, true);
-        result = destroyer.attack(5, 'D');
+        result = destroyer.attack(5, 'D', false);
         assertEquals(AtackStatus.CAPTAIN, result.getResult());
-        result = destroyer.attack(5, 'D');
+        result = destroyer.attack(5, 'D', false);
         assertEquals(AtackStatus.HIT, result.getResult());
 
         Ship minesweeper2 = new Minesweeper();
         minesweeper2.place('D', 4, true);
-        result = minesweeper2.attack(4, 'D');
+        result = minesweeper2.attack(4, 'D', false);
         assertEquals(AtackStatus.HIT, result.getResult());
-        result = minesweeper2.attack(4, 'D');
+        result = minesweeper2.attack(4, 'D', false);
         assertEquals(AtackStatus.INVALID, result.getResult());
     }
 

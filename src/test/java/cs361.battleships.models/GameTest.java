@@ -13,8 +13,8 @@ public class GameTest {
     public void testAttack(){
         Game test = new Game();
 
-        assertEquals(true, test.attack(3,'H'));
-        assertEquals(true, test.attack(4, 'G'));
+        assertEquals(true, test.attack(3,'H', false));
+        assertEquals(true, test.attack(4, 'G', false));
 
 
     }
