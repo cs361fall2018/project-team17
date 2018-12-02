@@ -19,88 +19,89 @@ public class BoardTest {
 
     @Test
     public void testInvalidPlacement() {
-        assertFalse(board.placeShip(new Minesweeper(), 11, 'C', true));
+        assertFalse(board.placeShip(new Minesweeper(), 11, 'C', true, false));
     }
 
     @Test
     public void testPlaceMinesweeper() {
-        assertTrue(board.placeShip(new Minesweeper(), 2, 'B', true));
+        assertTrue(board.placeShip(new Minesweeper(), 2, 'B', true, false));
     }
 
     @Test
     public void testAttackEmptySquare() {
-        board.placeShip(new Minesweeper(), 2, 'B', true);
-        Result result = board.attack(2, 'E');
+        board.placeShip(new Minesweeper(), 2, 'B', true, false);
+        Result result = board.attack(2, 'E', false);
         assertEquals(AtackStatus.MISS, result.getResult());
     }
 
     @Test
     public void testAttackShip() {
         Ship minesweeper = new Minesweeper();
-        board.placeShip(minesweeper, 3, 'C', true);
+        board.placeShip(minesweeper, 3, 'C', true, false);
         minesweeper = board.getShips().get(0);
-        Result result = board.attack(3, 'C');
+        Result result = board.attack(3, 'C', false);
         result.setShip(minesweeper);
-        assertEquals(AtackStatus.HIT, result.getResult());
+        assertEquals(AtackStatus.SURRENDER, result.getResult()); //Since no other ships were placed, we have destroyed the only one
         assertEquals(minesweeper, result.getShip());
     }
 
     @Test
     public void testAttackSameSquareMultipleTimes() {
         Ship minesweeper = new Minesweeper();
-        board.placeShip(minesweeper, 1, 'A', true);
-        board.attack(1, 'A');
-        Result result = board.attack(1, 'A');
+        board.placeShip(minesweeper, 1, 'A', true, false);
+        board.attack(1, 'A', false);
+        Result result = board.attack(1, 'A', false);
         assertEquals(AtackStatus.MISS, result.getResult());
     }
 
     @Test
     public void testAttackSameEmptySquareMultipleTimes() {
-        Result initialResult = board.attack(1, 'A');
+        Result initialResult = board.attack(1, 'A', false);
         assertEquals(AtackStatus.MISS, initialResult.getResult());
-        Result result = board.attack(1, 'A');
+        Result result = board.attack(1, 'A', false);
         assertEquals(AtackStatus.MISS, result.getResult());
     }
 
     @Test
     public void testPlaceMultipleShipsOfSameType() {
-        assertTrue(board.placeShip(new Minesweeper(), 2, 'B', true));
-        assertFalse(board.placeShip(new Minesweeper(), 5, 'D', true));
+        assertTrue(board.placeShip(new Minesweeper(), 2, 'B', true, false));
+        assertFalse(board.placeShip(new Minesweeper(), 5, 'D', true, false));
 
     }
 
     @Test
-    public void testCantPlaceMoreThan3Ships() {
-        assertTrue(board.placeShip(new Minesweeper(), 2, 'B', true));
-        assertTrue(board.placeShip(new Battleship(), 5, 'D', true));
-        assertTrue(board.placeShip(new Destroyer(), 6, 'E', false));
-        assertFalse(board.placeShip(new Ship(), 8, 'B', false));
+    public void testCantPlaceMoreThan4Ships() {
+        assertTrue(board.placeShip(new Minesweeper(), 2, 'B', true, false));
+        assertTrue(board.placeShip(new Battleship(), 5, 'D', true, false));
+        assertTrue(board.placeShip(new Destroyer(), 6, 'E', false, false));
+        assertTrue(board.placeShip(new Submarine(true), 6, 'E', false, true));
+        assertFalse(board.placeShip(new Ship(), 8, 'B', false, false));
 
     }
 
     @Test
     public void testCantPlaceShipsOnTopOfEachOther() {
-        assertTrue(board.placeShip(new Minesweeper(), 2, 'B', true));
-        assertFalse(board.placeShip(new Minesweeper(), 2, 'B', true));
+        assertTrue(board.placeShip(new Minesweeper(), 2, 'B', true, false));
+        assertFalse(board.placeShip(new Minesweeper(), 2, 'B', true, false));
     }
 
     @Test
     public void sinkAttackTest(){
         Board test = new Board();
         Ship mine = new Minesweeper();
-        test.placeShip(mine, 3, 'D', true);
+        test.placeShip(mine, 3, 'D', true, false);
 
         Ship mine2 = new Destroyer();
-        test.placeShip(mine2, 6, 'G', false);
+        test.placeShip(mine2, 6, 'G', false, false);
 
 
-        Result sink = test.sinkAttack(3, 'D');
+        Result sink = test.attack(3, 'D',false);
         assertEquals(AtackStatus.SUNK, sink.getResult());
 
-        Result sink2 = test.sinkAttack(6, 'H');
+        Result sink2 = test.attack(6, 'H',false);
         assertEquals(AtackStatus.CAPTAIN, sink2.getResult());
 
-        Result sink3 = test.sinkAttack(6, 'H');
+        Result sink3 = test.attack(6, 'H',false);
         assertEquals(AtackStatus.SURRENDER, sink3.getResult());
     }
 
@@ -108,7 +109,7 @@ public class BoardTest {
     public void testGetSquareAt(){
         Board test = new Board();
         Ship mine = new Minesweeper();
-        test.placeShip(mine, 3, 'D', true);
+        test.placeShip(mine, 3, 'D', true, false);
 
         Square tempSquare = test.getSquareAt(3, 'D');
         assertEquals(false, tempSquare.isHit(mine.getKind()));
@@ -116,7 +117,7 @@ public class BoardTest {
         assertEquals(3, tempSquare.getRow());
         assertEquals('D', tempSquare.getColumn());
 
-        test.sinkAttack(3, 'D');
+        test.attack(3, 'D', false);
         tempSquare = test.getSquareAt(4, 'D');
 
         assertEquals(true, tempSquare.isHit(mine.getKind()));
@@ -130,7 +131,7 @@ public class BoardTest {
     public void testGetShipAt(){
         Board test = new Board();
         Ship mine = new Minesweeper();
-        test.placeShip(mine, 3, 'D', true);
+        test.placeShip(mine, 3, 'D', true, false);
 
         Ship tempShip = test.getShipAt(3, 'D');
         assertEquals("MINESWEEPER", tempShip.getKind());
@@ -196,7 +197,7 @@ public class BoardTest {
     public void testSonarFindsShip () {
         Board test = new Board();
 
-        assertTrue(test.placeShip(new Minesweeper(), 2, 'B', true));
+        assertTrue(test.placeShip(new Minesweeper(), 2, 'B', true, false));
 
         test.sonar(2, 'B');
         List<Sonar> sonarResult = test.getSonar();

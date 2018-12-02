@@ -12,21 +12,23 @@ import java.util.Set;
 
 public class Ship {
 
-	@JsonProperty private String kind;
-	@JsonProperty private List<Square> occupiedSquares;
-	@JsonProperty private int size;
-	@JsonProperty private int captainsQuarters;
+	@JsonProperty protected String kind;
+	@JsonProperty protected List<Square> occupiedSquares;
+	@JsonProperty protected int size;
+	@JsonProperty protected int captainsQuarters;
+	@JsonProperty protected boolean submerged;
 
 	public Ship() {
 		occupiedSquares = new ArrayList<>();
 	}
 	
 
-	public Ship(String kind, int size, int captainsQuarters){
+	public Ship(String kind, int size, int captainsQuarters, boolean submerged){
 		this();
 		this.kind = kind;
 		this.size = size;
 		this.captainsQuarters = captainsQuarters;
+		this.submerged = submerged;
 	}
 
 	public List<Square> getOccupiedSquares() {
@@ -61,7 +63,7 @@ public class Ship {
 		return kind;
 	}
 
-	public Result attack(int x, char y) {
+	public Result attack(int x, char y, boolean spaceLaser) {
 		var attackedLocation = new Square(x, y);
 		var square = getOccupiedSquares().stream().filter(s -> s.equals(attackedLocation)).findFirst();
 		if (!square.isPresent()) {
@@ -71,7 +73,11 @@ public class Ship {
 		if ((attackedSquare.getHit() == 0) && attackedSquare.isCaptainsQuarters() && !(kind.equals("MINESWEEPER"))) {
 		    attackedSquare.hit();
             var result = new Result(attackedLocation);
-			result.setResult(AtackStatus.CAPTAIN);
+            if(spaceLaser) {
+                result.setResult(AtackStatus.CAPTAINLASER);
+            } else {
+                result.setResult(AtackStatus.CAPTAIN);
+            }
 			return result;
 		}else if(attackedSquare.isHit(kind)){
 			var result = new Result(attackedLocation);
@@ -81,9 +87,17 @@ public class Ship {
 		attackedSquare.hit();
 		var result = new Result(attackedLocation);
 		if (isSunk()) {
-		    result.setResult(AtackStatus.SUNK);
+		    if(spaceLaser) {
+                result.setResult(AtackStatus.SUNKLASER);
+            } else {
+                result.setResult(AtackStatus.SUNK);
+            }
         }else {
- 			result.setResult(AtackStatus.HIT);
+			if(spaceLaser) {
+				result.setResult(AtackStatus.HITLASER);
+			} else {
+				result.setResult(AtackStatus.HIT);
+			}
 		}
 		return result;
 	}
@@ -141,5 +155,9 @@ public class Ship {
 
 	public int getCaptainsQuarters(){
 		return captainsQuarters;
+	}
+
+	public boolean getSubmerged(){
+		return submerged;
 	}
 }

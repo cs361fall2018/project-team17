@@ -27,10 +27,13 @@ public class ApplicationController {
         else if (g.getShipType().equals("DESTROYER")){
             ship = new Destroyer();
         }
-        else {
+        else if (g.getShipType().equals("BATTLESHIP")){
             ship = new Battleship();
         }
-        boolean result = game.placeShip(ship, g.getActionRow(), g.getActionColumn(), g.isVertical());
+        else {
+            ship = new Submarine(g.getSubmerged());
+        }
+        boolean result = game.placeShip(ship, g.getActionRow(), g.getActionColumn(), g.isVertical(), g.getSubmerged());
         if (result) {
             return Results.json().render(game);
         } else {
@@ -40,7 +43,17 @@ public class ApplicationController {
 
     public Result attack(Context context, AttackGameAction g) {
         Game game = g.getGame();
-        boolean result = game.attack(g.getActionRow(), g.getActionColumn());
+        boolean result = game.attack(g.getActionRow(), g.getActionColumn(), false);
+        if (result) {
+            return Results.json().render(game);
+        } else {
+            return Results.badRequest();
+        }
+    }
+
+    public Result attackLaser(Context context, AttackGameAction g) {
+        Game game = g.getGame();
+        boolean result = game.attack(g.getActionRow(), g.getActionColumn(), true);
         if (result) {
             return Results.json().render(game);
         } else {

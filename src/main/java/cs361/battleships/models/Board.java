@@ -24,8 +24,8 @@ public class Board {
 	/*
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
-	public boolean placeShip(Ship ship, int x, char y, boolean isVertical) {
-		if (ships.size() >= 3) {
+	public boolean placeShip(Ship ship, int x, char y, boolean isVertical, boolean submerged) {
+		if (ships.size() >= 4) {
 			return false;
 		}
 		if (ships.stream().anyMatch(s -> s.getKind().equals(ship.getKind()))) {
@@ -38,12 +38,26 @@ public class Board {
 		else if (ship.getKind().equals("DESTROYER")){
 			placedShip = new Destroyer();
 		}
-		else {
+		else if (ship.getKind().equals("BATTLESHIP")){
 			placedShip = new Battleship();
 		}
+		else {
+			placedShip = new Submarine(submerged);
+		}
 		placedShip.place(y, x, isVertical);
-		if (ships.stream().anyMatch(s -> s.overlaps(placedShip))) {
-			return false;
+		int i;
+		boolean blocked = false;
+		if (ships.stream().anyMatch(s -> s.overlaps(placedShip)) && !(submerged)) {
+			var overlap = ships.stream().filter(s -> s.overlaps(placedShip)).collect(Collectors.toList());
+			for (i = 0; i < overlap.size(); i++ ){
+				var overlapShip = overlap.get(i);
+				if (!(overlapShip.getSubmerged())) {
+					 blocked = true;
+				}
+			}
+			if (blocked) {
+				return false;
+			}
 		}
 		if (placedShip.getOccupiedSquares().stream().anyMatch(s -> s.isOutOfBounds())) {
 			return false;
@@ -55,42 +69,105 @@ public class Board {
 	/*
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
-	public Result attack(int x, char y) {
-		Result attackResult = attack(new Square(x, y));
-		attacks.add(attackResult);
-		return attackResult;
+	public Result attack(int x, char y, boolean spaceLaser) {
+		Ship hitShip1 = null;
+		Ship hitShip2 = null;
+		Square s = new Square(x, y);
+
+		var shipsAtLocation = ships.stream().filter(ship -> ship.isAtLocation(s)).collect(Collectors.toList());
+		if (shipsAtLocation.size() == 0) {
+			var attackResult = new Result(s);
+			if(spaceLaser && attackResult.getResult() == AtackStatus.MISS) { attackResult.setResult(AtackStatus.MISSLASER); }
+			attacks.add(attackResult);
+			return attackResult;
+		}
+		if(shipsAtLocation.size() == 2) {
+			if(shipsAtLocation.get(0).getSubmerged()) {
+				hitShip2 = shipsAtLocation.get(0);
+				hitShip1 = shipsAtLocation.get(1);
+			} else {
+				hitShip1 = shipsAtLocation.get(0);
+				hitShip2 = shipsAtLocation.get(1);
+			}
+		} else if (shipsAtLocation.get(0).getSubmerged() && !spaceLaser) {
+			var attackResult = new Result(s);
+			attacks.add(attackResult);
+			return attackResult;
+		}
+		else { hitShip1 = shipsAtLocation.get(0); }
+
+		if(!spaceLaser) {
+			return attackOrSink(s, hitShip1, spaceLaser);
+		} else {
+			if(hitShip2 != null) {
+				Result attk1 = attackOrSink(s, hitShip1, spaceLaser);
+				Result attk2 = attackOrSink(s, hitShip2, spaceLaser);
+				if(attk1.getResult() == AtackStatus.INVALID && attk2.getResult() != AtackStatus.INVALID) {
+					return attk2;
+				} else {
+					return attk1;
+				}
+			} else {
+				return attackOrSink(s, hitShip1, spaceLaser);
+			}
+		}
 	}
 
-	public Result sinkAttack(int x, char y){
-		Ship tempShip = getShipAt(x, y);
+	private Result attackOrSink(Square s, Ship ship, boolean spaceLaser) {
+		var square = ship.getOccupiedSquares().stream().filter(sq -> sq.equals(s)).findFirst();
+		if(square.get() != null && square.get().isCaptainsQuarters()) {
+			return sinkAttack(s.getRow(), s.getColumn(), ship, spaceLaser);
+		} else {
+			Result attackResult = attack(s, ship, spaceLaser);
+			attacks.add(attackResult);
+			return attackResult;
+		}
+	}
+
+	private Result sinkAttack(int x, char y, Ship ship, boolean spaceLaser){
 		int i;
-		if((getSquareAt(x, y).getHit() == 0) && !tempShip.getKind().equals("MINESWEEPER")){
-		    Result attackResult = attack(new Square(x, y));
+		if((ship.getOccupiedSquares().get(ship.captainsQuarters).getHit() == 0) && !ship.getKind().equals("MINESWEEPER")){
+		    Result attackResult = attack(new Square(x, y), ship, spaceLaser);
             attacks.add(attackResult);
             return attackResult;
         }
 
-		for(i = 0; i < tempShip.getOccupiedSquares().size(); i++){
-		    Result attackResult = attack(new Square(tempShip.getOccupiedSquares().get(i).getRow(), tempShip.getOccupiedSquares().get(i).getColumn()));
-			attacks.add(attackResult);
-			if(attackResult.getResult() == AtackStatus.SUNK || attackResult.getResult() == AtackStatus.SURRENDER){
+		for(i = 0; i < ship.getOccupiedSquares().size(); i++){
+		    Result attackResult = attack(new Square(ship.getOccupiedSquares().get(i).getRow(), ship.getOccupiedSquares().get(i).getColumn()), ship, spaceLaser);
+		    if(attackResult.getResult() != AtackStatus.INVALID)
+				attacks.add(attackResult);
+			if(attackResult.getResult() == AtackStatus.SUNK || attackResult.getResult() == AtackStatus.SURRENDER || attackResult.getResult() == AtackStatus.SUNKLASER){
 			    return attackResult;
 			}
 		}
-		return attack(new Square(x, y));
+		return attack(new Square(x, y), ship, spaceLaser);
+	}
+
+	public Result checkDoubleMiss(int x, char y, boolean spaceLaser) {
+		Square s = new Square(x, y);
+		var missAttakcs = attacks.stream().filter(r -> r.getResult().equals(AtackStatus.MISS)).collect(Collectors.toList());
+		if(!spaceLaser) {
+			for (int i = 0; i < missAttakcs.size(); i++) {
+				if (missAttakcs.get(i).getLocation().getColumn() == s.getColumn() && missAttakcs.get(i).getLocation().getRow() == s.getRow()) {
+					return new Result();
+				}
+			}
+		} else {
+			missAttakcs = attacks.stream().filter(r -> r.getResult().equals(AtackStatus.MISSLASER)).collect(Collectors.toList());
+			for (int i = 0; i < missAttakcs.size(); i++) {
+				if (missAttakcs.get(i).getLocation().getColumn() == s.getColumn() && missAttakcs.get(i).getLocation().getRow() == s.getRow()) {
+					return new Result();
+				}
+			}
+		}return new Result(s);
 	}
 
 
-	private Result attack(Square s) {
-		var shipsAtLocation = ships.stream().filter(ship -> ship.isAtLocation(s)).collect(Collectors.toList());
-		if (shipsAtLocation.size() == 0) {
-			var attackResult = new Result(s);
-			return attackResult;
-		}
-		Ship hitShip = shipsAtLocation.get(0);
-		var attackResult = hitShip.attack(s.getRow(), s.getColumn());
-		if (attackResult.getResult() == AtackStatus.SUNK) {
-			if (ships.stream().allMatch(ship -> ship.isSunk())) {
+	private Result attack(Square s, Ship ship, boolean spaceLaser) {
+
+		var attackResult = ship.attack(s.getRow(), s.getColumn(), spaceLaser);
+		if (attackResult.getResult() == AtackStatus.SUNK || attackResult.getResult() == AtackStatus.SUNKLASER) {
+			if (ships.stream().allMatch(shipss -> shipss.isSunk())) {
 				attackResult.setResult(AtackStatus.SURRENDER);
 			}
 		}

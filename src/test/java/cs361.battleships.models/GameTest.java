@@ -13,16 +13,16 @@ public class GameTest {
     public void testAttack(){
         Game test = new Game();
 
-        assertEquals(true, test.attack(3,'H'));
-        assertEquals(true, test.attack(4, 'G'));
+        assertEquals(true, test.attack(3,'H', false));
+        assertEquals(true, test.attack(4, 'G', false));
 
     }
 
     @Test
     public void testPlaceShip() {
         Game test = new Game();
-        assertTrue(test.placeShip(new Minesweeper(), 2, 'B', false));
-        assertFalse(test.placeShip(new Minesweeper(), 1, 'A', false));
+        assertTrue(test.placeShip(new Minesweeper(), 2, 'B', false, false));
+        assertFalse(test.placeShip(new Minesweeper(), 1, 'A', false, false));
     }
 
     @Test

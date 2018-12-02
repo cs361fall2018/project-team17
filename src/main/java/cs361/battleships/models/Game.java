@@ -14,8 +14,8 @@ public class Game {
     /*
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
-    public boolean placeShip(Ship ship, int x, char y, boolean isVertical) {
-        boolean successful = playersBoard.placeShip(ship, x, y, isVertical);
+    public boolean placeShip(Ship ship, int x, char y, boolean isVertical, boolean submerged) {
+        boolean successful = playersBoard.placeShip(ship, x, y, isVertical, submerged);
         if (!successful)
             return false;
 
@@ -23,7 +23,11 @@ public class Game {
         do {
             // AI places random ships, so it might try and place overlapping ships
             // let it try until it gets it right
-            opponentPlacedSuccessfully = opponentsBoard.placeShip(ship, randRow(), randCol(), randVertical());
+            if (ship.kind.equals("SUBMARINE")){
+                opponentPlacedSuccessfully = opponentsBoard.placeShip(ship, randRow(), randCol(), randVertical(), randSubmerged());
+            }else {
+                opponentPlacedSuccessfully = opponentsBoard.placeShip(ship, randRow(), randCol(), randVertical(), false);
+            }
         } while (!opponentPlacedSuccessfully);
 
         return true;
@@ -32,12 +36,11 @@ public class Game {
     /*
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
-    public boolean attack(int x, char  y) {
+    public boolean attack(int x, char  y, boolean spaceLaser) {
         Result playerAttack = new Result();
-        if(opponentsBoard.getSquareAt(x, y) != null && opponentsBoard.getSquareAt(x, y).isCaptainsQuarters()){
-            playerAttack.setResultClass(opponentsBoard.sinkAttack(x, y));
-        }else {
-            playerAttack.setResultClass(opponentsBoard.attack(x, y));
+        playerAttack.setResultClass(opponentsBoard.checkDoubleMiss(x, y, spaceLaser));
+        if(playerAttack.getResult() != INVALID) {
+            playerAttack.setResultClass(opponentsBoard.attack(x, y, spaceLaser));
         }
         if (playerAttack.getResult() == INVALID) {
             return false;
@@ -49,10 +52,9 @@ public class Game {
             // let it try until it gets it right
             int xRand = randRow();
             char yRand = randCol();
-            if(playersBoard.getSquareAt(xRand, yRand) != null && playersBoard.getSquareAt(xRand, yRand).isCaptainsQuarters()){
-                opponentAttackResult.setResultClass(playersBoard.sinkAttack(xRand, yRand));
-            }else {
-                opponentAttackResult.setResultClass(playersBoard.attack(xRand, yRand));
+            opponentAttackResult.setResultClass(playersBoard.checkDoubleMiss(xRand, yRand, spaceLaser));
+            if(opponentAttackResult.getResult() != INVALID) {
+                opponentAttackResult.setResultClass(playersBoard.attack(xRand, yRand, spaceLaser));
             }
         } while(opponentAttackResult.getResult() == INVALID);
 
@@ -78,6 +80,10 @@ public class Game {
     }
 
     private boolean randVertical() {
+        return new Random().nextBoolean();
+    }
+
+    private boolean randSubmerged() {
         return new Random().nextBoolean();
     }
 }

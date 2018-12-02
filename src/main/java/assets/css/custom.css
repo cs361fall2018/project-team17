@@ -6,7 +6,6 @@
     display: none;
 }
 
-
 h1 {
   font-family: 'Anton', serif;
   font-size: 86px;
@@ -34,9 +33,19 @@ body {
     animation: fadein 2s linear;
 }
 
+.fadein-fast {
+    opacity: 1;
+    animation: fadein 1s linear;
+}
+
 .fadeout{
     opacity: 0;
     animation: fadeout 2s linear;
+}
+
+.fadeout-fast {
+    opacity: 0;
+    animation: fadeout 0.5s linear;
 }
 
 body {
@@ -172,8 +181,16 @@ td:hover {
     background-color: lightcoral;
 }
 
+.captainLaser {
+    background-color: #c06666;
+}
+
 .hit {
     background-color: darkred;
+}
+
+.hitLaser {
+    background-color: #610000;
 }
 
 .sink {
@@ -182,6 +199,10 @@ td:hover {
 
 .miss {
     background-color: lightblue;
+}
+
+.missLaser {
+    background-color: #9bc2cf;
 }
 
 .sonar_container .sonar_tooltip {
@@ -217,11 +238,6 @@ td:hover {
     height: 25px;
     background-color: black;
     border-radius: 25px;
-}
-
-#place-menu > li {
-    display: inline;
-    padding: 20px;
 }
 
 button {
@@ -277,8 +293,52 @@ button:hover {
     text-align: center;
 }
 
+.place {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    margin-bottom: 0px;
+}
+
+#place-menu > li {
+    display: inline;
+    padding: 20px;
+}
+
 #error-menu {
     color: red;
     text-align: center;
     padding: 20px;
+}
+
+#info-menu > li {
+    list-style: none;
+}
+
+#first-sunk-info {
+    padding: 10px;
+    position: fixed;
+    width: 350px;
+    top: 40%;
+    left: 45%;
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 5px 5px 5px 5px;
+}
+
+#first-sunk-info > .info-text {
+    font-size: 20px;
+}
+.info-header {
+    text-align: center;
+    font-weight: bold;
+}
+
+#close-info {
+    border: 1px solid black;
+    padding: 0px;
+    width: 20px;
+    position: absolute;
+    right: 40px;
+    top: 25px;
 }
