@@ -38,12 +38,11 @@ public class Game {
     /*
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
-    public boolean attack(int x, char  y) {
+    public boolean attack(int x, char  y, boolean spaceLaser) {
         Result playerAttack = new Result();
-        if(opponentsBoard.getSquareAt(x, y) != null && opponentsBoard.getSquareAt(x, y).isCaptainsQuarters()){
-            playerAttack.setResultClass(opponentsBoard.sinkAttack(x, y));
-        }else {
-            playerAttack.setResultClass(opponentsBoard.attack(x, y));
+        playerAttack.setResultClass(opponentsBoard.checkDoubleMiss(x, y, spaceLaser));
+        if(playerAttack.getResult() != INVALID) {
+            playerAttack.setResultClass(opponentsBoard.attack(x, y, spaceLaser));
         }
         if (playerAttack.getResult() == INVALID) {
             return false;
@@ -55,10 +54,9 @@ public class Game {
             // let it try until it gets it right
             int xRand = randRow();
             char yRand = randCol();
-            if(playersBoard.getSquareAt(xRand, yRand) != null && playersBoard.getSquareAt(xRand, yRand).isCaptainsQuarters()){
-                opponentAttackResult.setResultClass(playersBoard.sinkAttack(xRand, yRand));
-            }else {
-                opponentAttackResult.setResultClass(playersBoard.attack(xRand, yRand));
+            opponentAttackResult.setResultClass(playersBoard.checkDoubleMiss(xRand, yRand, spaceLaser));
+            if(opponentAttackResult.getResult() != INVALID) {
+                opponentAttackResult.setResultClass(playersBoard.attack(xRand, yRand, spaceLaser));
             }
         } while(opponentAttackResult.getResult() == INVALID);
 

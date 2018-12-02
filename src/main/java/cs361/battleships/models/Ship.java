@@ -63,7 +63,7 @@ public class Ship {
 		return kind;
 	}
 
-	public Result attack(int x, char y) {
+	public Result attack(int x, char y, boolean spaceLaser) {
 		var attackedLocation = new Square(x, y);
 		var square = getOccupiedSquares().stream().filter(s -> s.equals(attackedLocation)).findFirst();
 		if (!square.isPresent()) {
@@ -73,7 +73,11 @@ public class Ship {
 		if ((attackedSquare.getHit() == 0) && attackedSquare.isCaptainsQuarters() && !(kind.equals("MINESWEEPER"))) {
 		    attackedSquare.hit();
             var result = new Result(attackedLocation);
-			result.setResult(AtackStatus.CAPTAIN);
+            if(spaceLaser) {
+                result.setResult(AtackStatus.CAPTAINLASER);
+            } else {
+                result.setResult(AtackStatus.CAPTAIN);
+            }
 			return result;
 		}else if(attackedSquare.isHit(kind)){
 			var result = new Result(attackedLocation);
@@ -83,9 +87,17 @@ public class Ship {
 		attackedSquare.hit();
 		var result = new Result(attackedLocation);
 		if (isSunk()) {
-		    result.setResult(AtackStatus.SUNK);
+		    if(spaceLaser) {
+                result.setResult(AtackStatus.SUNKLASER);
+            } else {
+                result.setResult(AtackStatus.SUNK);
+            }
         }else {
- 			result.setResult(AtackStatus.HIT);
+			if(spaceLaser) {
+				result.setResult(AtackStatus.HITLASER);
+			} else {
+				result.setResult(AtackStatus.HIT);
+			}
 		}
 		return result;
 	}

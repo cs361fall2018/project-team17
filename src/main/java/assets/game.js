@@ -1,5 +1,7 @@
 var isSetup = true;
 var sonarClicked=false;
+var attackMethod="/attack";
+var showToolTip=true;
 var sonarUsed=0;
 var placedShips = 0;
 var game;
@@ -53,26 +55,81 @@ function displayEndGame(endGame) {
     }, (2000));
 }
 
+function captainHit(row, col, cell) {
+    var i, j, shipCount = 0;
+    var shipOneCQ = 0;
+    for(i = 0; i < game.opponentsBoard.ships.length; i++) {
+        var shipSearch = game.opponentsBoard.ships[i];
+        for(j = 0; j < shipSearch.occupiedSquares.length; j++) {
+            var shipSearchSq = shipSearch.occupiedSquares[j];
+                var shipSearchCol = shipSearchSq.column.charCodeAt(0) - 'A'.charCodeAt(0);
+                var shipSearchRow = shipSearchSq.row - 1;
+                if(shipSearchCol === col && shipSearchRow === row) {
+                    shipCount++;
+                    if(shipCount == 1) {
+                        if(shipSearchSq.captainsQuarters && shipSearchSq.hit === 1)
+                            shipOneCQ = 2;
+                        else
+                            shipOneCQ = 1;
+                    } else if (shipCount == 2) {
+                        if(shipSearchSq.captainsQuarters && shipSearchSq.hit === 1 && shipOneCQ === 1) {
+                            cell.classList.remove("hitLaser");
+                        } else if (!shipSearchSq.captainsQuarters && shipOneCQ === 2) {
+                            cell.classList.remove("hitLaser");
+                        }
+                    }
+                }
+        }
+    }
+}
+
 function markHits(board, elementId, surrenderText) {
     board.attacks.forEach((attack) => {
         let className;
     if (attack.result === "MISS")
         className = "miss";
+    else if (attack.result === "MISSLASER")
+        className = "missLaser";
     else if (attack.result === "HIT")
         className = "hit";
+    else if (attack.result === "HITLASER")
+        className = "hitLaser";
     else if (attack.result === "SUNK") {
         className = "hit";
         if(elementId === "opponent" && sonarUsed == 0) {
+            attackMethod = "/attackLaser"
             document.getElementById("place_sonar").classList.remove('hide');
+            if(showToolTip) {
+                document.getElementById("info-menu").classList.remove("hide");
+                showToolTip=false;
+            }
         }
-    }else if( attack.result === "CAPTAIN"){
+    } else if (attack.result === "SUNKLASER")
+        className = "hitLaser";
+    else if( attack.result === "CAPTAIN"){
         className = "captain";
     }
+    else if (attack.result === "CAPTAINLASER")
+        className = "captainLaser";
     else if (attack.result === "SURRENDER") {
         className = "hit";
         displayEndGame(surrenderText);
     }
-    document.getElementById(elementId).rows[attack.location.row-1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add(className);
+    var cell = document.getElementById(elementId).rows[attack.location.row-1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)];
+    cell.classList.add(className);
+    if(cell.classList.contains("hit") && cell.classList.contains("captainLaser")) {
+        cell.classList.remove("hit");
+    }
+    if(cell.classList.contains("miss") && (className.includes("hitLaser") || className.includes("captain")) && attackMethod === "/attackLaser") {
+        cell.classList.remove("miss");
+    }
+    if((cell.classList.contains("sonar_ship") || cell.classList.contains("sonar_water")) && ((className.includes("hitLaser") || className.includes("captain")))) {
+        cell.classList.remove("sonar_ship");
+        cell.classList.remove("sonar_water");
+    }
+    if(cell.classList.contains("captainLaser") && cell.classList.contains("hitLaser")) {
+        captainHit(attack.location.row-1, attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0), cell);
+    }
 });
 }
 
@@ -80,19 +137,20 @@ function markSonar(board, elementId) {
     board.sonar.forEach((sonar) => {
         let className;
     if (sonar.result === "VISIBLE")
-        className = "sonar_ship";
+        className = "occupied";
     else if (sonar.result === "HIDDEN")
         className = "sonar_water";
     var cell = document.getElementById(elementId).rows[sonar.location.row-1].cells[sonar.location.column.charCodeAt(0) - 'A'.charCodeAt(0)];
 
     if(!cell.classList.contains("hit") && !cell.classList.contains("miss") && !cell.classList.contains("captain")) {
-        if(sonar.center === true) {
-            let center = document.createElement('div');
-            center.classList.add('sonar_center');
-            cell.appendChild(center);
+        if (!cell.classList.contains("hitLaser") && !cell.classList.contains("missLaser") && !cell.classList.contains("captainLaser")) {
+            if (sonar.center === true) {
+                let center = document.createElement('div');
+                center.classList.add('sonar_center');
+                cell.appendChild(center);
+            }
+            cell.classList.add(className);
         }
-        cell.classList.add(className);
-
     }
 });
 }
@@ -114,7 +172,6 @@ function redrawGrid() {
     game.playersBoard.ships.forEach((ship) => ship.occupiedSquares.forEach((square) => {
         document.getElementById("player").rows[square.row-1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("occupied");
     }));
-    markHits(game.opponentsBoard, "opponent", "You won the game");
     markHits(game.opponentsBoard, "opponent", "You won the game");
     markHits(game.playersBoard, "player", "You lost the game");
     markSonar(game.opponentsBoard, "opponent");
@@ -190,11 +247,20 @@ function cellClick() {
     } else {
         if(!sonarClicked) {
             if (document.getElementById("opponent").rows[this.parentNode.rowIndex].cells[this.cellIndex].classList.contains("hit") || document.getElementById("opponent").rows[this.parentNode.rowIndex].cells[this.cellIndex].classList.contains("miss")) {
-                document.getElementById("error-menu").classList.remove("hide");
-                document.getElementById("error-menu").innerHTML = "*You have already selected that space. Please select a different one";
-                return;
+                if(attackMethod === "/attack") {
+                    document.getElementById("error-menu").classList.remove("hide");
+                    document.getElementById("error-menu").innerHTML = "*You have already selected that space. Please select a different one";
+                    return;
+                }
             }
-            sendXhr("POST", "/attack", {game: game, x: row, y: col}, function (data) {
+            if (document.getElementById("opponent").rows[this.parentNode.rowIndex].cells[this.cellIndex].classList.contains("hitLaser") || document.getElementById("opponent").rows[this.parentNode.rowIndex].cells[this.cellIndex].classList.contains("missLaser")) {
+                if(attackMethod === "/attackLaser") {
+                    document.getElementById("error-menu").classList.remove("hide");
+                    document.getElementById("error-menu").innerHTML = "*You have already selected that space. Please select a different one";
+                    return;
+                }
+            }
+            sendXhr("POST", attackMethod, {game: game, x: row, y: col}, function (data) {
                 game = data;
                 redrawGrid();
             });
@@ -223,6 +289,9 @@ function sendXhr(method, url, data, handler) {
             if (isSetup) {
                 document.getElementById("error-menu").classList.remove("hide");
                 document.getElementById("error-menu").innerHTML = "*You are trying to place a ship on another or it is out of bounds. Please place your ship on empty spaces";
+            } else if (attackMethod === "/attackLaser") {
+                document.getElementById("error-menu").classList.remove("hide");
+                document.getElementById("error-menu").innerHTML = "*You have already selected that space. Please select a different one";
             } else {
                 alert("Cannot complete the action");
             }
@@ -364,6 +433,13 @@ function initGame() {
        document.getElementById("place-menu-container").classList.remove("hide");
        document.getElementById("submerge-option").setAttribute("class", "hide");
        document.getElementById("start-button").setAttribute("class", "hide")
+    });
+
+    document.getElementById("close-info").addEventListener("click", function () {
+        document.getElementById("info-menu").classList.add("fadeout-fast");
+        setTimeout(function() {
+            document.getElementById("info-menu").classList.add('hide');
+        }, (500));
     });
     sendXhr("GET", "/game", {}, function(data) {
         game = data;
