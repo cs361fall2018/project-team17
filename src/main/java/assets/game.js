@@ -55,6 +55,34 @@ function displayEndGame(endGame) {
     }, (2000));
 }
 
+function captainHit(row, col, cell) {
+    var i, j, shipCount = 0;
+    var shipOneCQ = 0;
+    for(i = 0; i < game.opponentsBoard.ships.length; i++) {
+        var shipSearch = game.opponentsBoard.ships[i];
+        for(j = 0; j < shipSearch.occupiedSquares.length; j++) {
+            var shipSearchSq = shipSearch.occupiedSquares[j];
+                var shipSearchCol = shipSearchSq.column.charCodeAt(0) - 'A'.charCodeAt(0);
+                var shipSearchRow = shipSearchSq.row - 1;
+                if(shipSearchCol === col && shipSearchRow === row) {
+                    shipCount++;
+                    if(shipCount == 1) {
+                        if(shipSearchSq.captainsQuarters && shipSearchSq.hit === 1)
+                            shipOneCQ = 2;
+                        else
+                            shipOneCQ = 1;
+                    } else if (shipCount == 2) {
+                        if(shipSearchSq.captainsQuarters && shipSearchSq.hit === 1 && shipOneCQ === 1) {
+                            cell.classList.remove("hitLaser");
+                        } else if (!shipSearchSq.captainsQuarters && shipOneCQ === 2) {
+                            cell.classList.remove("hitLaser");
+                        }
+                    }
+                }
+        }
+    }
+}
+
 function markHits(board, elementId, surrenderText) {
     board.attacks.forEach((attack) => {
         let className;
@@ -99,7 +127,9 @@ function markHits(board, elementId, surrenderText) {
         cell.classList.remove("sonar_ship");
         cell.classList.remove("sonar_water");
     }
-
+    if(cell.classList.contains("captainLaser") && cell.classList.contains("hitLaser")) {
+        captainHit(attack.location.row-1, attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0), cell);
+    }
 });
 }
 
