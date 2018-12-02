@@ -30,7 +30,7 @@ public class BoardTest {
     @Test
     public void testAttackEmptySquare() {
         board.placeShip(new Minesweeper(), 2, 'B', true, false);
-        Result result = board.attack(2, 'E');
+        Result result = board.attack(2, 'E', false);
         assertEquals(AtackStatus.MISS, result.getResult());
     }
 
@@ -39,9 +39,9 @@ public class BoardTest {
         Ship minesweeper = new Minesweeper();
         board.placeShip(minesweeper, 3, 'C', true, false);
         minesweeper = board.getShips().get(0);
-        Result result = board.attack(3, 'C');
+        Result result = board.attack(3, 'C', false);
         result.setShip(minesweeper);
-        assertEquals(AtackStatus.HIT, result.getResult());
+        assertEquals(AtackStatus.SURRENDER, result.getResult()); //Since no other ships were placed, we have destroyed the only one
         assertEquals(minesweeper, result.getShip());
     }
 
@@ -49,16 +49,16 @@ public class BoardTest {
     public void testAttackSameSquareMultipleTimes() {
         Ship minesweeper = new Minesweeper();
         board.placeShip(minesweeper, 1, 'A', true, false);
-        board.attack(1, 'A');
-        Result result = board.attack(1, 'A');
+        board.attack(1, 'A', false);
+        Result result = board.attack(1, 'A', false);
         assertEquals(AtackStatus.MISS, result.getResult());
     }
 
     @Test
     public void testAttackSameEmptySquareMultipleTimes() {
-        Result initialResult = board.attack(1, 'A');
+        Result initialResult = board.attack(1, 'A', false);
         assertEquals(AtackStatus.MISS, initialResult.getResult());
-        Result result = board.attack(1, 'A');
+        Result result = board.attack(1, 'A', false);
         assertEquals(AtackStatus.MISS, result.getResult());
     }
 
@@ -95,13 +95,13 @@ public class BoardTest {
         test.placeShip(mine2, 6, 'G', false, false);
 
 
-        Result sink = test.sinkAttack(3, 'D');
+        Result sink = test.attack(3, 'D',false);
         assertEquals(AtackStatus.SUNK, sink.getResult());
 
-        Result sink2 = test.sinkAttack(6, 'H');
+        Result sink2 = test.attack(6, 'H',false);
         assertEquals(AtackStatus.CAPTAIN, sink2.getResult());
 
-        Result sink3 = test.sinkAttack(6, 'H');
+        Result sink3 = test.attack(6, 'H',false);
         assertEquals(AtackStatus.SURRENDER, sink3.getResult());
     }
 
@@ -117,7 +117,7 @@ public class BoardTest {
         assertEquals(3, tempSquare.getRow());
         assertEquals('D', tempSquare.getColumn());
 
-        test.sinkAttack(3, 'D');
+        test.attack(3, 'D', false);
         tempSquare = test.getSquareAt(4, 'D');
 
         assertEquals(true, tempSquare.isHit(mine.getKind()));
