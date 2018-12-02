@@ -45,9 +45,9 @@ public class Game {
         }else {
             playerAttack.setResultClass(opponentsBoard.attack(x, y));
         }
-        if (playerAttack.getResult() == INVALID) {
-            return false;
-        }
+//        if (playerAttack.getResult() == INVALID) {
+//            return false;
+//        }
 
         Result opponentAttackResult = new Result();
         do {
