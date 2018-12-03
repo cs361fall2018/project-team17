@@ -42,9 +42,9 @@ public class Game {
         if(playerAttack.getResult() != INVALID) {
             playerAttack.setResultClass(opponentsBoard.attack(x, y, spaceLaser));
         }
-//        if (playerAttack.getResult() == INVALID) {
-//            return false;
-//        }
+        if (playerAttack.getResult() == INVALID) {
+            return false;
+        }
 
         Result opponentAttackResult = new Result();
         do {
